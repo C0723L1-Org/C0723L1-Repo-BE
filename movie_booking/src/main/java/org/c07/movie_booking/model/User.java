@@ -3,37 +3,27 @@ package org.c07.movie_booking.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "code")
     private String code;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "card_id")
     private String cardId;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "gender")
     private boolean gender;
 
-    @Column(name = "status")
     private boolean status;
 
-    @Column(name = "phone_number")
     private String phoneNumber;
-    @Column(name="avatar")
     private String avatar;
-    @Column(name="address")
     private String address;
     @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    @JoinColumn(name = "role_id")
     private Role role;
 
     public User() {

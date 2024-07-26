@@ -12,18 +12,9 @@ public class Role {
     private Long id;
     @Column(name = "code")
     private String name;
-    @OneToMany(mappedBy = "user")
-    private List<User> userList;
 
     public Role() {
     }
-
-    public Role(Long id, String name, List<User> userList) {
-        this.id = id;
-        this.name = name;
-        this.userList = userList;
-    }
-
     public Long getId() {
         return id;
     }
@@ -40,11 +31,4 @@ public class Role {
         this.name = name;
     }
 
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
-    }
 }
