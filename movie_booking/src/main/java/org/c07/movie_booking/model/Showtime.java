@@ -1,9 +1,6 @@
 package org.c07.movie_booking.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -14,8 +11,13 @@ public class Showtime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private int idMovie;
-    private int idRoom;
+    @ManyToOne
+    @JoinColumn(name = "movie_id")
+    private Movie movie;
+
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate showDate;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -23,15 +25,6 @@ public class Showtime {
 
     public Showtime() {
     }
-
-    public Showtime(long id, int idMovie, int idRoom, LocalDate showDate, LocalDateTime startTime) {
-        this.id = id;
-        this.idMovie = idMovie;
-        this.idRoom = idRoom;
-        this.showDate = showDate;
-        this.startTime = startTime;
-    }
-
     public long getId() {
         return id;
     }
@@ -40,20 +33,20 @@ public class Showtime {
         this.id = id;
     }
 
-    public int getIdMovie() {
-        return idMovie;
+    public Movie getMovie() {
+        return movie;
     }
 
-    public void setIdMovie(int idMovie) {
-        this.idMovie = idMovie;
+    public void setMovie(Movie movie) {
+        this.movie = movie;
     }
 
-    public int getIdRoom() {
-        return idRoom;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setIdRoom(int idRoom) {
-        this.idRoom = idRoom;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     public LocalDate getShowDate() {

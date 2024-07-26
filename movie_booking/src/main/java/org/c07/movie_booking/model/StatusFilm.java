@@ -5,22 +5,15 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class MovieStatus {
+public class StatusFilm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Column(name = "name")
     private String name;
-    @OneToMany(mappedBy = "movieStatusId")
-    private List<Movie> movie;
 
-    public List<Movie> getMovie() {
-        return movie;
-    }
-
-    public void setMovie(List<Movie> movie) {
-        this.movie = movie;
+    public StatusFilm() {
     }
 
     public Long getId() {

@@ -2,46 +2,37 @@ package org.c07.movie_booking.model;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "movie_name")
     private String nameMovie;
-    @Column(name = "release_date")
     private String releaseDate;
-    @Column(name = "duration")
     private String durationMovie;
-    @Column(name = "actor")
     private String actor;
-    @Column(name = "director")
     private String director;
-    @Column(name = "studio")
     private String studio;
-    @Column(name = "content")
     private String content;
-    @Column(name = "trailer")
     private String trailer;
-    @Column(name = "avatar")
     private String avatar;
     @ManyToOne
     @JoinColumn(name = "status_movie_id")
-    private MovieStatus movieStatusId;
+    private StatusFilm statusFilmId;
     @ManyToOne
     @JoinColumn(name = "type_movie_id")
-    private TypeMovie typeMovieId;
-    @OneToMany(mappedBy = "movieId")
-    private List<TimeLine> timeLine;
-    public void setId(Long id) {
-        this.id = id;
+    private KindOfFilm kindOfFilm;
+
+    public Movie() {
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNameMovie() {
@@ -114,5 +105,21 @@ public class Movie {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public StatusFilm getMovieStatusId() {
+        return statusFilmId;
+    }
+
+    public void setMovieStatusId(StatusFilm statusFilmId) {
+        this.statusFilmId = statusFilmId;
+    }
+
+    public KindOfFilm getKindOfFilm() {
+        return kindOfFilm;
+    }
+
+    public void setKindOfFilm(KindOfFilm kindOfFilm) {
+        this.kindOfFilm = kindOfFilm;
     }
 }
