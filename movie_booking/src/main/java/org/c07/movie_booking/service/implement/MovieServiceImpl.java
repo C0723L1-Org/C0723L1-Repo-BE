@@ -5,6 +5,8 @@ import org.c07.movie_booking.model.Movie;
 import org.c07.movie_booking.repository.IMovieRepository;
 import org.c07.movie_booking.service.IMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,5 +35,10 @@ public class MovieServiceImpl implements IMovieService {
     @Override
     public void deleteById(Long id) {
 
+    }
+
+    @Override
+    public Page<Movie> searchMovieByNameMovie(String searchContent, Pageable pageable) {
+        return movieRepository.searchMovieByNameMovie(searchContent, pageable);
     }
 }
