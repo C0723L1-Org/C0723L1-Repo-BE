@@ -1,9 +1,15 @@
 package org.c07.movie_booking.model;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,6 +20,7 @@ public class User {
     private String cardId;
 
     private String email;
+    private String password;
 
     private boolean gender;
 
@@ -29,18 +36,21 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String code, String name, String cardId, String email, boolean gender, boolean status, String phoneNumber, String avatar, String address, Role role) {
-        this.id = id;
-        this.code = code;
-        this.name = name;
-        this.cardId = cardId;
-        this.email = email;
-        this.gender = gender;
-        this.status = status;
-        this.phoneNumber = phoneNumber;
-        this.avatar = avatar;
-        this.address = address;
-        this.role = role;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.getName()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+    @Override
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getId() {
