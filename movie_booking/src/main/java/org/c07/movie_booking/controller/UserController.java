@@ -17,21 +17,21 @@ import org.springframework.data.domain.Pageable;
 import java.util.HashMap;
 
 @Controller
-@RequestMapping("/api/user/")
+@RequestMapping("/api/v1/user/")
 public class UserController {
     @Autowired
     private IRoleService iRoleService;
     @Autowired
     private IUserService iUserSrevice;
 
-    @GetMapping("register")
+    @GetMapping("/public/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("listRole", iRoleService.findAll());
         model.addAttribute("user", new UserDTO());
         return "register";
     }
 
-    @PostMapping("register")
+    @PostMapping("/public/register")
     public String addNewUser(@Valid @ModelAttribute("user") UserDTO userDTO,
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes,
@@ -44,10 +44,10 @@ public class UserController {
 
         iUserSrevice.createNewUser(userDTO);
         redirectAttributes.addFlashAttribute("message", "User registered successfully!");
-        return "redirect:/api/user/register";
+        return "redirect:/api/v1/user/public/register";
     }
 
-    @GetMapping("/check-email")
+    @GetMapping("check-email")
     public ResponseEntity<?> checkEmail(@RequestParam String email) {
         boolean exists = iUserSrevice.existsByEmail(email);
         return ResponseEntity.ok(new HashMap<String, Boolean>() {{

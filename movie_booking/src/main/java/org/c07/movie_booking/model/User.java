@@ -38,17 +38,20 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getName()));
+        return null;
     }
 
     @Override
-    public String getUsername() {
-        return email;
-    }
-    @Override
     public String getPassword() {
-        return password;
+        return null;
     }
+
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
