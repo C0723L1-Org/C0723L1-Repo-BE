@@ -25,7 +25,7 @@ public class Movie {
     @JoinColumn(name = "status_movie_id")
     private StatusFilm statusFilmId;
     @ManyToOne
-    @JoinColumn(name = "type_movie_id")
+    @JoinColumn(name = "kind_of_movie_id")
     private KindOfFilm kindOfFilm;
 
     public Movie() {
