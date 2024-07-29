@@ -47,7 +47,7 @@ public class UserController {
         return "redirect:/api/user/register";
     }
 
-    @GetMapping("/check-email")
+    @GetMapping("check-email")
     public ResponseEntity<?> checkEmail(@RequestParam String email) {
         boolean exists = iUserSrevice.existsByEmail(email);
         return ResponseEntity.ok(new HashMap<String, Boolean>() {{
