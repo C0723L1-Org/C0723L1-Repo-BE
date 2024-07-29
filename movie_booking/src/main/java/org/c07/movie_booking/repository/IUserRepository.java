@@ -34,5 +34,10 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     void deleteEmployeeByQuery( Long id);
     // Tìm employee theo id
 //    @Query(value= "select * from user where id = ?1 and status = false", nativeQuery = true)
-//    User findEmployeeById(Long id);
+    @Query(value = "SELECT u.* " +
+            "FROM user u " +
+            "JOIN role r ON u.role_id = r.id " +
+            "WHERE r.name = 'employee' AND u.status = false AND u.id = ?1"
+            , nativeQuery = true)
+    Optional<User> findEmployeeById(Long id);
 }

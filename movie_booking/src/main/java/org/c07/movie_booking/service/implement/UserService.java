@@ -30,7 +30,7 @@ public class UserService implements IUserService {
     // Tìm kiếm theo ID
     @Override
     public UserResDTO findEmployeeById(Long id) {
-        User user = iUserRepository.findById(id).orElse(null);
+        User user = iUserRepository.findEmployeeById(id).orElse(null);
         if (user == null || user.isStatus()) {
             return null;
         } else {
