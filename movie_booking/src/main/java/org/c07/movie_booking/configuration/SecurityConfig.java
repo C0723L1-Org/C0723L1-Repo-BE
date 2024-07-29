@@ -27,11 +27,7 @@ public class SecurityConfig {
                 // ????
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/movie/**").permitAll()
-                        .requestMatchers("/api/v1/seat/**").permitAll()
-                        .requestMatchers("/api/v1/showtime/**").permitAll()
-                        .requestMatchers("/api/v1/user/**").permitAll()
-                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/**/public/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

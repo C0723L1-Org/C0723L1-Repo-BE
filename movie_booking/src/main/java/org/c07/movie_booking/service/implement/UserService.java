@@ -1,2 +1,3 @@
-package org.c07.movie_booking.service.implement;public class UserService {
+package org.c07.movie_booking.service.implement;
+public class UserService {
 }

@@ -19,7 +19,7 @@ public class SeatController {
     @Autowired
     ISeatService seatService;
     // get all selected seats
-    @GetMapping("/list")
+    @GetMapping("/public/list")
     public ResponseEntity<List<Seat>> getAllSelectedSeats(){
         List<Seat> seatList = seatService.getAllSelectedSeat();
         if(seatList.isEmpty()){
