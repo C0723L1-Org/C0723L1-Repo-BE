@@ -2,14 +2,17 @@ package org.c07.movie_booking.model;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
+@Table(name = "movie")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     private String nameMovie;
-    private String releaseDate;
+    private Date releaseDate;
     private String durationMovie;
     private String actor;
     private String director;
@@ -17,6 +20,7 @@ public class Movie {
     private String content;
     private String trailer;
     private String avatar;
+    private Boolean isDelete;
     @ManyToOne
     @JoinColumn(name = "status_movie_id")
     private StatusFilm statusFilmId;
@@ -25,6 +29,21 @@ public class Movie {
     private KindOfFilm kindOfFilm;
 
     public Movie() {
+    }
+    public Boolean getDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(Boolean delete) {
+        isDelete = delete;
+    }
+
+    public StatusFilm getStatusFilmId() {
+        return statusFilmId;
+    }
+
+    public void setStatusFilmId(StatusFilm statusFilmId) {
+        this.statusFilmId = statusFilmId;
     }
 
     public Long getId() {
@@ -43,11 +62,11 @@ public class Movie {
         this.nameMovie = nameMovie;
     }
 
-    public String getReleaseDate() {
+    public Date getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
+    public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
 

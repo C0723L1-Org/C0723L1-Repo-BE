@@ -21,7 +21,7 @@ public class Showtime {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate showDate;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private LocalDateTime startTime ;
+    private LocalDateTime startTime;
 
     public Showtime() {
     }

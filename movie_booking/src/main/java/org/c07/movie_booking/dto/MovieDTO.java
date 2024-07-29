@@ -1,9 +1,12 @@
 package org.c07.movie_booking.dto;
 
+import javax.xml.crypto.Data;
+import java.util.Date;
+
 public class MovieDTO {
     private Long id;
     private String nameMovie;
-    private String releaseDate;
+    private Date releaseDate;
     private String durationMovie;
     private String actor;
     private String director;
@@ -11,6 +14,15 @@ public class MovieDTO {
     private String content;
     private String trailer;
     private String avatar;
+    private Boolean isDelete;
+
+    public Boolean getDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(Boolean delete) {
+        isDelete = delete;
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -28,11 +40,11 @@ public class MovieDTO {
         this.nameMovie = nameMovie;
     }
 
-    public String getReleaseDate() {
+    public Date getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
+    public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
 

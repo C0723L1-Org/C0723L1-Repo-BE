@@ -1,13 +1,21 @@
 package org.c07.movie_booking.service;
 
 import org.c07.movie_booking.dto.MovieDTO;
-import org.c07.movie_booking.model.Movie;
+import org.c07.movie_booking.exception.FieldRequiredException;
+
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public interface IMovieService {
     List<MovieDTO> getFindAll();
-    List<Movie> getSearchField(Map<String, Objects> params);
-    void deleteById(Long id);
+    List<MovieDTO> getSearchFields(String nameMovie, String content, String director,
+                                   Date releaseDate,
+                                   String nameStatus, String nameKind, String actor);
+
+    List<MovieDTO> getSearchByName(String nameMovie);
+
+    void deleteByIdQuery(Long id) throws FieldRequiredException;
+
+    void deleteByIds(List<Long> paths);
+
 }
