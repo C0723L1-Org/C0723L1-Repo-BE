@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IMovieRepository extends JpaRepository<Movie, Long> {
     /**
-     //     * Search for Movie entities by name_movie.
+     //     * Search for Movie entities by name_movie, actor, kind of film, studio.
      //     * @param searchContent the search content to match against movie_name
      //     * @param pageable the pagination information
      //     * @return a Page of Movie entities matching the search criteria
@@ -20,8 +20,8 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
     
 //    @Query( value = "SELECT m.id, m.actor, m.avatar, m.content, m.director, m.duration_movie, " +
 //            " m.name_movie, m.release_date, m.studio, m.trailer FROM movie m " +
-//            " JOIN kind_of_film k on m.type_movie_id = k.id " +
-//            " JOIN status_film s on m.status_movie_id = s.id " +
+//            " LEFT JOIN kind_of_film k on m.kind_of_movie_id = k.id " +
+//            " LEFT JOIN status_film s on m.status_movie_id = s.id " +
 //            " WHERE m.name_movie LIKE %:searchContent%", nativeQuery = true)
 //    Page<Movie> searchMovieByNameMovie(@Param("searchContent") String searchContent, Pageable pageable);
 //
@@ -29,7 +29,10 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
     @Query("SELECT m FROM Movie m " +
             "JOIN m.kindOfFilm k " +
             "JOIN m.statusFilmId s " +
-            "WHERE m.nameMovie LIKE %:searchContent%")
+            "WHERE m.nameMovie LIKE %:searchContent% " +
+            "OR m.actor LIKE %:searchContent% " +
+            "OR k.name LIKE %:searchContent% " +
+            "OR m.studio LIKE %:searchContent%")
     Page<Movie> searchMovieByNameMovie(@Param("searchContent") String searchContent, Pageable pageable);
 }
 

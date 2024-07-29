@@ -13,18 +13,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("api/v1/movie/public")
 @CrossOrigin("*")
 public class MovieController {
     @Autowired
     private IMovieService iMovieService;
     @GetMapping("/list-movie")
     public List<MovieDTO> getFindAll(){
+
         return iMovieService.getFindAll();
     }
 
-//    Show all and search movie by name
-    @GetMapping("/home")
+
+//    Show all information of movie and search movie
+    @GetMapping("/show-list-movie")
     public ResponseEntity<?> showAndSearchMovie( @RequestParam(value = "searchContent", defaultValue = "") String searchContent,
                                              @RequestParam(value = "page", defaultValue = "0") int page)
     {

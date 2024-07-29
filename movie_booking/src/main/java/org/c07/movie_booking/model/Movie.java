@@ -17,14 +17,32 @@ public class Movie {
     private String content;
     private String trailer;
     private String avatar;
+    private String poster;
+    private boolean isDelete;
     @ManyToOne
     @JoinColumn(name = "status_movie_id")
     private StatusFilm statusFilmId;
     @ManyToOne
-    @JoinColumn(name = "type_movie_id")
+    @JoinColumn(name = "kind_of_movie_id")
     private KindOfFilm kindOfFilm;
 
     public Movie() {
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
+
+    public boolean isDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(boolean delete) {
+        isDelete = delete;
     }
 
     public Long getId() {
