@@ -21,6 +21,16 @@ public class Movie {
     private String content;
     private String trailer;
     private String avatar;
+    private String poster;
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
+
     private Boolean isDelete;
     @ManyToOne
     @JoinColumn(name = "status_movie_id")

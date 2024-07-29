@@ -1,4 +1,4 @@
-package org.c07.movie_booking.Advice;
+package org.c07.movie_booking.advice;
 
 import org.c07.movie_booking.dto.ErrorResponseDTO;
 import org.c07.movie_booking.exception.FieldRequiredException;
