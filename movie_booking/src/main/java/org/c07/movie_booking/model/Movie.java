@@ -2,6 +2,7 @@ package org.c07.movie_booking.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -12,7 +13,7 @@ public class Movie {
     @Column(name = "id")
     private Long id;
     private String nameMovie;
-    private Date releaseDate;
+    private LocalDate releaseDate;
     private String durationMovie;
     private String actor;
     private String director;
@@ -62,11 +63,11 @@ public class Movie {
         this.nameMovie = nameMovie;
     }
 
-    public Date getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 

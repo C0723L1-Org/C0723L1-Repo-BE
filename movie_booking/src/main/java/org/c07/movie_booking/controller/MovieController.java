@@ -1,48 +1,58 @@
 package org.c07.movie_booking.controller;
 
 
+import org.c07.movie_booking.dto.KindOfFilmDTO;
 import org.c07.movie_booking.dto.MovieDTO;
+import org.c07.movie_booking.dto.StatusFilmDTO;
 import org.c07.movie_booking.exception.FieldRequiredException;
-import org.c07.movie_booking.model.Movie;
+import org.c07.movie_booking.service.IKindOfFilmService;
 import org.c07.movie_booking.service.IMovieService;
+import org.c07.movie_booking.service.IStatusFilmService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
+@RequestMapping("api/v1/movie/private")
 public class MovieController {
     @Autowired
     private IMovieService iMovieService;
-    @GetMapping("v1/list-movie")
+    @Autowired
+    private IKindOfFilmService iKindOfFilmService;
+    @Autowired
+    private IStatusFilmService iStatusFilmService;
+    @GetMapping("/list-movie")
     public List<MovieDTO> getFindAll(){
         return iMovieService.getFindAll();
     }
-    @GetMapping("v1/searches")
+    @GetMapping("/list-kind-of-film")
+    public List<KindOfFilmDTO> getFindAllKindOfFilm(){
+        return iKindOfFilmService.getFindAll();
+    }
+    @GetMapping("/list-status-film")
+    public List<StatusFilmDTO> getFindAllStatus(){
+        return iStatusFilmService.getFindAll();
+    }
+//    @GetMapping("/searches")
     public List<MovieDTO> getSearchFields(
                             @RequestParam(value = "nameMovie", required = false) String nameMovie,
                             @RequestParam(value = "content", required = false) String content,
                             @RequestParam(value = "director", required = false) String director,
-                            @RequestParam(value = "releaseDate", required = false) @DateTimeFormat(pattern = "yyyy/MM/dd") Date releaseDate,
+                            @RequestParam(value = "releaseDate", required = false) @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate releaseDate,
                             @RequestParam(value = "nameStatus", required = false) String nameStatus,
                             @RequestParam(value = "nameKind", required = false) String nameKind,
                             @RequestParam(value = "actor", required = false) String actor
     ){
-        List<MovieDTO> dtoList = iMovieService.getSearchFields(nameMovie, content, director,
-                releaseDate,
+        List<MovieDTO> dtoList = iMovieService.getSearchFields(nameMovie, content, director, releaseDate,
                 nameStatus, nameKind, actor);
         return dtoList;
 
     }
-    @GetMapping("v1/searches/a")
+    @GetMapping("/nameSearches")
     public List<MovieDTO> getSearchByName(
             @RequestParam(value = "nameMovie", required = false) String nameMovie
     ){
@@ -50,13 +60,9 @@ public class MovieController {
         return dtoList;
     }
 
-    @PutMapping ("v1/delete/{id}")
-    public ResponseEntity<Void> deleteMovieById(@PathVariable(name = "id") Long id){
-        try {
+    @PutMapping ("delete/{id}")
+    public ResponseEntity<Void> deleteMovieById(@PathVariable(name = "id") Long id) throws FieldRequiredException {
             iMovieService.deleteByIdQuery(id);
-        } catch (FieldRequiredException e) {
-            throw new RuntimeException(e);
-        }
         return ResponseEntity.noContent().build();
     }
     @PutMapping ("v1/delete")

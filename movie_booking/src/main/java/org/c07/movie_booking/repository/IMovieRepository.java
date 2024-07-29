@@ -9,12 +9,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 @Repository
 public interface IMovieRepository extends JpaRepository<Movie, Long> {
-    @Query(value = "select * from movie where is_delete = true", nativeQuery = true)
+    @Query(value = "select * from movie where is_delete = false", nativeQuery = true)
     List<Movie> findAllByQuery();
     @Query("select mv from Movie mv " +
             "left join mv.kindOfFilm k " +
@@ -22,7 +23,7 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
             "where mv.isDelete = false " +
             "and (:nameMovie is null or mv.nameMovie like %:nameMovie%) " +
             "and (:director is null or mv.director like %:director%) " +
-            "and (:releaseDate is null or DATE(mv.releaseDate) =:releaseDate) " +
+            "and (:releaseDate is null or LOCALDATE(mv.releaseDate) =:releaseDate) " +
             "and (:content is null or mv.content like %:content%) " +
             "and (:actor is null or mv.actor like %:actor%) " +
             "and (:nameStatus is null or s.name like %:nameStatus%) " +
@@ -31,20 +32,22 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
             @Param("nameMovie") String nameMovie,
             @Param("content") String content,
             @Param("director") String director,
-            @Param("releaseDate") Date releaseDate,
+            @Param("releaseDate") LocalDate releaseDate,
             @Param("nameStatus") String nameStatus,
             @Param("nameKind") String nameKind,
             @Param("actor") String actor
     );
 //    @Query(value = "select id from movie where id = :id", nativeQuery = true)
 //    Long getFindById(@Param("id") Long id);
-    @Query("SELECT mv FROM Movie mv " +
+
+    @Modifying   @Query("SELECT mv FROM Movie mv " +
             "LEFT JOIN mv.kindOfFilm k " +
             "LEFT JOIN mv.statusFilmId s " +
             "WHERE (mv.nameMovie LIKE %:nameMovie%) ")
     List<Movie> getSearchByName(@Param("nameMovie") String nameMovie);
-    @Modifying
     @Transactional
-    @Query(value = "update movie set is_delete = 0 where id =:id", nativeQuery = true)
+    @Query(value = "update movie set is_delete = 1 where id =:id", nativeQuery = true)
     void deleteById(@Param("id") Long id);
+    @Query(value = "select id from movie where id = :id", nativeQuery = true)
+    Long findByIdMovie(@Param("id") Long id);
 }
