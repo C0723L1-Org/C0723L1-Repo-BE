@@ -22,6 +22,7 @@ public class User {
     private String phoneNumber;
     private String avatar;
     private String address;
+    private String password;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
@@ -29,7 +30,7 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String code, String name, String cardId, String email, boolean gender, boolean status, String phoneNumber, String avatar, String address, Role role) {
+    public User(Long id, String code, String name, String cardId, String email, boolean gender, boolean status, String phoneNumber, String avatar, String address, String password, Role role) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -40,6 +41,7 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.avatar = avatar;
         this.address = address;
+        this.password = password;
         this.role = role;
     }
 
@@ -115,19 +117,27 @@ public class User {
         this.avatar = avatar;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
