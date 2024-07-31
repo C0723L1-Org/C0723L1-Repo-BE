@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1/booking")
 @CrossOrigin
 public class BookingController {
 
     @Autowired
     private IBookingService iBookingService;
 
-    @GetMapping("")
+    @GetMapping("/private/booking-custormer")
     public ResponseEntity<List<BookingDTO>> showList() {
         List<BookingDTO> bookings = iBookingService.fillAllBooking();
         return ResponseEntity.ok(bookings);
