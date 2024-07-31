@@ -17,6 +17,8 @@ public class Movie {
     private String content;
     private String trailer;
     private String avatar;
+    private String poster;
+    private boolean isDelete;
     @ManyToOne
     @JoinColumn(name = "status_movie_id")
     private StatusFilm statusFilmId;
@@ -107,11 +109,27 @@ public class Movie {
         this.avatar = avatar;
     }
 
-    public StatusFilm getMovieStatusId() {
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
+
+    public boolean isDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(boolean delete) {
+        isDelete = delete;
+    }
+
+    public StatusFilm getStatusFilmId() {
         return statusFilmId;
     }
 
-    public void setMovieStatusId(StatusFilm statusFilmId) {
+    public void setStatusFilmId(StatusFilm statusFilmId) {
         this.statusFilmId = statusFilmId;
     }
 

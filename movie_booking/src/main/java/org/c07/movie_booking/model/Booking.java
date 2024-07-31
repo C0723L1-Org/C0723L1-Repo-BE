@@ -11,6 +11,7 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String codeBooking;
+    private boolean receive;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateBooking;
     private double totalAmount;
