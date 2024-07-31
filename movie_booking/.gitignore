@@ -35,8 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
-<<<<<<< HEAD
 *.properties
-=======
-*.properties
->>>>>>> origin/main
+
+

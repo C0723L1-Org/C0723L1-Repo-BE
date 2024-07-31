@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping({"/api/v1/private/user"})
+@RequestMapping({"/api/v1/user"})
 public class UserController {
     @Autowired
     IUserService iUserService;
     //Show List and Search Employee
-    @GetMapping("/list-employee")
+    @GetMapping("private/list-employee")
     public ResponseEntity<Page<UserResDTO>> searchEmployees(
             @RequestParam(value = "valueSearch", defaultValue = "") String valueSearch,
             @RequestParam("page") Optional<Integer> page) {
@@ -33,7 +33,7 @@ public class UserController {
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
     // Remove Employee
-    @PutMapping("/delete/{id}")
+    @PutMapping("private/delete-employee/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
         UserResDTO userResDTO = iUserService.findEmployeeById(id);
         if (userResDTO == null) {

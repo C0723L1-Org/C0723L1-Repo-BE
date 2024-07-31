@@ -7,10 +7,7 @@ import org.c07.movie_booking.service.IMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class MovieServiceImpl implements IMovieService {
@@ -33,5 +30,10 @@ public class MovieServiceImpl implements IMovieService {
     @Override
     public void deleteById(Long id) {
 
+    }
+
+    @Override
+    public Optional<Movie> getMovieById(Long id) {
+        return movieRepository.findById(id);
     }
 }
