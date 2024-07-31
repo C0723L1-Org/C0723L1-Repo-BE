@@ -22,7 +22,7 @@ public class UserController {
     @Autowired
     private IRoleService iRoleService;
     @Autowired
-    private IUserService iUserSrevice;
+    private IUserService iUserService;
 
     @GetMapping("/public/register")
     public String showRegisterForm(Model model) {
@@ -42,21 +42,21 @@ public class UserController {
             return "register";
         }
 
-        iUserSrevice.createNewUser(userDTO);
+        iUserService.createNewUser(userDTO);
         redirectAttributes.addFlashAttribute("message", "User registered successfully!");
         return "redirect:/api/v1/user/public/register";
     }
 
     @GetMapping("check-email")
     public ResponseEntity<?> checkEmail(@RequestParam String email) {
-        boolean exists = iUserSrevice.existsByEmail(email);
+        boolean exists = iUserService.existsByEmail(email);
         return ResponseEntity.ok(new HashMap<String, Boolean>() {{
             put("exists", exists);
         }});
     }
     @GetMapping("list")
     public ResponseEntity<Page<UserDTO>> listUsers(Pageable pageable) {
-        Page<UserDTO> userPage = iUserSrevice.getAllUser(pageable);
+        Page<UserDTO> userPage = iUserService.getAllUser(pageable);
         return ResponseEntity.ok(userPage);
     }
     
