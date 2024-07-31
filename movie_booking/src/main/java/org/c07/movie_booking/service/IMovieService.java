@@ -10,9 +10,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public interface IMovieService {
-    List<MovieDTO> getFindAll();
-    List<Movie> getSearchField(Map<String, Objects> params);
-    void deleteById(Long id);
-    Page<Movie> searchMovieByNameMovie(String searchContent, Pageable pageable);
+    Page<Movie> getSearchMovieByNameMovie(String searchContent, Pageable pageable);
 
 }

@@ -4,6 +4,7 @@ import org.c07.movie_booking.dto.MovieDTO;
 import org.c07.movie_booking.model.Movie;
 import org.c07.movie_booking.repository.IMovieRepository;
 import org.c07.movie_booking.service.IMovieService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,26 +20,9 @@ public class MovieServiceImpl implements IMovieService {
     @Autowired
     private IMovieRepository movieRepository;
 
-
     @Override
-    public List<MovieDTO> getFindAll() {
-        List<Movie> movieEntity = movieRepository.findAll();
-        List<MovieDTO> movieDTOList = new ArrayList<>();
-        return movieDTOList;
+    public Page<Movie> getSearchMovieByNameMovie(String searchContent, Pageable pageable) {
+        return movieRepository.getSearchMovieByNameMovie(searchContent, pageable);
     }
 
-    @Override
-    public List<Movie> getSearchField(Map<String, Objects> params) {
-        return null;
-    }
-
-    @Override
-    public void deleteById(Long id) {
-
-    }
-
-    @Override
-    public Page<Movie> searchMovieByNameMovie(String searchContent, Pageable pageable) {
-        return movieRepository.searchMovieByNameMovie(searchContent, pageable);
-    }
 }

@@ -16,23 +16,14 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
      //     * @return a Page of Movie entities matching the search criteria
      //     */
 
-//      1.SQL
-    
-//    @Query( value = "SELECT m.id, m.actor, m.avatar, m.content, m.director, m.duration_movie, " +
-//            " m.name_movie, m.release_date, m.studio, m.trailer FROM movie m " +
-//            " LEFT JOIN kind_of_film k on m.kind_of_movie_id = k.id " +
-//            " LEFT JOIN status_film s on m.status_movie_id = s.id " +
-//            " WHERE m.name_movie LIKE %:searchContent%", nativeQuery = true)
-//    Page<Movie> searchMovieByNameMovie(@Param("searchContent") String searchContent, Pageable pageable);
-//
-//    2.JPQL
+//    1.JPQL
     @Query("SELECT m FROM Movie m " +
             "JOIN m.kindOfFilm k " +
             "JOIN m.statusFilmId s " +
-            "WHERE m.nameMovie LIKE %:searchContent% " +
+            "WHERE m.isDelete=false AND m.nameMovie LIKE %:searchContent% " +
             "OR m.actor LIKE %:searchContent% " +
             "OR k.name LIKE %:searchContent% " +
             "OR m.studio LIKE %:searchContent%")
-    Page<Movie> searchMovieByNameMovie(@Param("searchContent") String searchContent, Pageable pageable);
+    Page<Movie> getSearchMovieByNameMovie(@Param("searchContent") String searchContent, Pageable pageable);
 }
 
