@@ -6,13 +6,12 @@ import org.c07.movie_booking.model.Role;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class UserDTO implements Validator {
 
-
-    private Long id;
-    @NotBlank(message = "Vui lòng không để trống")
     private String code;
     @NotBlank(message = "Vui lòng không để trống")
     private String name;
@@ -22,21 +21,24 @@ public class UserDTO implements Validator {
     @Email(message = "Email không hợp lệ")
     private String email;
     private boolean gender;
-    private boolean status;
     @NotBlank(message = "Vui lòng không để trống")
     private String phoneNumber;
     private String avatar;
     @NotBlank(message = "Vui lòng không để trống")
     private String address;
-    private Role role;
+    @NotBlank
+    private String password;
+
+    private Set<String> roles;
 
     public UserDTO() {
         // Thiết lập giá trị mặc định cho avatar
         this.avatar = "https://i.pinimg.com/736x/bc/43/98/bc439871417621836a0eeea768d60944.jpg";
         // Thiết lập giá trị mặc định cho code
         this.code = "KH-" + generateRandomCode();
-        // Thiết lập giá trị mặc định cho role
-        this.role = new Role(1L, "Customer");
+        // Thiết lập giá trị mặc định cho roles
+        this.roles = new HashSet<>();
+        this.roles.add("USER");
     }
 
     private String generateRandomCode() {
@@ -45,28 +47,7 @@ public class UserDTO implements Validator {
         return String.format("%05d", randomNumber);
     }
 
-
-    public UserDTO(Long id, String code, String name, String cardId, String email, boolean gender, boolean status, String phoneNumber, String avatar, String address, Role role) {
-        this.id = id;
-        this.code = code;
-        this.name = name;
-        this.cardId = cardId;
-        this.email = email;
-        this.gender = gender;
-        this.status = status;
-        this.phoneNumber = phoneNumber;
-        this.avatar = avatar;
-        this.address = address;
-        this.role = role;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // Getters and setters for all fields
 
     public String getCode() {
         return code;
@@ -108,14 +89,6 @@ public class UserDTO implements Validator {
         this.gender = gender;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -140,21 +113,29 @@ public class UserDTO implements Validator {
         this.address = address;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<String> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return false;
+        return UserDTO.class.isAssignableFrom(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-
+        // Custom validation logic if any
     }
 }

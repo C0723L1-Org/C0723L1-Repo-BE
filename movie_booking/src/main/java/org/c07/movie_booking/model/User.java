@@ -1,6 +1,7 @@
 package org.c07.movie_booking.model;
 
 import jakarta.persistence.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 public class User {
@@ -22,6 +23,7 @@ public class User {
     private String phoneNumber;
     private String avatar;
     private String address;
+    private String password;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
@@ -29,7 +31,7 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String code, String name, String cardId, String email, boolean gender, boolean status, String phoneNumber, String avatar, String address, Role role) {
+    public User(Long id, String code, String name, String cardId, String email, boolean gender, boolean status, String phoneNumber, String avatar, String address, Role role, String password) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -41,6 +43,7 @@ public class User {
         this.avatar = avatar;
         this.address = address;
         this.role = role;
+        this.password = password;
     }
 
     public Long getId() {
@@ -129,5 +132,13 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
