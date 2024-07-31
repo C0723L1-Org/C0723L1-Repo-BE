@@ -29,6 +29,23 @@ public class Movie {
     public Movie() {
     }
 
+    public Movie(Long id, String nameMovie, String releaseDate, String durationMovie, String actor, String director, String studio, String content, String trailer, String avatar, String poster, boolean isDelete, StatusFilm statusFilmId, KindOfFilm kindOfFilm) {
+        this.id = id;
+        this.nameMovie = nameMovie;
+        this.releaseDate = releaseDate;
+        this.durationMovie = durationMovie;
+        this.actor = actor;
+        this.director = director;
+        this.studio = studio;
+        this.content = content;
+        this.trailer = trailer;
+        this.avatar = avatar;
+        this.poster = poster;
+        this.isDelete = isDelete;
+        this.statusFilmId = statusFilmId;
+        this.kindOfFilm = kindOfFilm;
+    }
+
     public Long getId() {
         return id;
     }
@@ -109,22 +126,6 @@ public class Movie {
         this.avatar = avatar;
     }
 
-    public StatusFilm getMovieStatusId() {
-        return statusFilmId;
-    }
-
-    public void setMovieStatusId(StatusFilm statusFilmId) {
-        this.statusFilmId = statusFilmId;
-    }
-
-    public KindOfFilm getKindOfFilm() {
-        return kindOfFilm;
-    }
-
-    public void setKindOfFilm(KindOfFilm kindOfFilm) {
-        this.kindOfFilm = kindOfFilm;
-    }
-
     public String getPoster() {
         return poster;
     }
@@ -147,5 +148,13 @@ public class Movie {
 
     public void setStatusFilmId(StatusFilm statusFilmId) {
         this.statusFilmId = statusFilmId;
+    }
+
+    public KindOfFilm getKindOfFilm() {
+        return kindOfFilm;
+    }
+
+    public void setKindOfFilm(KindOfFilm kindOfFilm) {
+        this.kindOfFilm = kindOfFilm;
     }
 }
