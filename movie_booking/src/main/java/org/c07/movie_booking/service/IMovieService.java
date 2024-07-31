@@ -13,10 +13,8 @@ public interface IMovieService {
                                    LocalDate releaseDate,
                                    String nameStatus, String nameKind, String actor);
 
-    List<MovieDTO> getSearchByName(String nameMovie);
-
     void deleteByIdQuery(Long id) throws FieldRequiredException;
 
-    void deleteByIds(List<Long> paths);
+    void deleteByIds(List<Long> paths) throws FieldRequiredException;
 
 }

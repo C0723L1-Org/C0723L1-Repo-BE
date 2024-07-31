@@ -1,5 +1,6 @@
 package org.c07.movie_booking.service.implement;
 
+import org.c07.movie_booking.dto.ErrorResponseDTO;
 import org.c07.movie_booking.dto.MovieDTO;
 import org.c07.movie_booking.exception.FieldRequiredException;
 import org.c07.movie_booking.model.Movie;
@@ -43,34 +44,29 @@ public class MovieService implements IMovieService {
                 .map(movie -> modelMapper.map(movie, MovieDTO.class))
                 .collect(Collectors.toList());
     }
-    @Override
-    public List<MovieDTO> getSearchByName(String nameMovie) {
-        List<Movie> movies = iMovieRepository.getSearchByName(nameMovie);
-        // Chuyển đổi sang MovieDTO và trả về
-        return movies.stream()
-                .map(movie -> modelMapper.map(movie, MovieDTO.class))
-                .collect(Collectors.toList());
-    }
 
     @Override
     public void deleteByIdQuery(Long id) throws FieldRequiredException {
-       validate(id);
-       iMovieRepository.deleteById(id);
+        Long getId = validate(id);
+        iMovieRepository.deleteById(getId);
     }
-    public void validate(Long id) throws FieldRequiredException {
+    public Long validate(Long id) throws FieldRequiredException {
+        Long getId = null;
         if(id > 0){
-            Long getId = iMovieRepository.findByIdMovie(id);
+            getId = iMovieRepository.findByIdMovie(id);
             if(getId == null){
                 throw new FieldRequiredException("id not found or you did not pass the value!");
             }
-            throw new FieldRequiredException("id cannot be less than 0");
+        }else {
+            throw new FieldRequiredException("id not found ex: !id < 0");
         }
+        return getId;
     }
 
     @Override
-    public void deleteByIds(List<Long> paths) {
-        for (Long item: paths){
-            iMovieRepository.deleteById(item);
+    public void deleteByIds(List<Long> paths) throws FieldRequiredException {
+        for (Long id : paths) {
+            deleteByIdQuery(id);
         }
     }
 }

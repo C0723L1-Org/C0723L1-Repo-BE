@@ -13,25 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
-//khi gặp exception sẽ losd đến file này
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
-//    lỗi toán học
-    @ExceptionHandler(ArithmeticException.class)
-    public ResponseEntity<Object> handleArithmetic(ArithmeticException ex, WebRequest request){
-        ErrorResponseDTO response = new ErrorResponseDTO();
-        response.setError(ex.getMessage());//lấy message
-        List<String> detail = new ArrayList<>();
-        detail.add("Số nguyên làm sao chia cho không");//nhiều dòng
-        response.setDetail(detail);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     @ExceptionHandler(FieldRequiredException.class)
     public ResponseEntity<Object> handleFieldRequiredException(FieldRequiredException ex, WebRequest request){
         ErrorResponseDTO response = new ErrorResponseDTO();
-        response.setError(ex.getMessage());//lấy message
+        response.setError(ex.getMessage());
         List<String> detail = new ArrayList<>();
-        detail.add("Check lại id đi vì đang bị null hoặc giá trị không có trong dữ liệu đó");//nhiều dòng
+        detail.add("Check lại id đi vì đang bị null hoặc giá trị không có trong dữ liệu đó");
         response.setDetail(detail);
         return new ResponseEntity<>(response, HttpStatus.BAD_GATEWAY);
     }

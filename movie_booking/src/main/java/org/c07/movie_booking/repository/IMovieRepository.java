@@ -23,7 +23,7 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
             "where mv.isDelete = false " +
             "and (:nameMovie is null or mv.nameMovie like %:nameMovie%) " +
             "and (:director is null or mv.director like %:director%) " +
-            "and (:releaseDate is null or LOCALDATE(mv.releaseDate) =:releaseDate) " +
+            "and (:releaseDate is null or DATE(mv.releaseDate) =:releaseDate) " +
             "and (:content is null or mv.content like %:content%) " +
             "and (:actor is null or mv.actor like %:actor%) " +
             "and (:nameStatus is null or s.name like %:nameStatus%) " +
@@ -37,17 +37,11 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
             @Param("nameKind") String nameKind,
             @Param("actor") String actor
     );
-//    @Query(value = "select id from movie where id = :id", nativeQuery = true)
-//    Long getFindById(@Param("id") Long id);
-
-    @Modifying   @Query("SELECT mv FROM Movie mv " +
-            "LEFT JOIN mv.kindOfFilm k " +
-            "LEFT JOIN mv.statusFilmId s " +
-            "WHERE (mv.nameMovie LIKE %:nameMovie%) ")
-    List<Movie> getSearchByName(@Param("nameMovie") String nameMovie);
+    @Modifying
     @Transactional
-    @Query(value = "update movie set is_delete = 1 where id =:id", nativeQuery = true)
+    @Query(value = "update movie set is_delete = 0 where id =:id", nativeQuery = true)
     void deleteById(@Param("id") Long id);
+
     @Query(value = "select id from movie where id = :id", nativeQuery = true)
     Long findByIdMovie(@Param("id") Long id);
 }

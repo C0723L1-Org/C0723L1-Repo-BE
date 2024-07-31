@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/movie/private")
+@RequestMapping("api/v1/movie/")
 public class MovieController {
     @Autowired
     private IMovieService iMovieService;
@@ -25,19 +25,19 @@ public class MovieController {
     private IKindOfFilmService iKindOfFilmService;
     @Autowired
     private IStatusFilmService iStatusFilmService;
-    @GetMapping("/list-movie")
+    @GetMapping("private/list-movie")
     public List<MovieDTO> getFindAll(){
         return iMovieService.getFindAll();
     }
-    @GetMapping("/list-kind-of-film")
+    @GetMapping("private/list-kind-of-film")
     public List<KindOfFilmDTO> getFindAllKindOfFilm(){
         return iKindOfFilmService.getFindAll();
     }
-    @GetMapping("/list-status-film")
+    @GetMapping("private/list-status-film")
     public List<StatusFilmDTO> getFindAllStatus(){
         return iStatusFilmService.getFindAll();
     }
-//    @GetMapping("/searches")
+    @GetMapping("private/searches")
     public List<MovieDTO> getSearchFields(
                             @RequestParam(value = "nameMovie", required = false) String nameMovie,
                             @RequestParam(value = "content", required = false) String content,
@@ -52,21 +52,14 @@ public class MovieController {
         return dtoList;
 
     }
-    @GetMapping("/nameSearches")
-    public List<MovieDTO> getSearchByName(
-            @RequestParam(value = "nameMovie", required = false) String nameMovie
-    ){
-        List<MovieDTO> dtoList = iMovieService.getSearchByName(nameMovie);
-        return dtoList;
-    }
 
-    @PutMapping ("delete/{id}")
+    @PutMapping ("private/delete/{id}")
     public ResponseEntity<Void> deleteMovieById(@PathVariable(name = "id") Long id) throws FieldRequiredException {
             iMovieService.deleteByIdQuery(id);
         return ResponseEntity.noContent().build();
     }
-    @PutMapping ("v1/delete")
-    public ResponseEntity<Void> deleteMovieByIds(@RequestParam List<Long> id){
+    @PutMapping ("private/list-delete")
+    public ResponseEntity<Void> deleteMovieByIds(@RequestParam List<Long> id) throws FieldRequiredException {
         iMovieService.deleteByIds(id);
         return ResponseEntity.noContent().build();
     }
