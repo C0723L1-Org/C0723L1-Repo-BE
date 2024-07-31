@@ -17,9 +17,9 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "booking_status_id")
     private BookingStatus bookingStatus;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
     @ManyToOne
     @JoinColumn(name = "showtime_id")
     private Showtime showTime;
@@ -69,14 +69,14 @@ public class Booking {
     public void setBookingStatus(BookingStatus bookingStatus) {
         this.bookingStatus = bookingStatus;
     }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+//
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 
     public Showtime getShowTime() {
         return showTime;

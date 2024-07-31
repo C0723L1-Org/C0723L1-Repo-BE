@@ -15,17 +15,14 @@ public class MovieDTO {
     private String trailer;
     private String avatar;
     private String poster;
+    private Boolean isDelete;
 
     public String getPoster() {
         return poster;
     }
-
     public void setPoster(String poster) {
         this.poster = poster;
     }
-
-    private Boolean isDelete;
-
     public Boolean getDelete() {
         return isDelete;
     }
