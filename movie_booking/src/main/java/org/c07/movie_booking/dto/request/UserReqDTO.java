@@ -1,39 +1,60 @@
-package org.c07.movie_booking.model;
+package org.c07.movie_booking.dto.request;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import org.springframework.validation.Errors;
 
 import java.util.Date;
 
-@Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserReqDTO {
     private Long id;
+
+    @NotBlank(message = "Code is mandatory")
+    @Pattern(regexp = "^NV\\d+$", message = "Code must start with 'NV' followed by digits")
     private String code;
 
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
+    @NotBlank(message = "Card ID is mandatory")
     private String cardId;
 
+    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email is mandatory")
     private String email;
 
-    private boolean gender;
+    @NotNull(message = "Gender is mandatory")
+    private Boolean gender;
 
-    private boolean status;
+    @NotNull(message = "Status is mandatory")
+    private Boolean status;
 
+    @NotBlank(message = "Phone number is mandatory")
+    @Pattern(regexp = "^0\\d{9}$", message = "Phone number must start with 0 and have 10 digits")
     private String phoneNumber;
-    private String avatar;
-    private String address;
-    private String password;
-    private Date birthday;
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
 
-    public User() {
+    @NotBlank(message = "Avatar is mandatory")
+    private String avatar;
+
+    @NotBlank(message = "Address is mandatory")
+    private String address;
+
+    @NotBlank(message = "Password is mandatory")
+    @Size(min = 8, message = "Password must have at least 8 characters")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[^\\w\\d\\s:]).+$", message = "Password must contain a letter, a number and a special character")
+    private String password;
+
+    @NotNull(message = "Birthday is mandatory")
+    @PastOrPresent(message = "Birthday must be a past or present date")
+    private Date birthday;
+
+    @NotNull(message = "Role ID is mandatory")
+    private Long roleId;
+
+    public UserReqDTO() {
     }
 
-    public User(Long id, String code, String name, String cardId, String email, boolean gender, boolean status, String phoneNumber, String avatar, String address, String password, Date birthday, Role role) {
+
+    public UserReqDTO(Long id, String code, String name, String cardId, String email, Boolean gender, Boolean status, String phoneNumber, String avatar, String address, String password, Date birthday, Long roleId) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -46,7 +67,7 @@ public class User {
         this.address = address;
         this.password = password;
         this.birthday = birthday;
-        this.role = role;
+        this.roleId = roleId;
     }
 
     public Long getId() {
@@ -89,19 +110,19 @@ public class User {
         this.email = email;
     }
 
-    public boolean isGender() {
+    public Boolean getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(Boolean gender) {
         this.gender = gender;
     }
 
-    public boolean isStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
@@ -137,12 +158,12 @@ public class User {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
     public Date getBirthday() {
@@ -151,5 +172,10 @@ public class User {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+    public void validate(Object target, Errors errors) {
+        UserReqDTO userReqDTO = (UserReqDTO) target;
+
+
     }
 }
