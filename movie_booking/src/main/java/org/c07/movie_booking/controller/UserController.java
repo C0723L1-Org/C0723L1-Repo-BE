@@ -36,7 +36,7 @@ public class UserController {
             return new ResponseEntity<>(new ResponMessage("Email đã tồn tại"), HttpStatus.OK);
         }
 
-        // Mã hóa mật khẩu
+        // Mã hóa mật khẩu 11
         String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
         userDTO.setPassword(encodedPassword);
 
