@@ -1,6 +1,9 @@
 package org.c07.movie_booking.model;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Entity
 public class Movie {
@@ -9,7 +12,8 @@ public class Movie {
     @Column(name = "id")
     private Long id;
     private String nameMovie;
-    private String releaseDate;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate releaseDate;
     private String durationMovie;
     private String actor;
     private String director;
@@ -17,6 +21,9 @@ public class Movie {
     private String content;
     private String trailer;
     private String avatar;
+    private String poster;
+
+    private Boolean isDelete;
     @ManyToOne
     @JoinColumn(name = "status_movie_id")
     private StatusFilm statusFilmId;
@@ -25,6 +32,30 @@ public class Movie {
     private KindOfFilm kindOfFilm;
 
     public Movie() {
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
+
+    public Boolean getDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(Boolean delete) {
+        isDelete = delete;
+    }
+
+    public StatusFilm getStatusFilmId() {
+        return statusFilmId;
+    }
+
+    public void setStatusFilmId(StatusFilm statusFilmId) {
+        this.statusFilmId = statusFilmId;
     }
 
     public Long getId() {
@@ -43,11 +74,11 @@ public class Movie {
         this.nameMovie = nameMovie;
     }
 
-    public String getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
+    public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 
