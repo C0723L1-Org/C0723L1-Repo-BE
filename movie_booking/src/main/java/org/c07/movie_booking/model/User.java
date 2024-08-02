@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class User{
+public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,13 +36,52 @@ public class User{
     public User() {
     }
 
-
-    public String getPassword() {
-        return null;
+    public User(String code, String name, String cardId, String email, String password, boolean gender, boolean status, String phoneNumber, String avatar, String address, Role role) {
+        this.code = code;
+        this.name = name;
+        this.cardId = cardId;
+        this.email = email;
+        this.password = password;
+        this.gender = gender;
+        this.status = status;
+        this.phoneNumber = phoneNumber;
+        this.avatar = avatar;
+        this.address = address;
+        this.role = role;
+    }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.getName()));
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public Long getId() {
@@ -85,6 +124,10 @@ public class User{
         this.email = email;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public boolean isGender() {
         return gender;
     }
@@ -117,19 +160,19 @@ public class User{
         this.avatar = avatar;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
