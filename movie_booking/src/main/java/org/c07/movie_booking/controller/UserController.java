@@ -19,14 +19,14 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping({"/api/v1/private/user"})
+@RequestMapping({"/api/v1/user"})
 public class UserController {
     @Autowired
     IUserService iUserService;
     @Autowired
     private UserService userService;
     //Show List and Search Employee
-    @GetMapping("/list-employee")
+    @GetMapping("/private/list-employee")
     public ResponseEntity<Page<UserResDTO>> searchEmployees(
             @RequestParam(value = "valueSearch", defaultValue = "") String valueSearch,
             @RequestParam("page") Optional<Integer> page) {
@@ -41,7 +41,7 @@ public class UserController {
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
     // Remove Employee
-    @PutMapping("/delete/{id}")
+    @PutMapping("/private/delete/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
         UserResDTO userResDTO = iUserService.findEmployeeById(id);
         if (userResDTO == null) {
@@ -50,8 +50,8 @@ public class UserController {
         iUserService.deleteEmployeeById(id);
         return new ResponseEntity<>("Delete employee successfully.", HttpStatus.OK);
     }
-    @PostMapping("/create")
-    public ResponseEntity<String> createUser(@Valid @RequestBody UserReqDTO userDTO, BindingResult bindingResult) throws MethodArgumentNotValidException {
+    @PostMapping("/private/create")
+    public ResponseEntity<String> createEmployee(@Valid @RequestBody UserReqDTO userDTO, BindingResult bindingResult) throws MethodArgumentNotValidException {
         new UserReqDTO().validate(userDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             throw new MethodArgumentNotValidException(null, bindingResult);
@@ -62,12 +62,12 @@ public class UserController {
             return new ResponseEntity<>("User email exists!", HttpStatus.BAD_REQUEST);
         }
 
-        userService.createUser(userDTO);
+        userService.createEmployee(userDTO);
         return new ResponseEntity<>("User created successfully!", HttpStatus.CREATED);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<String> updateUser(@Valid @RequestBody UserReqDTO userDTO, BindingResult bindingResult) throws MethodArgumentNotValidException {
+    @PutMapping("/private/update")
+    public ResponseEntity<String> updateEmployee(@Valid @RequestBody UserReqDTO userDTO, BindingResult bindingResult) throws MethodArgumentNotValidException {
         new UserReqDTO().validate(userDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             throw new MethodArgumentNotValidException(null, bindingResult);
@@ -78,7 +78,7 @@ public class UserController {
             return new ResponseEntity<>("User email exists!", HttpStatus.BAD_REQUEST);
         }
 
-        userService.updateUser(userDTO);
+        userService.updateEmployee(userDTO);
         return new ResponseEntity<>("User updated successfully!", HttpStatus.OK);
     }
 }

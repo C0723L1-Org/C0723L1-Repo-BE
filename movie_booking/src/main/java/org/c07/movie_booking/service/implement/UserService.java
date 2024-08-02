@@ -52,13 +52,13 @@ public class UserService implements IUserService {
     public List<String> findAllExistEmail() {
         return iUserRepository.findAllEmails();
     }
-    public void createUser(UserReqDTO userDTO) {
+    public void createEmployee(UserReqDTO userDTO) {
         iUserRepository.insertUser(userDTO.getCode(), userDTO.getName(), userDTO.getCardId(), userDTO.getEmail(),
                 userDTO.getGender(), userDTO.getStatus(), userDTO.getPhoneNumber(), userDTO.getAvatar(),
                 userDTO.getAddress(), userDTO.getPassword(), userDTO.getBirthday(),userDTO.getRoleId());
     }
 
-    public void updateUser(UserReqDTO userDTO) {
+    public void updateEmployee(UserReqDTO userDTO) {
         iUserRepository.updateUser(userDTO.getId(), userDTO.getCode(), userDTO.getName(), userDTO.getCardId(), userDTO.getEmail(),
                 userDTO.getGender(), userDTO.getStatus(), userDTO.getPhoneNumber(), userDTO.getAvatar(),
                 userDTO.getAddress(), userDTO.getPassword(), userDTO.getBirthday(),userDTO.getRoleId());
