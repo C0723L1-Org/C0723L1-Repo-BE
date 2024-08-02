@@ -9,8 +9,6 @@ import org.springframework.validation.Validator;
 import java.util.Random;
 
 public class UserDTO implements Validator {
-
-
     private Long id;
     @NotBlank(message = "Vui lòng không để trống")
     private String code;
@@ -50,6 +48,20 @@ public class UserDTO implements Validator {
 
     public UserDTO(Long id, String code, String name, String cardId, String email, String password, boolean gender, boolean status, String phoneNumber, String avatar, String address, Role role) {
         this.id = id;
+        this.code = code;
+        this.name = name;
+        this.cardId = cardId;
+        this.email = email;
+        this.password = password;
+        this.gender = gender;
+        this.status = status;
+        this.phoneNumber = phoneNumber;
+        this.avatar = avatar;
+        this.address = address;
+        this.role = role;
+    }
+
+    public UserDTO(String code, String name, String cardId, String email, String password, boolean gender, boolean status, String phoneNumber, String avatar, String address, Role role) {
         this.code = code;
         this.name = name;
         this.cardId = cardId;
