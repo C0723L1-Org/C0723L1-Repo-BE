@@ -1,9 +1,10 @@
 package org.c07.movie_booking.service.implement;
 
-import org.c07.movie_booking.dto.ErrorResponseDTO;
 import org.c07.movie_booking.dto.MovieDTO;
 import org.c07.movie_booking.exception.FieldRequiredException;
+import org.c07.movie_booking.model.KindOfFilm;
 import org.c07.movie_booking.model.Movie;
+import org.c07.movie_booking.model.StatusFilm;
 import org.c07.movie_booking.repository.IMovieRepository;
 import org.c07.movie_booking.service.IMovieService;
 import org.modelmapper.ModelMapper;
@@ -22,12 +23,34 @@ public class MovieService implements IMovieService {
     private IMovieRepository iMovieRepository;
     @Autowired
     private ModelMapper modelMapper;
-
+    //Home
     @Override
-    public Page<Movie> getSearchMovieByNameMovie(String searchContent, Pageable pageable) {
-        return iMovieRepository.getSearchMovieByNameMovie(searchContent, pageable);
+    public Page<Movie> getSearchMovie(String nameMovie, String director, LocalDate releaseDate, String nameStatus,
+                                      String nameKind, String actor, Pageable pageable) {
+        return iMovieRepository.getSearchMovie( nameMovie, director, releaseDate, nameStatus, nameKind, actor, pageable);
     }
 
+    @Override
+    public List<Movie> getMovieIsComming() {
+        return iMovieRepository.getMovieIsComming();
+    }
+
+    @Override
+    public List<Movie> getMovieIsShowing() {
+        return iMovieRepository.getMovieIsShowing();
+    }
+
+    @Override
+    public List<KindOfFilm> getKindOfMovie() {
+        return iMovieRepository.getMovieKindOfMovie();
+    }
+
+    @Override
+    public List<StatusFilm> getStatusMovie() {
+        return iMovieRepository.getMovieStatusFilm();
+    }
+
+    //Manager
     @Override
     public List<MovieDTO> getFindAll() {
         List<Movie> movieEntity = iMovieRepository.findAllByQuery();

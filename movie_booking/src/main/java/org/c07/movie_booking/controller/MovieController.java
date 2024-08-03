@@ -1,11 +1,12 @@
 package org.c07.movie_booking.controller;
 
-
 import org.c07.movie_booking.dto.KindOfFilmDTO;
 import org.c07.movie_booking.dto.MovieDTO;
+import org.c07.movie_booking.model.KindOfFilm;
 import org.c07.movie_booking.model.Movie;
 import org.c07.movie_booking.dto.StatusFilmDTO;
 import org.c07.movie_booking.exception.FieldRequiredException;
+import org.c07.movie_booking.model.StatusFilm;
 import org.c07.movie_booking.service.IKindOfFilmService;
 import org.c07.movie_booking.service.IMovieService;
 import org.c07.movie_booking.service.IStatusFilmService;
@@ -31,16 +32,52 @@ public class MovieController {
     @Autowired
     private IStatusFilmService iStatusFilmService;
 
-
     //    Home
-    //    Show all information of movie and search movie
-    @GetMapping("public/show-list-movie")
-    public ResponseEntity<?> showAndSearchMovie( @RequestParam(value = "searchContent", defaultValue = "") String searchContent,
-                                                 @RequestParam(value = "page", defaultValue = "0") int page) {
+    @GetMapping("public/show-search-movie")
+    public ResponseEntity<?> showAndSearchMovie(  @RequestParam(value = "nameMovie", defaultValue = "") String nameMovie,
+                                                  @RequestParam(value = "director", defaultValue = "") String director,
+                                                  @RequestParam(value = "releaseDate", defaultValue = "") @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate releaseDate,
+                                                  @RequestParam(value = "nameStatus", defaultValue = "") String nameStatus,
+                                                  @RequestParam(value = "nameKind", defaultValue = "") String nameKind,
+                                                  @RequestParam(value = "actor", defaultValue = "") String actor,
+                                                  @RequestParam(value = "page", defaultValue = "0") int page) {
         if (page < 0) {
             page = 0;
         }
-        Page<Movie> movies = iMovieService.getSearchMovieByNameMovie(searchContent, PageRequest.of(page, 5));
+        Page<Movie> movies = iMovieService.getSearchMovie(nameMovie, director, releaseDate,
+                nameStatus, nameKind, actor, PageRequest.of(page, 5));
+        if (movies.isEmpty()) {
+            return ResponseEntity.status(404).body("Not found");
+        }
+        return ResponseEntity.ok(movies);
+    }
+    @GetMapping("public/show-list-movie-showing")
+    public ResponseEntity<?> getMovieIsShowing(){
+        List<Movie> movies = iMovieService.getMovieIsShowing();
+        if (movies.isEmpty()) {
+            return ResponseEntity.status(404).body("Not found");
+        }
+        return ResponseEntity.ok(movies);
+    }
+    @GetMapping("public/show-list-movie-comming")
+    public ResponseEntity<?> getMovieIsComming(){
+        List<Movie> movies = iMovieService.getMovieIsComming();
+        if (movies.isEmpty()) {
+            return ResponseEntity.status(404).body("Not found");
+        }
+        return ResponseEntity.ok(movies);
+    }
+    @GetMapping("public/show-list-kindofmovie")
+    public ResponseEntity<?> getKindOfMovie(){
+        List<KindOfFilm> movies = iMovieService.getKindOfMovie();
+        if (movies.isEmpty()) {
+            return ResponseEntity.status(404).body("Not found");
+        }
+        return ResponseEntity.ok(movies);
+    }
+    @GetMapping("public/show-list-statusmovie")
+    public ResponseEntity<?> getStatusMovie(){
+        List<StatusFilm> movies = iMovieService.getStatusMovie();
         if (movies.isEmpty()) {
             return ResponseEntity.status(404).body("Not found");
         }
@@ -54,10 +91,12 @@ public class MovieController {
     }
     @GetMapping("private/list-kind-of-film")
     public List<KindOfFilmDTO> getFindAllKindOfFilm(){
+
         return iKindOfFilmService.getFindAll();
     }
     @GetMapping("private/list-status-film")
     public List<StatusFilmDTO> getFindAllStatus(){
+
         return iStatusFilmService.getFindAll();
     }
     @GetMapping("private/searches")

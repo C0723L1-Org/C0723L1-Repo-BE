@@ -1,12 +1,13 @@
 package org.c07.movie_booking.dto;
 
 import javax.xml.crypto.Data;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class MovieDTO {
     private Long id;
     private String nameMovie;
-    private Date releaseDate;
+    private LocalDate releaseDate;
     private String durationMovie;
     private String actor;
     private String director;
@@ -47,11 +48,11 @@ public class MovieDTO {
         this.nameMovie = nameMovie;
     }
 
-    public Date getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 

@@ -1,5 +1,7 @@
 package org.c07.movie_booking.repository;
+import org.c07.movie_booking.model.KindOfFilm;
 import org.c07.movie_booking.model.Movie;
+import org.c07.movie_booking.model.StatusFilm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,16 +26,41 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
      //     * @return a Page of Movie entities matching the search criteria
      //     */
 
-//    1.JPQL
+//   Home
     @Query("SELECT m FROM Movie m " +
             "JOIN m.kindOfFilm k " +
             "JOIN m.statusFilmId s " +
-            "WHERE m.isDelete=false AND m.nameMovie LIKE %:searchContent% " +
-            "OR m.actor LIKE %:searchContent% " +
-            "OR k.name LIKE %:searchContent% " +
-            "OR m.studio LIKE %:searchContent%")
-    Page<Movie> getSearchMovieByNameMovie(@Param("searchContent") String searchContent, Pageable pageable);
+            "WHERE m.isDelete = FALSE " +
+            "AND (:nameMovie is null or m.nameMovie LIKE %:nameMovie%) " +
+            "AND (:director is null or m.director LIKE %:director%) " +
+            "AND (:releaseDate is null or DATE(m.releaseDate) =:releaseDate) " +
+            "AND (:actor is null or m.actor LIKE %:actor%) " +
+            "AND (:nameStatus is null or s.name LIKE %:nameStatus%) " +
+            "AND (:nameKind is null or k.name LIKE %:nameKind%)")
+    Page<Movie> getSearchMovie(
+            @Param("nameMovie") String nameMovie,
+            @Param("director") String director,
+            @Param("releaseDate") LocalDate releaseDate,
+            @Param("nameStatus") String nameStatus,
+            @Param("nameKind") String nameKind,
+            @Param("actor") String actor,
+            Pageable pageable);
+    @Query("SELECT m FROM Movie m " +
+            "JOIN m.kindOfFilm k " +
+            "JOIN m.statusFilmId s " +
+            "WHERE s.name ='Comming'")
+    List<Movie> getMovieIsComming();
+    @Query("SELECT m FROM Movie m " +
+            "JOIN m.kindOfFilm k " +
+            "JOIN m.statusFilmId s " +
+            "WHERE s.name ='Showing'")
+    List<Movie> getMovieIsShowing();
+    @Query("SELECT k FROM KindOfFilm k ")
+    List<KindOfFilm> getMovieKindOfMovie();
+    @Query("SELECT s FROM StatusFilm s ")
+    List<StatusFilm> getMovieStatusFilm();
 
+    //Manager
     @Query(value = "select * from movie where is_delete = false", nativeQuery = true)
     List<Movie> findAllByQuery();
     @Query("select mv from Movie mv " +
