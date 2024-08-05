@@ -12,5 +12,5 @@ public interface UserResponse {
     String getAvatar();
     String getAddress();
     boolean isGender();
-    Role getRole();
+    String getRole();
 }

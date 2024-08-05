@@ -40,6 +40,7 @@ public class AuthController {
     ){
         String token =authenticationService.authenticate(request);
         Cookie cookie = new Cookie("jwt",token);
+        cookie.setMaxAge(30*60); // set thời gian sống của cookie
         cookie.setHttpOnly(true); // Không cho phép JavaScript truy cập
         cookie.setSecure(true); // Chỉ gửi cookie qua HTTPS
         cookie.setPath("/"); // Áp dụng cho toàn bộ ứng dụng
