@@ -9,8 +9,6 @@ public class MovieBookingApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MovieBookingApplication.class, args);
-        BCryptPasswordEncoder test = new BCryptPasswordEncoder();
-        System.out.println(test.encode("12345678"));
 
     }
 

@@ -2,6 +2,7 @@ package org.c07.movie_booking.service.implement;
 
 
 import org.c07.movie_booking.dto.UserDTO;
+import org.c07.movie_booking.dto.UserResponse;
 import org.c07.movie_booking.model.Role;
 import org.c07.movie_booking.model.User;
 import org.c07.movie_booking.repository.IUserRepositoty;
@@ -94,5 +95,10 @@ public class UserService implements IUserService {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(userDTOList, pageable, userPage.getTotalElements());
+    }
+
+    @Override
+    public UserResponse findUserByEmail(String email) {
+        return iUserRepositoty.findUserByEmail(email);
     }
 }
