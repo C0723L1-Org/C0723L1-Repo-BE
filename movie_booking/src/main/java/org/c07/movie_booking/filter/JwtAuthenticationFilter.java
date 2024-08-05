@@ -2,6 +2,7 @@ package org.c07.movie_booking.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,14 +30,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
+        Cookie[] cookies = request.getCookies();
         final String authHeader = request.getHeader("Authorization");
-        final String jwt;
+        String jwt = "";
         final String userEmail;
-        if(authHeader == null || !authHeader.startsWith("Bearer ")){
-            filterChain.doFilter(request,response);
-            return;
-        }
-        jwt = authHeader.substring(7);
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwt".equals(cookie.getName())) {
+                    jwt = cookie.getValue();
+                    break;
+                }
+            }
+        } else filterChain.doFilter(request,response);
+//        if(authHeader == null || !authHeader.startsWith("Bearer ")){
+//            filterChain.doFilter(request,response);
+//            return;
+//        }
+//        jwt = authHeader.substring(7);
         // extract user email form jwt token
         userEmail = jwtService.extractUsername(jwt);
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
