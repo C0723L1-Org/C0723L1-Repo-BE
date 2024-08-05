@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,23 +35,46 @@ public class MovieController {
 
     //    Home
     @GetMapping("public/show-search-movie")
-    public ResponseEntity<?> showAndSearchMovie(  @RequestParam(value = "nameMovie", defaultValue = "") String nameMovie,
-                                                  @RequestParam(value = "director", defaultValue = "") String director,
-                                                  @RequestParam(value = "releaseDate", defaultValue = "") @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate releaseDate,
-                                                  @RequestParam(value = "nameStatus", defaultValue = "") String nameStatus,
-                                                  @RequestParam(value = "nameKind", defaultValue = "") String nameKind,
-                                                  @RequestParam(value = "actor", defaultValue = "") String actor,
-                                                  @RequestParam(value = "page", defaultValue = "0") int page) {
+    public ResponseEntity<?> showAndSearchMovie(
+            @RequestParam(value = "nameMovie", defaultValue = "") String nameMovie,
+            @RequestParam(value = "director", defaultValue = "") String director,
+            @RequestParam(value = "releaseDate", defaultValue = "") @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate releaseDate,
+            @RequestParam(value = "nameStatus", defaultValue = "") String nameStatus,
+            @RequestParam(value = "nameKind", defaultValue = "") String nameKind,
+            @RequestParam(value = "actor", defaultValue = "") String actor,
+            @RequestParam(value = "page", defaultValue = "0") int page) {
         if (page < 0) {
             page = 0;
         }
-        Page<Movie> movies = iMovieService.getSearchMovie(nameMovie, director, releaseDate,
-                nameStatus, nameKind, actor, PageRequest.of(page, 5));
+        Page<Movie> movies = iMovieService.getSearchMovie(nameMovie, director, releaseDate, nameStatus, nameKind, actor, PageRequest.of(page, 5));
         if (movies.isEmpty()) {
-            return ResponseEntity.status(404).body("Not found");
+            String notFoundFields = "";
+            if (!nameMovie.isEmpty()) {
+                notFoundFields += "Tên phim, ";
+            }
+            if (!director.isEmpty()) {
+                notFoundFields += "Đạo diễn, ";
+            }
+            if (releaseDate != null) {
+                notFoundFields += "Ngày phát hành, ";
+            }
+            if (!nameStatus.isEmpty()) {
+                notFoundFields += "Trạng thái phim, ";
+            }
+            if (!nameKind.isEmpty()) {
+                notFoundFields += "Loại phim, ";
+            }
+            if (!actor.isEmpty()) {
+                notFoundFields += "Diễn viên, ";
+            }
+            if (notFoundFields.endsWith(", ")) {
+                notFoundFields = notFoundFields.substring(0, notFoundFields.length() - 2);
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy " + notFoundFields + " bạn đang cần tìm.");
         }
         return ResponseEntity.ok(movies);
     }
+
     @GetMapping("public/show-list-movie-showing")
     public ResponseEntity<?> getMovieIsShowing(){
         List<Movie> movies = iMovieService.getMovieIsShowing();
