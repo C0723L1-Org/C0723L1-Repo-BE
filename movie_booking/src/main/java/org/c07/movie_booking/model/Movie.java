@@ -11,12 +11,14 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     private String nameMovie;
     private LocalDate releaseDate;
     private String durationMovie;
     private String actor;
     private String director;
     private String studio;
+    @Column(columnDefinition = "TEXT")
     private String content;
     private String trailer;
     private String avatar;
@@ -25,6 +27,7 @@ public class Movie {
     @ManyToOne
     @JoinColumn(name = "status_movie_id")
     private StatusFilm statusFilmId;
+
     @ManyToOne
     @JoinColumn(name = "kind_of_movie_id")
     private KindOfFilm kindOfFilm;
