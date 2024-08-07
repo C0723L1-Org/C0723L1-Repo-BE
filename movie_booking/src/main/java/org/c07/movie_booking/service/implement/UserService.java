@@ -24,7 +24,10 @@ public class UserService implements IUserService {
 
 
     @Override
-    public User createNewUser(UserDTO userDTO) {
+    public User addNewUser(UserDTO userDTO) {
+        if (iUserRepositoty.existsByEmail(userDTO.getEmail())) {
+            throw new IllegalArgumentException("Email đã được sử dụng");
+        }
         // Thiết lập giá trị mặc định cho userDTO nếu chưa có
         if (userDTO.getCode() == null) {
             userDTO.setCode("KH-" + generateRandomCode());
@@ -38,6 +41,10 @@ public class UserService implements IUserService {
             defaultRole.setName("ROLE_USER");
             userDTO.setRole(defaultRole);
         }
+
+            userDTO.setStatus(false);
+
+
 
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
@@ -60,19 +67,11 @@ public class UserService implements IUserService {
 
     // Cập nhật thông tin
     @Override
-    public User updateUser(User user, Long id) {
-        User existingUser = iUserRepositoty.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    public User updateUser(UserDTO userDTO, String email) {
+        User existingUser = iUserRepositoty.findUserByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        existingUser.setCode(user.getCode());
-        existingUser.setName(user.getName());
-        existingUser.setCardId(user.getCardId());
-        existingUser.setEmail(user.getEmail());
-        existingUser.setGender(user.isGender());
-        existingUser.setStatus(user.isStatus());
-        existingUser.setPhoneNumber(user.getPhoneNumber());
-        existingUser.setAvatar(user.getAvatar());
-        existingUser.setRole(user.getRole());
-        existingUser.setAddress(user.getAddress());
+        BeanUtils.copyProperties(userDTO, existingUser, "id", "email", "code", "status");
         return iUserRepositoty.save(existingUser);
     }
 
@@ -94,5 +93,14 @@ public class UserService implements IUserService {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(userDTOList, pageable, userPage.getTotalElements());
+    }
+
+    @Override
+    public UserDTO findUserByEmail(String email) {
+        User user = iUserRepositoty.findUserByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(user, userDTO);
+        return userDTO;
     }
 }

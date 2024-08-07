@@ -8,10 +8,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface IUserService {
-    User createNewUser(UserDTO userDTO);
+    User addNewUser(UserDTO userDTO);
     User findUserById(Long id);
-    User updateUser(User user, Long id);
+    User updateUser(UserDTO userDTO, String email);
     Boolean existsByEmail(String email); //email da co trong DB chua
     Page<UserDTO> getAllUser (Pageable pageable);
+
+    UserDTO findUserByEmail (String email);
 
 }

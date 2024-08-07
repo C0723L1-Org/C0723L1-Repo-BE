@@ -1,6 +1,5 @@
 package org.c07.movie_booking.config;
 
-import lombok.RequiredArgsConstructor;
 import org.c07.movie_booking.filter.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +26,9 @@ public class SecurityConfig {
                         "/api/v1/auth/public/**",
                         "/api/v1/movie/public/**",
                         "/api/v1/room/public/**",
-                        "/api/v1/showtime/public/**"
+                        "/api/v1/showtime/public/**",
+                        "/api/v1/user/public/**"
+
                 ).permitAll())
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

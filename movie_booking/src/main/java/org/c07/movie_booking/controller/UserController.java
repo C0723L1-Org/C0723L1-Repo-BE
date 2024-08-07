@@ -7,31 +7,27 @@ import org.c07.movie_booking.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller
+@RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/v1/user")
 public class UserController {
     @Autowired
     private IRoleService iRoleService;
     @Autowired
     private IUserService iUserService;
-
-    @GetMapping("/public/register")
-    public String showRegisterForm(Model model) {
-        model.addAttribute("listRole", iRoleService.findAll());
-        model.addAttribute("user", new UserDTO());
-       return "register";
-    }
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
 
     @PostMapping("/public/register")
@@ -46,7 +42,13 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        iUserService.createNewUser(userDTO);
+        if (iUserService.existsByEmail(userDTO.getEmail())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already in use");
+        }
+
+
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        iUserService.addNewUser(userDTO);
         Map<String, String> response = new HashMap<>();
         response.put("message", "User registered successfully!");
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -65,5 +67,12 @@ public class UserController {
         Page<UserDTO> userPage = iUserService.getAllUser(pageable);
         return ResponseEntity.ok(userPage);
     }
-    
+    @GetMapping("/profile")
+    public ResponseEntity<UserDTO> getUserProfile(Principal principal) {
+        String email = principal.getName();
+        UserDTO userDTO = iUserService.findUserByEmail(email);
+        return ResponseEntity.ok(userDTO);
+    }
+
+
 }

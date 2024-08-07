@@ -10,7 +10,6 @@ import java.util.Random;
 
 public class UserDTO implements Validator {
     private Long id;
-    @NotBlank(message = "Vui lòng không để trống")
     private String code;
     @NotBlank(message = "Vui lòng không để trống")
     private String name;
@@ -37,6 +36,7 @@ public class UserDTO implements Validator {
         this.code = "KH-" + generateRandomCode();
         // Thiết lập giá trị mặc định cho role
         this.role = new Role(1L, "Customer");
+        this.status = false;
     }
 
     private String generateRandomCode() {
