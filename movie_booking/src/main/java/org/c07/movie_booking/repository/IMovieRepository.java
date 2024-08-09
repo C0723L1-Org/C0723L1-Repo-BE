@@ -1,4 +1,5 @@
 package org.c07.movie_booking.repository;
+import org.c07.movie_booking.dto.MovieDTO;
 import org.c07.movie_booking.model.KindOfFilm;
 import org.c07.movie_booking.model.Movie;
 import org.c07.movie_booking.model.StatusFilm;
@@ -27,9 +28,28 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
      //     */
 
 //   Home
+    @Query(nativeQuery = true,value = "select m.* from movie m " +
+            "join status_film s on s.id = m.status_movie_id " +
+            "join kind_of_film k on k.id = m.kind_of_movie_id " +
+            "where m.name_movie like ?1 " +
+            "and m.director like ?2 " +
+            "and m.release_date like ?3 " +
+            "and s.name like ?4  " +
+            "and k.name like ?5 " +
+            "and m.actor like ?6"
+            )
+    Page<Movie> getSearchMovie(
+            String nameMovie,
+            String director,
+            LocalDate releaseDate,
+            String nameStatus,
+            String nameKind,
+            String actor,
+            Pageable pageable);
+
     @Query("SELECT m FROM Movie m " +
             "JOIN m.kindOfFilm k " +
-            "JOIN m.statusFilmId s " +
+          "JOIN m.statusFilmId s " +
             "WHERE m.isDelete = FALSE " +
             "AND (:nameMovie is null or m.nameMovie LIKE %:nameMovie%) " +
             "AND (:director is null or m.director LIKE %:director%) " +
@@ -37,7 +57,7 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
             "AND (:actor is null or m.actor LIKE %:actor%) " +
             "AND (:nameStatus is null or s.name LIKE %:nameStatus%) " +
             "AND (:nameKind is null or k.name LIKE %:nameKind%)")
-    Page<Movie> getSearchMovie(
+    Page<Movie> Test(
             @Param("nameMovie") String nameMovie,
             @Param("director") String director,
             @Param("releaseDate") LocalDate releaseDate,
@@ -45,20 +65,20 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
             @Param("nameKind") String nameKind,
             @Param("actor") String actor,
             Pageable pageable);
-    @Query("SELECT m FROM Movie m " +
-            "JOIN m.kindOfFilm k " +
-            "JOIN m.statusFilmId s " +
-            "WHERE s.name ='Comming'")
+
+
+    @Query(nativeQuery = true , value = " SELECT m.* FROM Movie m " +
+            " join status_film s on s.id = m.status_movie_id " +
+            " WHERE s.id = 1 ")
     List<Movie> getMovieIsComming();
-    @Query("SELECT m FROM Movie m " +
-            "JOIN m.kindOfFilm k " +
-            "JOIN m.statusFilmId s " +
-            "WHERE s.name ='Showing'")
+
+    @Query(nativeQuery = true , value = " SELECT m.* FROM Movie m " +
+            " join status_film s on s.id = m.status_movie_id " +
+            " WHERE s.id = 2 ")
     List<Movie> getMovieIsShowing();
-    @Query("SELECT k FROM KindOfFilm k ")
-    List<KindOfFilm> getMovieKindOfMovie();
-    @Query("SELECT s FROM StatusFilm s ")
-    List<StatusFilm> getMovieStatusFilm();
+
+
+
 
     //Manager
     @Query(value = "select * from movie where is_delete = false", nativeQuery = true)

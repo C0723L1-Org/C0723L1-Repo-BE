@@ -11,13 +11,11 @@ import org.c07.movie_booking.service.IKindOfFilmService;
 import org.c07.movie_booking.service.IMovieService;
 import org.c07.movie_booking.service.IStatusFilmService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -32,10 +30,24 @@ public class MovieController {
     private IKindOfFilmService iKindOfFilmService;
     @Autowired
     private IStatusFilmService iStatusFilmService;
-
-    //    Home
+    //Home
     @GetMapping("public/show-search-movie")
     public ResponseEntity<?> showAndSearchMovie(
+            @RequestParam(defaultValue = "") String nameMovie,
+            @RequestParam(defaultValue = "") String director,
+            @RequestParam(defaultValue = "2024-02-25") @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate releaseDate,
+            @RequestParam(defaultValue = "") String nameStatus,
+            @RequestParam(defaultValue = "") String nameKind,
+            @RequestParam(defaultValue = "") String actor,
+            @RequestParam(defaultValue = "0") int page) {
+        if (page < 0) {
+            page = 0;
+        }
+        Page<Movie> movies = iMovieService.getSearchMovie("%"+nameMovie+"%", "%"+director+"%", releaseDate, "%"+nameStatus+"%", "%"+nameKind+"%", "%"+actor+"%", PageRequest.of(page, 5));
+        return ResponseEntity.ok(movies);
+    }
+    @GetMapping("public/show-search-movie-test")
+    public ResponseEntity<?> Test(
             @RequestParam(value = "nameMovie", defaultValue = "") String nameMovie,
             @RequestParam(value = "director", defaultValue = "") String director,
             @RequestParam(value = "releaseDate", defaultValue = "") @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate releaseDate,
@@ -46,34 +58,11 @@ public class MovieController {
         if (page < 0) {
             page = 0;
         }
-        Page<Movie> movies = iMovieService.getSearchMovie(nameMovie, director, releaseDate, nameStatus, nameKind, actor, PageRequest.of(page, 5));
-        if (movies.isEmpty()) {
-            String notFoundFields = "";
-            if (!nameMovie.isEmpty()) {
-                notFoundFields += "Tên phim, ";
-            }
-            if (!director.isEmpty()) {
-                notFoundFields += "Đạo diễn, ";
-            }
-            if (releaseDate != null) {
-                notFoundFields += "Ngày phát hành, ";
-            }
-            if (!nameStatus.isEmpty()) {
-                notFoundFields += "Trạng thái phim, ";
-            }
-            if (!nameKind.isEmpty()) {
-                notFoundFields += "Loại phim, ";
-            }
-            if (!actor.isEmpty()) {
-                notFoundFields += "Diễn viên, ";
-            }
-            if (notFoundFields.endsWith(", ")) {
-                notFoundFields = notFoundFields.substring(0, notFoundFields.length() - 2);
-            }
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy " + notFoundFields + " bạn đang cần tìm.");
-        }
+        Page<Movie> movies = iMovieService.test(nameMovie, director, releaseDate, nameStatus, nameKind, actor, PageRequest.of(page, 5));
         return ResponseEntity.ok(movies);
     }
+
+
 
     @GetMapping("public/show-list-movie-showing")
     public ResponseEntity<?> getMovieIsShowing(){
@@ -93,7 +82,7 @@ public class MovieController {
     }
     @GetMapping("public/show-list-kindofmovie")
     public ResponseEntity<?> getKindOfMovie(){
-        List<KindOfFilm> movies = iMovieService.getKindOfMovie();
+        List<KindOfFilm> movies = iKindOfFilmService.getKindOfMovie();
         if (movies.isEmpty()) {
             return ResponseEntity.status(404).body("Not found");
         }
@@ -101,7 +90,7 @@ public class MovieController {
     }
     @GetMapping("public/show-list-statusmovie")
     public ResponseEntity<?> getStatusMovie(){
-        List<StatusFilm> movies = iMovieService.getStatusMovie();
+        List<StatusFilm> movies = iStatusFilmService.getStatusMovie();
         if (movies.isEmpty()) {
             return ResponseEntity.status(404).body("Not found");
         }
@@ -125,13 +114,15 @@ public class MovieController {
     }
     @GetMapping("private/searches")
     public List<MovieDTO> getSearchFields(
-                            @RequestParam(value = "nameMovie", required = false) String nameMovie,
-                            @RequestParam(value = "content", required = false) String content,
-                            @RequestParam(value = "director", required = false) String director,
-                            @RequestParam(value = "releaseDate", required = false) @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate releaseDate,
-                            @RequestParam(value = "nameStatus", required = false) String nameStatus,
-                            @RequestParam(value = "nameKind", required = false) String nameKind,
-                            @RequestParam(value = "actor", required = false) String actor
+            @RequestParam(value = "nameMovie", defaultValue = "" ,required = false) String nameMovie,
+            @RequestParam(value = "content", defaultValue = "", required = false) String content,
+            @RequestParam(value = "director", defaultValue = "", required = false) String director,
+            @RequestParam(value = "releaseDate", defaultValue = "", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate releaseDate,
+            @RequestParam(value = "nameStatus", defaultValue = "", required = false) String nameStatus,
+            @RequestParam(value = "nameKind", defaultValue = "", required = false) String nameKind,
+            @RequestParam(value = "actor", defaultValue = "", required = false) String actor,
+            @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "2") int pageSize
     ){
         List<MovieDTO> dtoList = iMovieService.getSearchFields(nameMovie, content, director, releaseDate,
                 nameStatus, nameKind, actor);

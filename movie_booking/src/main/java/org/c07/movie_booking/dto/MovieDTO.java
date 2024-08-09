@@ -3,6 +3,7 @@ package org.c07.movie_booking.dto;
 import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 public class MovieDTO {
     private Long id;
@@ -17,27 +18,13 @@ public class MovieDTO {
     private String avatar;
     private String poster;
     private Boolean isDelete;
-
-    public String getPoster() {
-        return poster;
-    }
-    public void setPoster(String poster) {
-        this.poster = poster;
-    }
-    public Boolean getDelete() {
-        return isDelete;
-    }
-
-    public void setDelete(Boolean delete) {
-        isDelete = delete;
+    List<KindOfFilmDTO> kindOfFilm;
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getNameMovie() {
@@ -110,5 +97,29 @@ public class MovieDTO {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
+
+    public Boolean getDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(Boolean delete) {
+        isDelete = delete;
+    }
+
+    public List<KindOfFilmDTO> getKindOfFilm() {
+        return kindOfFilm;
+    }
+
+    public void setKindOfFilm(List<KindOfFilmDTO> kindOfFilm) {
+        this.kindOfFilm = kindOfFilm;
     }
 }

@@ -26,4 +26,9 @@ public class StatusFilmService implements IStatusFilmService {
         }
         return statusFilmDTOList;
     }
+
+    @Override
+    public List<StatusFilm> getStatusMovie() {
+        return iStatusFilmRepository.getMovieStatusFilm();
+    }
 }

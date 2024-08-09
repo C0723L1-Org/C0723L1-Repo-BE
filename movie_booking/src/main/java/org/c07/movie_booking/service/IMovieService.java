@@ -14,10 +14,10 @@ import java.util.List;
 public interface IMovieService {
     Page<Movie> getSearchMovie(String nameMovie, String director, LocalDate releaseDate,
                                String nameStatus, String nameKind, String actor, Pageable pageable);
+    Page<Movie> test(String nameMovie, String director, LocalDate releaseDate, String nameStatus,
+                              String nameKind, String actor, Pageable pageable);
     List<Movie> getMovieIsComming();
     List<Movie> getMovieIsShowing();
-    List<KindOfFilm> getKindOfMovie();
-    List<StatusFilm> getStatusMovie();
     List<MovieDTO> getFindAll();
     List<MovieDTO> getSearchFields(String nameMovie, String content, String director,
                                    LocalDate releaseDate,

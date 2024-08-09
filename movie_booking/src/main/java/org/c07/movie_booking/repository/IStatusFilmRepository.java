@@ -13,4 +13,6 @@ import java.util.List;
 public interface IStatusFilmRepository extends JpaRepository<StatusFilm, Long> {
     @Query(value = "select * from status_film", nativeQuery = true)
     List<StatusFilm> findAllByQuery();
+    @Query("SELECT s FROM StatusFilm s")
+    List<StatusFilm> getMovieStatusFilm();
 }

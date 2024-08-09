@@ -1,5 +1,6 @@
 package org.c07.movie_booking.service.implement;
 
+import org.c07.movie_booking.dto.KindOfFilmDTO;
 import org.c07.movie_booking.dto.MovieDTO;
 import org.c07.movie_booking.exception.FieldRequiredException;
 import org.c07.movie_booking.model.KindOfFilm;
@@ -10,6 +11,8 @@ import org.c07.movie_booking.service.IMovieService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +28,13 @@ public class MovieService implements IMovieService {
     private ModelMapper modelMapper;
     //Home
     @Override
-    public Page<Movie> getSearchMovie(String nameMovie, String director, LocalDate releaseDate, String nameStatus,
-                                      String nameKind, String actor, Pageable pageable) {
-        return iMovieRepository.getSearchMovie( nameMovie, director, releaseDate, nameStatus, nameKind, actor, pageable);
+    public Page<Movie> getSearchMovie(String nameMovie, String director, LocalDate releaseDate, String nameStatus, String nameKind, String actor, Pageable pageable) {
+        return iMovieRepository.getSearchMovie(nameMovie, director, releaseDate, nameStatus, nameKind, actor, pageable);
+    }
+
+    @Override
+    public Page<Movie> test(String nameMovie, String director, LocalDate releaseDate, String nameStatus, String nameKind, String actor, Pageable pageable) {
+        return iMovieRepository.Test(nameMovie, director, releaseDate, nameStatus,  nameKind, actor, pageable);
     }
 
     @Override
@@ -38,16 +45,6 @@ public class MovieService implements IMovieService {
     @Override
     public List<Movie> getMovieIsShowing() {
         return iMovieRepository.getMovieIsShowing();
-    }
-
-    @Override
-    public List<KindOfFilm> getKindOfMovie() {
-        return iMovieRepository.getMovieKindOfMovie();
-    }
-
-    @Override
-    public List<StatusFilm> getStatusMovie() {
-        return iMovieRepository.getMovieStatusFilm();
     }
 
     //Manager
@@ -98,4 +95,6 @@ public class MovieService implements IMovieService {
             deleteByIdQuery(id);
         }
     }
+
+
 }

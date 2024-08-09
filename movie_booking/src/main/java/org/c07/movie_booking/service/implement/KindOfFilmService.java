@@ -26,4 +26,8 @@ public class KindOfFilmService implements IKindOfFilmService {
         }
         return kindOfFilmDTOS;
     }
+    @Override
+    public List<KindOfFilm> getKindOfMovie() {
+        return iKindOfFilmRepository.getMovieKindOfMovie();
+    }
 }

@@ -2,7 +2,16 @@ package org.c07.movie_booking.dto;
 public class KindOfFilmDTO {
         private Long id;
         private String name;
-        public Long getId() {
+
+    public KindOfFilmDTO() {
+    }
+
+    public KindOfFilmDTO(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Long getId() {
             return id;
         }
         public void setId(Long id) {
