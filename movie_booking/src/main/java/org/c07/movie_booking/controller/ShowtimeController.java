@@ -15,9 +15,10 @@ import java.util.List;
 public class ShowtimeController {
     @Autowired
     IShowtimeService showtimeService;
-    @GetMapping("/public/movie/{id}")
-    public ResponseEntity<?> findShowtimeByIdMovie(@PathVariable("id") Long id,@RequestParam String date){
-        List<Showtime> showtimeList = showtimeService.findShowtimeByIdMovie(id,"%"+date+"%");
+    @GetMapping("/public/list")
+    public ResponseEntity<?> findShowtimeByIdMovie(@RequestParam Long movieId,@RequestParam String date){
+        System.out.println(date);
+        List<Showtime> showtimeList = showtimeService.findShowtimeByIdMovie(movieId,"%"+date+"%");
         if(showtimeList.isEmpty()){
             return new ResponseEntity<>(showtimeList, HttpStatus.NO_CONTENT);
         }else return new ResponseEntity<>(showtimeList, HttpStatus.OK);

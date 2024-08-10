@@ -10,4 +10,5 @@ public interface IMovieService {
     List<MovieDTO> getFindAll();
     List<Movie> getSearchField(Map<String, Objects> params);
     void deleteById(Long id);
+    Movie getMovieById(Long id);
 }

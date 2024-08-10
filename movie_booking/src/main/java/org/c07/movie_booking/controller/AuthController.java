@@ -59,9 +59,8 @@ public class AuthController {
         // Tạo lại cookie jwt với giá trị rỗng và maxAge bằng 0 để xóa nó
         Cookie jwtCookie = new Cookie("jwt", null);
         jwtCookie.setPath("/");
-        jwtCookie.setHttpOnly(true);
+//        jwtCookie.setHttpOnly(true);
         jwtCookie.setMaxAge(0); // Đặt maxAge là 0 để xóa cookie
-
         // Thêm cookie vào phản hồi
         response.addCookie(jwtCookie);
         return ResponseEntity.ok("Đăng xuất thành công");
