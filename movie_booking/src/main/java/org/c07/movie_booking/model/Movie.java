@@ -9,6 +9,10 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "movie")
 public class Movie {
@@ -18,6 +22,7 @@ public class Movie {
     private Long id;
     private String nameMovie;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
+
     private LocalDate releaseDate;
     private String durationMovie;
     private String actor;
@@ -32,7 +37,7 @@ public class Movie {
 
     @ManyToOne
     @JoinColumn(name = "status_movie_id")
-    private StatusFilm statusFilmId;
+    private StatusFilm statusFilm;
     @ManyToMany
     @JoinTable(
             name = "movie_kind_of_film",
@@ -44,7 +49,7 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(Long id, String nameMovie, LocalDate releaseDate, String durationMovie, String actor, String director, String studio, String content, String trailer, String avatar, String poster, Boolean isDelete, StatusFilm statusFilmId, Set<KindOfFilm> kindOfFilms) {
+    public Movie(Long id, String nameMovie, LocalDate releaseDate, String durationMovie, String actor, String director, String studio, String content, String trailer, String avatar, String poster, Boolean isDelete, StatusFilm statusFilm, Set<KindOfFilm> kindOfFilms) {
         this.id = id;
         this.nameMovie = nameMovie;
         this.releaseDate = releaseDate;
@@ -57,7 +62,7 @@ public class Movie {
         this.avatar = avatar;
         this.poster = poster;
         this.isDelete = isDelete;
-        this.statusFilmId = statusFilmId;
+        this.statusFilm = statusFilm;
         this.kindOfFilms = kindOfFilms;
     }
 
@@ -157,12 +162,12 @@ public class Movie {
         isDelete = delete;
     }
 
-    public StatusFilm getStatusFilmId() {
-        return statusFilmId;
+    public StatusFilm getStatusFilm() {
+        return statusFilm;
     }
 
-    public void setStatusFilmId(StatusFilm statusFilmId) {
-        this.statusFilmId = statusFilmId;
+    public void setStatusFilm(StatusFilm statusFilm) {
+        this.statusFilm = statusFilm;
     }
 
     public Set<KindOfFilm> getKindOfFilms() {

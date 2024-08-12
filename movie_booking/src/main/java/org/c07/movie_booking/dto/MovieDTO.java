@@ -5,46 +5,57 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public class MovieDTO implements Validator {
 
-    private Long id;
+    private long id;
+
     @NotBlank(message = "Tên phim không được để trống")
     private String nameMovie;
+
     @NotBlank(message = "Ngày phát hành không được để trống")
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate releaseDate;
+
     private String durationMovie;
+
     @NotBlank(message = "Diễn viên không được bỏ trống")
     private String actor;
+
     @NotBlank(message = "Dạo diễn không được bỏ trống ")
     private String director;
+
     @NotBlank(message = "phòng chiếu không được bỏ trống")
     private String studio;
+
     @NotBlank(message = "Nội dung không được bỏ trống")
     private String content;
+
     @NotBlank(message = "Trailer không được bỏ trống")
     private String trailer;
+
     @NotBlank(message = "Avatar không được bỏ trống")
     private String avatar;
+
     @NotBlank(message = "Poster không được bỏ trống")
     private String poster;
+
     private Boolean isDelete = true;
+
     @NotBlank(message = "Trạng thái phim không được bỏ trống")
-    private Long statusFilm;
+    private long statusFilm;
+
     @NotBlank(message = "Loại phim không được bỏ trống")
     private List<KindOfFilmDTO> kindOfFilm;
-
-
-
 
     public MovieDTO() {
     }
 
-    public MovieDTO(Long id, String nameMovie, LocalDate releaseDate, String durationMovie, String actor, String director, String studio, String content, String trailer, String avatar, String poster, Boolean isDelete, Long statusFilm, List<KindOfFilmDTO> kindOfFilm) {
+    public MovieDTO(long id, String nameMovie, LocalDate releaseDate, String durationMovie, String actor, String director, String studio, String content, String trailer, String avatar, String poster, Boolean isDelete, long statusFilm, List<KindOfFilmDTO> kindOfFilm) {
         this.id = id;
         this.nameMovie = nameMovie;
         this.releaseDate = releaseDate;
@@ -61,27 +72,27 @@ public class MovieDTO implements Validator {
         this.kindOfFilm = kindOfFilm;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getNameMovie() {
+    public @NotBlank(message = "Tên phim không được để trống") String getNameMovie() {
         return nameMovie;
     }
 
-    public void setNameMovie(String nameMovie) {
+    public void setNameMovie(@NotBlank(message = "Tên phim không được để trống") String nameMovie) {
         this.nameMovie = nameMovie;
     }
 
-    public LocalDate getReleaseDate() {
+    public @NotBlank(message = "Ngày phát hành không được để trống") LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(LocalDate releaseDate) {
+    public void setReleaseDate(@NotBlank(message = "Ngày phát hành không được để trống") LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -93,59 +104,59 @@ public class MovieDTO implements Validator {
         this.durationMovie = durationMovie;
     }
 
-    public String getActor() {
+    public @NotBlank(message = "Diễn viên không được bỏ trống") String getActor() {
         return actor;
     }
 
-    public void setActor(String actor) {
+    public void setActor(@NotBlank(message = "Diễn viên không được bỏ trống") String actor) {
         this.actor = actor;
     }
 
-    public String getDirector() {
+    public @NotBlank(message = "Dạo diễn không được bỏ trống ") String getDirector() {
         return director;
     }
 
-    public void setDirector(String director) {
+    public void setDirector(@NotBlank(message = "Dạo diễn không được bỏ trống ") String director) {
         this.director = director;
     }
 
-    public String getStudio() {
+    public @NotBlank(message = "phòng chiếu không được bỏ trống") String getStudio() {
         return studio;
     }
 
-    public void setStudio(String studio) {
+    public void setStudio(@NotBlank(message = "phòng chiếu không được bỏ trống") String studio) {
         this.studio = studio;
     }
 
-    public String getContent() {
+    public @NotBlank(message = "Nội dung không được bỏ trống") String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(@NotBlank(message = "Nội dung không được bỏ trống") String content) {
         this.content = content;
     }
 
-    public String getTrailer() {
+    public @NotBlank(message = "Trailer không được bỏ trống") String getTrailer() {
         return trailer;
     }
 
-    public void setTrailer(String trailer) {
+    public void setTrailer(@NotBlank(message = "Trailer không được bỏ trống") String trailer) {
         this.trailer = trailer;
     }
 
-    public String getAvatar() {
+    public @NotBlank(message = "Avatar không được bỏ trống") String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(String avatar) {
+    public void setAvatar(@NotBlank(message = "Avatar không được bỏ trống") String avatar) {
         this.avatar = avatar;
     }
 
-    public String getPoster() {
+    public @NotBlank(message = "Poster không được bỏ trống") String getPoster() {
         return poster;
     }
 
-    public void setPoster(String poster) {
+    public void setPoster(@NotBlank(message = "Poster không được bỏ trống") String poster) {
         this.poster = poster;
     }
 
@@ -157,19 +168,20 @@ public class MovieDTO implements Validator {
         isDelete = delete;
     }
 
-    public Long getStatusFilm() {
+    @NotBlank(message = "Trạng thái phim không được bỏ trống")
+    public long getStatusFilm() {
         return statusFilm;
     }
 
-    public void setStatusFilm(Long statusFilm) {
+    public void setStatusFilm(@NotBlank(message = "Trạng thái phim không được bỏ trống") long statusFilm) {
         this.statusFilm = statusFilm;
     }
 
-    public List<KindOfFilmDTO> getKindOfFilm() {
+    public @NotBlank(message = "Loại phim không được bỏ trống") List<KindOfFilmDTO> getKindOfFilm() {
         return kindOfFilm;
     }
 
-    public void setKindOfFilm(List<KindOfFilmDTO> kindOfFilm) {
+    public void setKindOfFilm(@NotBlank(message = "Loại phim không được bỏ trống") List<KindOfFilmDTO> kindOfFilm) {
         this.kindOfFilm = kindOfFilm;
     }
 
@@ -183,4 +195,3 @@ public class MovieDTO implements Validator {
 
     }
 }
-

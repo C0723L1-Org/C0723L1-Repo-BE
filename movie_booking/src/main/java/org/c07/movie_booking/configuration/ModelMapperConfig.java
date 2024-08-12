@@ -1,3 +1,4 @@
+
 package org.c07.movie_booking.configuration;
 
 import org.modelmapper.ModelMapper;
@@ -11,3 +12,4 @@ public class ModelMapperConfig {
         return new ModelMapper();
     }
 }
+

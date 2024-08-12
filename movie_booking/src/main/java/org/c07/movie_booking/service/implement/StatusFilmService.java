@@ -18,7 +18,7 @@ public class StatusFilmService implements IStatusFilmService {
     private ModelMapper modelMapper;
     @Override
     public List<StatusFilmDTO> getFindAll() {
-        List<StatusFilm> statusFilms = iStatusFilmRepository.findAllByQuery();
+        List<StatusFilm> statusFilms = iStatusFilmRepository.findAll();
         List<StatusFilmDTO> statusFilmDTOList = new ArrayList<>();
         for(StatusFilm items: statusFilms){
             StatusFilmDTO statusFilmDTO = modelMapper.map(items, StatusFilmDTO.class);

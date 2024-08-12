@@ -1,6 +1,4 @@
 package org.c07.movie_booking.repository;
-
-
 import org.c07.movie_booking.model.KindOfFilm;
 import org.c07.movie_booking.model.StatusFilm;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface IStatusFilmRepository extends JpaRepository<StatusFilm, Long> {
-    @Query(value = "select * from status_film", nativeQuery = true)
-    List<StatusFilm> findAllByQuery();
+//    @Query(value = "select * from status_film", nativeQuery = true)
+//    List<StatusFilm> findAllByQuery();
+
 }
