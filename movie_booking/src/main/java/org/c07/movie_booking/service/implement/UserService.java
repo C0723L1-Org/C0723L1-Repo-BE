@@ -99,6 +99,7 @@ public class UserService implements IUserService {
 
     @Override
     public UserResponse findUserByEmail(String email) {
+
         return iUserRepositoty.findUserByEmail(email);
     }
 }

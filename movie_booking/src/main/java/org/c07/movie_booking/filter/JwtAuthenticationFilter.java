@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.c07.movie_booking.service.auth.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -41,6 +40,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     break;
                 }
             }
+            if(jwt !=null){
+                userEmail = jwtService.extractUsername(jwt);
+                if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
+                    UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+                    // kiểm tra xem jwt còn hạn hoặc hợp lệ không
+                    if ((jwtService.isTokenValid(jwt,userDetails))){
+                        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                                userDetails,null,userDetails.getAuthorities()
+                        );
+                        authenticationToken.setDetails(
+                                new WebAuthenticationDetailsSource().buildDetails(request)
+                        );
+                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    } else {
+                        // Token hết hạn hoặc không hợp lệ
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        response.getWriter().write("Token has expired or is invalid");
+                        return;
+                    }
+                }
+                filterChain.doFilter(request,response);
+            }
         } else filterChain.doFilter(request,response);
 //        if(authHeader == null || !authHeader.startsWith("Bearer ")){
 //            filterChain.doFilter(request,response);
@@ -48,20 +69,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //        }
 //        jwt = authHeader.substring(7);
         // extract user email form jwt token
-        userEmail = jwtService.extractUsername(jwt);
-        if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-            if ((jwtService.isTokenValid(jwt,userDetails))){
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,null,userDetails.getAuthorities()
-                );
-                authenticationToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            }
-        }
-        filterChain.doFilter(request,response);
+
+
 
     }
 }

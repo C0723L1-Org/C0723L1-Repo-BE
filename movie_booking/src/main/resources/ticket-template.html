@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header img {
+            max-width: 100%;
+            height: auto;
+        }
+        .ticket-info {
+            border-top: 2px solid #b00000;
+            border-bottom: 2px solid #b00000;
+            padding: 20px 0;
+            margin: 20px 0;
+        }
+        .ticket-info p {
+            margin: 5px 0;
+        }
+        .ticket-info .title {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .barcode {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .barcode img {
+            margin-bottom: 5px;
+        }
+        .footer {
+            background-color: #600000;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .footer p {
+            margin: 5px 0;
+        }
+        .footer .social-icons img {
+            width: 20px;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="header">
+        <img src="https://www.cgv.vn/media/wysiwyg/email/header.png" alt="CGV Cinemas">
+    </div>
+    <div class="qrCode" style="display: flex; justify-content: center;">
+        <div>
+            {{ img }}
+        </div>
+    </div>
+    <div class="ticket-info">
+        <p class="title">THÔNG TIN VÉ</p>
+        <p><strong>Mã vé:</strong> {{ ticketCode }}</p>
+        <p><strong>Tên phim:</strong> {{ movieName }}</p>
+        <p><strong>Rạp:</strong> {{ cinema }}</p>
+        <p><strong>Phòng chiếu:</strong> {{ room }}</p>
+        <p><strong>Suất chiếu:</strong> {{ showtime }}</p>
+        <p><strong>Ghế:</strong> {{ seats }}</p>
+        <p><strong>Giá:</strong> {{ price }}</p>
+    </div>
+    <div style="display: flex; align-items: center;">
+        <div>
+            Vui lòng đưa mã QRCode đến quầy vé CGV để nhận vé của bạn
+            *Lưu ý: Vui lòng sử dụng loại vé đúng với độ tuổi theo quy định của CGV. Chi tiết
+        </div>
+    </div>
+    <div class="footer">
+        <p>CGV Cinemas Việt Nam</p>
+        <p>Lầu 2, 72B Thành Thái, Phường 14, Quận 10, TP.HCM</p>
+        <p>Email hỗ trợ: <a href="mailto:hoidap@cgv.vn">hoidap@cgv.vn</a></p>
+        <p>Hotline: 1900 6017</p>
+        <div class="social-icons">
+            <a href="#"><img src="https://link-to-facebook-icon.png" alt="Facebook"></a>
+            <a href="#"><img src="https://link-to-twitter-icon.png" alt="Twitter"></a>
+            <a href="#"><img src="https://link-to-instagram-icon.png" alt="Instagram"></a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
