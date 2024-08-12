@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-
+@CrossOrigin
 @RestController
 @RequestMapping({"/api/v1/user"})
 public class UserController {
@@ -27,7 +27,7 @@ public class UserController {
         System.out.println("Name: " + valueSearch);
 
         int currentPage = page.map(p -> Math.max(p, 0)).orElse(0);
-        Pageable pageable = PageRequest.of(currentPage, 5);
+        Pageable pageable = PageRequest.of(currentPage, 7);
         Page<UserResDTO> employees = iUserService.searchEmployees(
                 valueSearch, pageable);
         return new ResponseEntity<>(employees, HttpStatus.OK);
