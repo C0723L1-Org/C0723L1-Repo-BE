@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,7 +22,7 @@ public class User implements UserDetails{
 
     private String email;
     private String password;
-
+    private Date birthday;
     private boolean gender;
 
     private boolean status;

@@ -1,5 +1,7 @@
 package org.c07.movie_booking.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import org.c07.movie_booking.model.auth_entity.AuthenticationRequest;
@@ -24,9 +26,16 @@ public class AuthController {
     }
     @PostMapping("public/authenticate")
     public ResponseEntity<?> register(
-            @RequestBody AuthenticationRequest request
+            @RequestBody AuthenticationRequest request,
+            HttpServletResponse response
     ){
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+        String token =authenticationService.authenticate(request);
+        Cookie cookie = new Cookie("jwt",token);
+        cookie.setHttpOnly(true); // Không cho phép JavaScript truy cập
+        cookie.setSecure(true); // Chỉ gửi cookie qua HTTPS
+        cookie.setPath("/"); // Áp dụng cho toàn bộ ứng dụng
+        response.addCookie(cookie);
+        return ResponseEntity.ok(token);
     }
     @GetMapping("/demo")
     public ResponseEntity<?> sayHello(){

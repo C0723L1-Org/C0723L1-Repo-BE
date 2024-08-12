@@ -15,5 +15,7 @@ public interface IUserService {
     Page<UserDTO> getAllUser (Pageable pageable);
 
     UserDTO findUserByEmail (String email);
+    Boolean existsByCardId(String cardId);
+    Boolean existsByPhoneNumber(String phoneNumber);
 
 }

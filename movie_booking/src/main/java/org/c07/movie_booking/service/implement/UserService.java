@@ -28,6 +28,9 @@ public class UserService implements IUserService {
         if (iUserRepositoty.existsByEmail(userDTO.getEmail())) {
             throw new IllegalArgumentException("Email đã được sử dụng");
         }
+        if (iUserRepositoty.existsByCardId(userDTO.getCardId())){
+            throw new IllegalArgumentException("số CCCD đã tồn tại");
+        }
         // Thiết lập giá trị mặc định cho userDTO nếu chưa có
         if (userDTO.getCode() == null) {
             userDTO.setCode("KH-" + generateRandomCode());
@@ -38,7 +41,7 @@ public class UserService implements IUserService {
         if (userDTO.getRole() == null) {
             Role defaultRole = new Role();
             defaultRole.setId(1L);
-            defaultRole.setName("ROLE_USER");
+            defaultRole.setName("user");
             userDTO.setRole(defaultRole);
         }
 
@@ -102,5 +105,15 @@ public class UserService implements IUserService {
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(user, userDTO);
         return userDTO;
+    }
+
+    @Override
+    public Boolean existsByCardId(String cardId) {
+        return iUserRepositoty.existsByCardId(cardId);
+    }
+
+    @Override
+    public Boolean existsByPhoneNumber(String phoneNumber) {
+        return iUserRepositoty.existsByPhoneNumber(phoneNumber);
     }
 }
