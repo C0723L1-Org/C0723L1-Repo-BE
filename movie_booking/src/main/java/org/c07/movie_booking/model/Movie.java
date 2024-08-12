@@ -2,14 +2,18 @@ package org.c07.movie_booking.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private long id;
     private String nameMovie;
-    private String releaseDate;
+    private LocalDate releaseDate;
     private String durationMovie;
     private String actor;
     private String director;
@@ -21,15 +25,20 @@ public class Movie {
     private boolean isDelete;
     @ManyToOne
     @JoinColumn(name = "status_movie_id")
-    private StatusFilm statusFilmId;
-    @ManyToOne
-    @JoinColumn(name = "type_movie_id")
-    private KindOfFilm kindOfFilm;
+    private StatusFilm statusFilm;
+
+    @ManyToMany
+    @JoinTable(
+            name = "movie_kind_of_film",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "kind_of_film_id")
+    )
+    private Set<KindOfFilm> kindOfFilms = new HashSet<>();
 
     public Movie() {
     }
 
-    public Movie(Long id, String nameMovie, String releaseDate, String durationMovie, String actor, String director, String studio, String content, String trailer, String avatar, String poster, boolean isDelete, StatusFilm statusFilmId, KindOfFilm kindOfFilm) {
+    public Movie(long id, String nameMovie, LocalDate releaseDate, String durationMovie, String actor, String director, String studio, String content, String trailer, String avatar, String poster, boolean isDelete, StatusFilm statusFilm, Set<KindOfFilm> kindOfFilms) {
         this.id = id;
         this.nameMovie = nameMovie;
         this.releaseDate = releaseDate;
@@ -42,15 +51,15 @@ public class Movie {
         this.avatar = avatar;
         this.poster = poster;
         this.isDelete = isDelete;
-        this.statusFilmId = statusFilmId;
-        this.kindOfFilm = kindOfFilm;
+        this.statusFilm = statusFilm;
+        this.kindOfFilms = kindOfFilms;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -62,11 +71,11 @@ public class Movie {
         this.nameMovie = nameMovie;
     }
 
-    public String getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
+    public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -142,19 +151,19 @@ public class Movie {
         isDelete = delete;
     }
 
-    public StatusFilm getStatusFilmId() {
-        return statusFilmId;
+    public StatusFilm getStatusFilm() {
+        return statusFilm;
     }
 
-    public void setStatusFilmId(StatusFilm statusFilmId) {
-        this.statusFilmId = statusFilmId;
+    public void setStatusFilm(StatusFilm statusFilm) {
+        this.statusFilm = statusFilm;
     }
 
-    public KindOfFilm getKindOfFilm() {
-        return kindOfFilm;
+    public Set<KindOfFilm> getKindOfFilms() {
+        return kindOfFilms;
     }
 
-    public void setKindOfFilm(KindOfFilm kindOfFilm) {
-        this.kindOfFilm = kindOfFilm;
+    public void setKindOfFilms(Set<KindOfFilm> kindOfFilms) {
+        this.kindOfFilms = kindOfFilms;
     }
 }
