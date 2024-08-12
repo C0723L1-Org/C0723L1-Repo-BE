@@ -3,6 +3,7 @@ package org.c07.movie_booking.controller;
 import jakarta.validation.Valid;
 import org.c07.movie_booking.dto.BookingDto;
 import org.c07.movie_booking.model.Booking;
+import org.c07.movie_booking.service.EmailService;
 import org.c07.movie_booking.service.IBookingService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ import java.util.Map;
 public class BookingController {
     @Autowired
     IBookingService bookingService;
+    @Autowired
+    EmailService emailService;
+
 
     @PostMapping("/create")
     public ResponseEntity<?> createNewBooking(@Valid @RequestBody BookingDto bookingDto,
@@ -38,11 +42,38 @@ public class BookingController {
         BeanUtils.copyProperties(bookingDto,booking);
         String msg;
         if(bookingService.addNewBooking(booking)){
+            sendEmail(booking.getUser().getEmail(),
+                    booking.getCodeBooking(),
+                    booking.getShowTime().getMovie().getNameMovie(),
+                    booking.getShowTime().getRoom().getRoomName(),
+                    booking.getShowTime().getShowDate().toString(),
+                    booking.getSeat().getSeatNumber(),
+                    Integer.toString(booking.getSeat().getPrice()),
+                    Double.toString(booking.getTotalAmount()));
             msg ="Booking success";
             return new ResponseEntity<>(msg,HttpStatus.OK);
         } else {
             msg = "Failed";
             return new ResponseEntity<>(msg,HttpStatus.BAD_REQUEST);
+        }
+    }
+    private void sendEmail(String to, String ticketCode,
+                           String movieName, String room,
+                           String showtime, String seats, String price, String totalPrice){
+        try{
+            emailService.sendTicketEmail(
+                    to,
+                    "Thông tin vé của bạn",
+                    ticketCode,
+                    movieName,
+                    "CGV Vinh Trung Plaza",
+                    room,
+                    showtime,
+                    seats,
+                    price,
+                    totalPrice);
+        } catch (Exception ignored){
+            System.out.println(ignored);
         }
     }
 }

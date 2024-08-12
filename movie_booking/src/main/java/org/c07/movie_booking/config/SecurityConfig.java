@@ -38,7 +38,8 @@ public class SecurityConfig {
                         "/api/v1/auth/public/**",
                         "/api/v1/movie/public/**",
                         "/api/v1/room/public/**",
-                        "/api/v1/showtime/public/**"
+                        "/api/v1/showtime/public/**",
+                        "/api/v1/mail/public/**"
                 ).permitAll())
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -51,11 +52,7 @@ public class SecurityConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);;
+                registry.addMapping("/**").allowedOrigins("http://localhost:3000");
             }
         };
     }

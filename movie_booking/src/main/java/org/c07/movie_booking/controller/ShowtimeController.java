@@ -16,9 +16,11 @@ public class ShowtimeController {
     @Autowired
     IShowtimeService showtimeService;
     @GetMapping("/public/list")
-    public ResponseEntity<?> findShowtimeByIdMovie(@RequestParam Long movieId,@RequestParam String date){
-        System.out.println(date);
-        List<Showtime> showtimeList = showtimeService.findShowtimeByIdMovie(movieId,"%"+date+"%");
+    public ResponseEntity<?> findShowtimeByIdMovie(@RequestParam Long movieId,@RequestParam String date, @RequestParam String time){
+        String dateTime = date + " "+time;
+        System.out.println("dateTime: " +dateTime);
+        System.out.println("date: " +date);
+        List<Showtime> showtimeList = showtimeService.findShowtimeByIdMovie(movieId,"%"+date+"%",dateTime);
         if(showtimeList.isEmpty()){
             return new ResponseEntity<>(showtimeList, HttpStatus.NO_CONTENT);
         }else return new ResponseEntity<>(showtimeList, HttpStatus.OK);
