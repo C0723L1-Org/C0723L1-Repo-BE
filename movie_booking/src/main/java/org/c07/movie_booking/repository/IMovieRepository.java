@@ -1,21 +1,15 @@
 package org.c07.movie_booking.repository;
-import org.c07.movie_booking.dto.MovieDTO;
-import org.c07.movie_booking.model.KindOfFilm;
 import org.c07.movie_booking.model.Movie;
-import org.c07.movie_booking.model.StatusFilm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -108,5 +102,8 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
 
     @Query(value = "select id from movie where id = :id", nativeQuery = true)
     Long findByIdMovie(@Param("id") Long id);
+
+    @Query(nativeQuery = true,value ="select * from movie where id = ?1")
+    Movie getMovieById(Long id);
 }
 

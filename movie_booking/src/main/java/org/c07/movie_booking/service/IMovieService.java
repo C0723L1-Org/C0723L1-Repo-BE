@@ -1,15 +1,14 @@
 package org.c07.movie_booking.service;
 
 import org.c07.movie_booking.dto.MovieDTO;
-import org.c07.movie_booking.model.KindOfFilm;
 import org.c07.movie_booking.model.Movie;
-import org.c07.movie_booking.model.StatusFilm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.c07.movie_booking.exception.FieldRequiredException;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public interface IMovieService {
     Page<Movie> getSearchMovie(String nameMovie, String director, LocalDate releaseDate,
@@ -21,9 +20,6 @@ public interface IMovieService {
     List<MovieDTO> getSearchFields(String nameMovie, String content, String director,
                                    LocalDate releaseDate,
                                    String nameStatus, String nameKind, String actor);
-
     void deleteByIdQuery(Long id) throws FieldRequiredException;
-
-    void deleteByIds(List<Long> paths) throws FieldRequiredException;
-
+    Movie getMovieById(Long id);
 }

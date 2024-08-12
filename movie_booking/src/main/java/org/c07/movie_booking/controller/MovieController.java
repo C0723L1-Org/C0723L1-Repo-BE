@@ -8,12 +8,14 @@ import org.c07.movie_booking.dto.StatusFilmDTO;
 import org.c07.movie_booking.exception.FieldRequiredException;
 import org.c07.movie_booking.model.StatusFilm;
 import org.c07.movie_booking.service.IKindOfFilmService;
+import org.c07.movie_booking.model.Movie;
 import org.c07.movie_booking.service.IMovieService;
 import org.c07.movie_booking.service.IStatusFilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +31,7 @@ public class MovieController {
     private IKindOfFilmService iKindOfFilmService;
     @Autowired
     private IStatusFilmService iStatusFilmService;
+
     //Home
     @GetMapping("public/show-search-movie")
     public ResponseEntity<?> showAndSearchMovie(
@@ -129,9 +132,10 @@ public class MovieController {
             iMovieService.deleteByIdQuery(id);
         return ResponseEntity.noContent().build();
     }
-    @PutMapping ("private/list-delete")
-    public ResponseEntity<Void> deleteMovieByIds(@RequestParam List<Long> id) throws FieldRequiredException {
-        iMovieService.deleteByIds(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/public/{id}")
+    public ResponseEntity<Movie> getMovieById(@PathVariable Long id){
+        Movie movie =iMovieService.getMovieById(id);
+        System.out.println(movie);
+        return new ResponseEntity<>(movie, HttpStatus.OK);
     }
 }

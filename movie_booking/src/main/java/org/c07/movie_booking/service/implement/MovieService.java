@@ -90,10 +90,8 @@ public class MovieService implements IMovieService {
     }
 
     @Override
-    public void deleteByIds(List<Long> paths) throws FieldRequiredException {
-        for (Long id : paths) {
-            deleteByIdQuery(id);
-        }
+    public Movie getMovieById(Long id) {
+        return null;
     }
 
 
