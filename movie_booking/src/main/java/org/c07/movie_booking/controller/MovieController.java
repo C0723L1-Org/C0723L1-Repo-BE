@@ -14,14 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 @RestController
-@RequestMapping("api/v1/movie/")
+@RequestMapping("/api/v1/movie")
 @CrossOrigin("*")
 public class MovieController {
     @Autowired
@@ -39,6 +38,7 @@ public class MovieController {
             @RequestParam(defaultValue = "") String nameStatus,
             @RequestParam(defaultValue = "") String actor,
             @RequestParam(defaultValue = "0") int page) {
+
         if (page < 0) {
             page = 0;
         }

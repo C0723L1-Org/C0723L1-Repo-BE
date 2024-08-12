@@ -1,41 +1,55 @@
-package org.c07.movie_booking.model;
+package org.c07.movie_booking.dto;
 
-import jakarta.persistence.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import org.c07.movie_booking.model.Role;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.Random;
 
-@Entity
-public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDTO implements Validator {
+
+
     private Long id;
+    @NotBlank(message = "Vui lòng không để trống")
     private String code;
-
+    @NotBlank(message = "Vui lòng không để trống")
     private String name;
-
+    @NotBlank(message = "Vui lòng không để trống")
     private String cardId;
-
+    @NotBlank(message = "Vui lòng không để trống")
+    @Email(message = "Email không hợp lệ")
     private String email;
+    @NotBlank(message = "Vui lòng không để trống")
     private String password;
-
     private boolean gender;
-
     private boolean status;
-
+    @NotBlank(message = "Vui lòng không để trống")
     private String phoneNumber;
     private String avatar;
+    @NotBlank(message = "Vui lòng không để trống")
     private String address;
-    @ManyToOne
-    @JoinColumn(name = "role_id")
     private Role role;
 
-    public User() {
+    public UserDTO() {
+        // Thiết lập giá trị mặc định cho avatar
+        this.avatar = "https://i.pinimg.com/736x/bc/43/98/bc439871417621836a0eeea768d60944.jpg";
+        // Thiết lập giá trị mặc định cho code
+        this.code = "KH-" + generateRandomCode();
+        // Thiết lập giá trị mặc định cho role
+        this.role = new Role(1L, "Customer");
     }
-    public User(String code, String name, String cardId, String email, String password, boolean gender, boolean status, String phoneNumber, String avatar, String address, Role role) {
+
+    private String generateRandomCode() {
+        Random random = new Random();
+        int randomNumber = random.nextInt(100000);
+        return String.format("%05d", randomNumber);
+    }
+
+
+    public UserDTO(Long id, String code, String name, String cardId, String email, String password, boolean gender, boolean status, String phoneNumber, String avatar, String address, Role role) {
+        this.id = id;
         this.code = code;
         this.name = name;
         this.cardId = cardId;
@@ -48,39 +62,13 @@ public class User implements UserDetails {
         this.address = address;
         this.role = role;
     }
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getName()));
-    }
 
-    @Override
     public String getPassword() {
         return password;
     }
 
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getId() {
@@ -123,10 +111,6 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public boolean isGender() {
         return gender;
     }
@@ -166,11 +150,22 @@ public class User implements UserDetails {
     public void setAddress(String address) {
         this.address = address;
     }
+
     public Role getRole() {
         return role;
     }
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return false;
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+
     }
 }

@@ -10,7 +10,7 @@ public class Seat {
     private String seatNumber;
     private String description;
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "room_id")
     private Room room;
     private int price;
 
