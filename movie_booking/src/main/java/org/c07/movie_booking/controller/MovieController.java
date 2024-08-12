@@ -37,28 +37,22 @@ public class MovieController {
             @RequestParam(defaultValue = "") String director,
             @RequestParam(defaultValue = "2024-02-25") @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate releaseDate,
             @RequestParam(defaultValue = "") String nameStatus,
-            @RequestParam(defaultValue = "") String nameKind,
             @RequestParam(defaultValue = "") String actor,
             @RequestParam(defaultValue = "0") int page) {
         if (page < 0) {
             page = 0;
         }
-        Page<Movie> movies = iMovieService.getSearchMovie("%"+nameMovie+"%", "%"+director+"%", releaseDate, "%"+nameStatus+"%", "%"+nameKind+"%", "%"+actor+"%", PageRequest.of(page, 5));
+        Page<Movie> movies = iMovieService.getSearchMovie("%"+nameMovie+"%", "%"+director+"%", releaseDate, "%"+nameStatus+"%", "%"+actor+"%", PageRequest.of(page, 5));
         return ResponseEntity.ok(movies);
     }
-    @GetMapping("public/show-search-movie-test")
+    @GetMapping("public/search-movie-by-kind")
     public ResponseEntity<?> Test(
-            @RequestParam(value = "nameMovie", defaultValue = "") String nameMovie,
-            @RequestParam(value = "director", defaultValue = "") String director,
-            @RequestParam(value = "releaseDate", defaultValue = "") @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate releaseDate,
-            @RequestParam(value = "nameStatus", defaultValue = "") String nameStatus,
             @RequestParam(value = "nameKind", defaultValue = "") String nameKind,
-            @RequestParam(value = "actor", defaultValue = "") String actor,
             @RequestParam(value = "page", defaultValue = "0") int page) {
         if (page < 0) {
             page = 0;
         }
-        Page<Movie> movies = iMovieService.test(nameMovie, director, releaseDate, nameStatus, nameKind, actor, PageRequest.of(page, 5));
+        Page<Movie> movies = iMovieService.searchMovieByKindOfFilm(nameKind, PageRequest.of(page, 5));
         return ResponseEntity.ok(movies);
     }
 

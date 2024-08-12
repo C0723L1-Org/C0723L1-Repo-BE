@@ -28,13 +28,13 @@ public class MovieService implements IMovieService {
     private ModelMapper modelMapper;
     //Home
     @Override
-    public Page<Movie> getSearchMovie(String nameMovie, String director, LocalDate releaseDate, String nameStatus, String nameKind, String actor, Pageable pageable) {
-        return iMovieRepository.getSearchMovie(nameMovie, director, releaseDate, nameStatus, nameKind, actor, pageable);
+    public Page<Movie> getSearchMovie(String nameMovie, String director, LocalDate releaseDate, String nameStatus, String actor, Pageable pageable) {
+        return iMovieRepository.getSearchMovie(nameMovie, director, releaseDate, nameStatus, actor, pageable);
     }
 
     @Override
-    public Page<Movie> test(String nameMovie, String director, LocalDate releaseDate, String nameStatus, String nameKind, String actor, Pageable pageable) {
-        return iMovieRepository.Test(nameMovie, director, releaseDate, nameStatus,  nameKind, actor, pageable);
+    public Page<Movie> searchMovieByKindOfFilm(String nameKind, Pageable pageable) {
+        return iMovieRepository.searchMovieByKindOfFilm(nameKind,pageable);
     }
 
     @Override
