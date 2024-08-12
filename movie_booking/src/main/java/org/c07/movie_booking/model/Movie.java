@@ -5,7 +5,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
+@Table(name = "movie")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,39 +28,37 @@ public class Movie {
     private String avatar;
     private String poster;
 
-    private Boolean isDelete;
+    private Boolean isDelete = true;
+
     @ManyToOne
     @JoinColumn(name = "status_movie_id")
     private StatusFilm statusFilmId;
-    @ManyToOne
-    @JoinColumn(name = "kind_of_movie_id")
-    private KindOfFilm kindOfFilm;
+    @ManyToMany
+    @JoinTable(
+            name = "movie_kind_of_film",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "kind_of_film_id")
+    )
+    private Set<KindOfFilm> kindOfFilms = new HashSet<>();
 
     public Movie() {
     }
 
-    public String getPoster() {
-        return poster;
-    }
-
-    public void setPoster(String poster) {
+    public Movie(Long id, String nameMovie, LocalDate releaseDate, String durationMovie, String actor, String director, String studio, String content, String trailer, String avatar, String poster, Boolean isDelete, StatusFilm statusFilmId, Set<KindOfFilm> kindOfFilms) {
+        this.id = id;
+        this.nameMovie = nameMovie;
+        this.releaseDate = releaseDate;
+        this.durationMovie = durationMovie;
+        this.actor = actor;
+        this.director = director;
+        this.studio = studio;
+        this.content = content;
+        this.trailer = trailer;
+        this.avatar = avatar;
         this.poster = poster;
-    }
-
-    public Boolean getDelete() {
-        return isDelete;
-    }
-
-    public void setDelete(Boolean delete) {
-        isDelete = delete;
-    }
-
-    public StatusFilm getStatusFilmId() {
-        return statusFilmId;
-    }
-
-    public void setStatusFilmId(StatusFilm statusFilmId) {
+        this.isDelete = isDelete;
         this.statusFilmId = statusFilmId;
+        this.kindOfFilms = kindOfFilms;
     }
 
     public Long getId() {
@@ -138,19 +141,35 @@ public class Movie {
         this.avatar = avatar;
     }
 
-    public StatusFilm getMovieStatusId() {
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
+
+    public Boolean getDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(Boolean delete) {
+        isDelete = delete;
+    }
+
+    public StatusFilm getStatusFilmId() {
         return statusFilmId;
     }
 
-    public void setMovieStatusId(StatusFilm statusFilmId) {
+    public void setStatusFilmId(StatusFilm statusFilmId) {
         this.statusFilmId = statusFilmId;
     }
 
-    public KindOfFilm getKindOfFilm() {
-        return kindOfFilm;
+    public Set<KindOfFilm> getKindOfFilms() {
+        return kindOfFilms;
     }
 
-    public void setKindOfFilm(KindOfFilm kindOfFilm) {
-        this.kindOfFilm = kindOfFilm;
+    public void setKindOfFilms(Set<KindOfFilm> kindOfFilms) {
+        this.kindOfFilms = kindOfFilms;
     }
 }
