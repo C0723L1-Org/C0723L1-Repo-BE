@@ -1,6 +1,9 @@
 package org.c07.movie_booking.model;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Entity
 public class User {
@@ -23,6 +26,8 @@ public class User {
     private String avatar;
     private String address;
     private String password;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate dateOfBirth;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
@@ -30,7 +35,7 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String code, String name, String cardId, String email, boolean gender, boolean status, String phoneNumber, String avatar, String address, String password, Role role) {
+    public User(Long id, String code, String name, String cardId, String email, boolean gender, boolean status, String phoneNumber, String avatar, String address, String password, LocalDate dateOfBirth, Role role) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -42,6 +47,7 @@ public class User {
         this.avatar = avatar;
         this.address = address;
         this.password = password;
+        this.dateOfBirth = dateOfBirth;
         this.role = role;
     }
 
@@ -131,6 +137,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Role getRole() {
