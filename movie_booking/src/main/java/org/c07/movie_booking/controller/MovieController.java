@@ -29,45 +29,6 @@ public class MovieController {
     @Autowired
     private IKindOfFilmService iKindOfFilmService;
 
-    //Hiển thị danh sách phim
-    @GetMapping("/private/list-movie")
-    public ResponseEntity<?> getAllMovies(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Movie> moviePage = iMovieService.findAllMovies(pageable);
-        Page<MovieDTO> movieDTOPage = moviePage.map(iMovieService::convertToDTO);
-        return ResponseEntity.ok(movieDTOPage);
-    }
-
-    //Tạo mới phim
-    @PostMapping("private/create")
-    public ResponseEntity<?> createMovie(@RequestBody MovieDTO movieDTO, BindingResult bindingResult){
-        new MovieDTO().validate(movieDTO,bindingResult);
-        if (bindingResult.hasErrors()){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        try {
-            iMovieService.createMovie(movieDTO);
-            return new ResponseEntity<>("Tạo mới thành công",HttpStatus.CREATED);
-        }catch (Exception e){
-            return new ResponseEntity<>("Tạo mới thất bại"+ e.getMessage(),HttpStatus.BAD_REQUEST);
-        }
-
-    }
-
-    //cập nhật phim
-    @PutMapping("private/update/{id}")
-    public ResponseEntity<?> updateMovie(@RequestBody MovieDTO movieDTO,@PathVariable long id,BindingResult bindingResult){
-        new MovieDTO().validate(movieDTO,bindingResult);
-        try {
-            iMovieService.updateMovie(movieDTO,id);
-            return new ResponseEntity<>("Cập nhật thành công",HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>("cập nhật thất bại" + e.getMessage(),HttpStatus.BAD_REQUEST);
-        }
-    }
-
     //xem chi tiết phim
     @GetMapping("/private/find/{id}")
     public ResponseEntity<?> getMovieById(@PathVariable Long id) {

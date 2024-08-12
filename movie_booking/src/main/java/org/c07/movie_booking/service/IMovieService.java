@@ -15,15 +15,5 @@ public interface IMovieService {
     // Tìm kiếm danh sách phim theo trạng thái
     List<Movie> findCurrentlyShowingMovies();
 
-    // Xóa phim theo ID
-    void deleteById(Long id);
-
-    // Lấy tất cả phim
-    Page<Movie> findAllMovies(Pageable pageable);
-
-    void createMovie(MovieDTO movieDTO);
-
-    void updateMovie(MovieDTO movieDTO, Long id);
-
     MovieDTO convertToDTO(Movie movie);
 }
