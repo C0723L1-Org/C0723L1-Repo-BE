@@ -34,47 +34,49 @@ public class MovieService implements IMovieService {
         return iMovieRepository.searchMovieByKindOfFilm(nameKind,pageable);
     }
     @Override
-
     public Page<MovieDTO> getFindAll(Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Movie> movieEntity = iMovieRepository.findAllByQuery(pageable);
-        List<MovieDTO> movieDTOList = movieEntity.stream()
-                .map(movie -> {
-                    MovieDTO movieDTO = modelMapper.map(movie , MovieDTO.class);
-                    List<String> kindOfFilmNames = movie.getKindOfFilms().stream()
-                            .map(KindOfFilm::getName)
-                            .collect(Collectors.toList());
-                    movieDTO.setKindOfFilms(kindOfFilmNames);
-                    return movieDTO;
-                }).collect(Collectors.toList());
+        List<MovieDTO> movieDTOList = new ArrayList<>();
+        for (Movie movie: movieEntity){
+            MovieDTO movieDTO = modelMapper.map(movie, MovieDTO.class);
+            List<KindOfFilmDTO> kindOfFilmDTOS = new ArrayList<>();
+            for (KindOfFilm kind: movie.getKindOfFilms()){
+                KindOfFilmDTO kindOfFilmDTO = modelMapper.map(kind, KindOfFilmDTO.class);
+                kindOfFilmDTOS.add(kindOfFilmDTO);
+            }
+            movieDTO.setKindOfFilm(kindOfFilmDTOS);
+            movieDTOList.add(movieDTO);
+        }
 
         return new PageImpl<>(movieDTOList, pageable, movieEntity.getTotalPages());
     }
-@Override
-public Page<MovieDTO> getSearchFields(String nameMovie, String content, String director,
-                                      LocalDate releaseDate, String nameStatus, String actor,
-                                      Integer pageNumber, Integer pageSize) {
-    Pageable pageable = PageRequest.of(pageNumber, pageSize);
-    Page<Movie> movies = iMovieRepository.getSearchOfFields(nameMovie, content, director,
-            releaseDate, nameStatus, actor, pageable);
-    List<MovieDTO> movieDTOList = new ArrayList<>();
-    for (Movie mv: movies){
-        MovieDTO movieDTO = modelMapper.map(mv, MovieDTO.class);
-        List<String> kinds = new ArrayList<>();
-        for (KindOfFilm kf: mv.getKindOfFilms()){
-            kinds.add(kf.getName());
-        }
-        movieDTO.setKindOfFilms(kinds);
-        movieDTOList.add(movieDTO);
-    }
-
-    return new PageImpl<>(movieDTOList, pageable, movies.getTotalPages());
-}
     @Override
     public List<Movie> getMovieIsComming() {
         return iMovieRepository.getMovieIsComming();
     }
 
+    @Override
+    public Page<MovieDTO> getSearchFields(String nameMovie, String content, String director,
+                                          LocalDate releaseDate, String nameStatus, String actor,
+                                          Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Movie> movies = iMovieRepository.getSearchOfFields(nameMovie, content, director,
+                releaseDate, nameStatus, actor, pageable);
+        List<MovieDTO> movieDTOList = new ArrayList<>();
+        for (Movie mv: movies){
+            MovieDTO movieDTO = modelMapper.map(mv, MovieDTO.class);
+            List<KindOfFilmDTO> kindOfFilmDTOS = new ArrayList<>();
+            for (KindOfFilm kind: mv.getKindOfFilms()){
+                KindOfFilmDTO kindOfFilmDTO = modelMapper.map(kind, KindOfFilmDTO.class);
+                kindOfFilmDTOS.add(kindOfFilmDTO);
+            }
+            movieDTO.setKindOfFilm(kindOfFilmDTOS);
+            movieDTOList.add(movieDTO);
+        }
+
+        return new PageImpl<>(movieDTOList, pageable, movies.getTotalPages());
+    }
     @Override
     public List<Movie> getMovieIsShowing() {
         return iMovieRepository.getMovieIsShowing();

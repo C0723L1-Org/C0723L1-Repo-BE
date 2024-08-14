@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 @Entity
 public class StatusFilm {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

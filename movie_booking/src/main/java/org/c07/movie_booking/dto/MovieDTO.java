@@ -51,7 +51,6 @@ public class MovieDTO implements Validator {
 
     @NotBlank(message = "Loại phim không được bỏ trống")
     private List<KindOfFilmDTO> kindOfFilm;
-    private List<String> kindOfFilms;
 
     public MovieDTO() {
     }
@@ -77,13 +76,6 @@ public class MovieDTO implements Validator {
         return id;
     }
 
-    public List<String> getKindOfFilms() {
-        return kindOfFilms;
-    }
-
-    public void setKindOfFilms(List<String> kindOfFilms) {
-        this.kindOfFilms = kindOfFilms;
-    }
 
     public void setId(long id) {
         this.id = id;
