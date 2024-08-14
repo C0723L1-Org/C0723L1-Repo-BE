@@ -20,16 +20,16 @@ public class MovieDTO {
     private String poster;
     private Boolean isDelete;
     private String statusName;
-    private List<String> kindOfFilm;
+    private List<KindOfFilmDTO> kindOfFilm;
 
-
-    public List<String> getKindOfFilm() {
+    public List<KindOfFilmDTO> getKindOfFilm() {
         return kindOfFilm;
     }
 
-    public void setKindOfFilm(List<String> kindOfFilm) {
+    public void setKindOfFilm(List<KindOfFilmDTO> kindOfFilm) {
         this.kindOfFilm = kindOfFilm;
     }
+
 
     public String getStatusName() {
         return statusName;
