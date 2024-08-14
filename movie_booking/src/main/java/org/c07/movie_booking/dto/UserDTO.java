@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import org.c07.movie_booking.model.Role;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-
 import java.util.Random;
 
 public class UserDTO implements Validator {

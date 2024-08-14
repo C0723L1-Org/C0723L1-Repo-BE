@@ -2,9 +2,8 @@ package org.c07.movie_booking.model;
 
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 public class Showtime {
@@ -20,8 +19,8 @@ public class Showtime {
     private Room room;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate showDate;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private LocalDateTime startTime;
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime startTime ;
 
     public Showtime() {
     }
@@ -57,11 +56,11 @@ public class Showtime {
         this.showDate = showDate;
     }
 
-    public LocalDateTime getStartTime() {
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 }

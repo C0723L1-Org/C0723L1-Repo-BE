@@ -1,9 +1,11 @@
 package org.c07.movie_booking.model;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+
 
 @Entity
 @Table(name = "movie")
@@ -12,8 +14,9 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
     private String nameMovie;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+
     private LocalDate releaseDate;
     private String durationMovie;
     private String actor;
@@ -24,7 +27,8 @@ public class Movie {
     private String trailer;
     private String avatar;
     private String poster;
-    private boolean isDelete;
+
+    private Boolean isDelete = true;
     @ManyToOne
     @JoinColumn(name = "status_movie_id")
     private StatusFilm statusFilmId;
@@ -34,28 +38,34 @@ public class Movie {
     private KindOfFilm kindOfFilm;
     @ManyToMany
     @JoinTable(
-    name = "movie_kind_of_film",
-    joinColumns = @JoinColumn(name = "movie_id"),
-    inverseJoinColumns = @JoinColumn(name = "kind_of_film_id")
+        name = "movie_kind_of_film",
+        joinColumns = @JoinColumn(name = "movie_id"),
+        inverseJoinColumns = @JoinColumn(name = "kind_of_film_id")
     )
     private Set<KindOfFilm> kindOfFilms = new HashSet<>();
+
     public Movie() {
     }
 
-    public Set<KindOfFilm> getKindOfFilms() {
-        return kindOfFilms;
-    }
-
-    public void setKindOfFilms(Set<KindOfFilm> kindOfFilms) {
+    public Movie(Long id, String nameMovie, LocalDate releaseDate, String durationMovie, String actor, String director, String studio, String content, String trailer, String avatar, String poster, Boolean isDelete, StatusFilm statusFilmId, Set<KindOfFilm> kindOfFilms) {
+        this.id = id;
+        this.nameMovie = nameMovie;
+        this.releaseDate = releaseDate;
+        this.durationMovie = durationMovie;
+        this.actor = actor;
+        this.director = director;
+        this.studio = studio;
+        this.content = content;
+        this.trailer = trailer;
+        this.avatar = avatar;
+        this.poster = poster;
+        this.isDelete = isDelete;
+        this.statusFilmId = statusFilmId;
         this.kindOfFilms = kindOfFilms;
     }
 
-    public Boolean getDelete() {
-        return isDelete;
-    }
-
-    public void setDelete(Boolean delete) {
-        isDelete = delete;
+    public Long getId() {
+        return id;
     }
 
     public StatusFilm getStatusFilmId() {
@@ -66,24 +76,12 @@ public class Movie {
         this.statusFilmId = statusFilmId;
     }
 
-    public String getPoster() {
-        return poster;
+    public KindOfFilm getKindOfFilm() {
+        return kindOfFilm;
     }
 
-    public void setPoster(String poster) {
-        this.poster = poster;
-    }
-
-    public boolean isDelete() {
-        return isDelete;
-    }
-
-    public void setDelete(boolean delete) {
-        isDelete = delete;
-    }
-
-    public Long getId() {
-        return id;
+    public void setKindOfFilm(KindOfFilm kindOfFilm) {
+        this.kindOfFilm = kindOfFilm;
     }
 
     public void setId(Long id) {
@@ -162,19 +160,26 @@ public class Movie {
         this.avatar = avatar;
     }
 
-    public StatusFilm getMovieStatusId() {
-        return statusFilmId;
+    public String getPoster() {
+        return poster;
+    }
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 
-    public void setMovieStatusId(StatusFilm statusFilmId) {
-        this.statusFilmId = statusFilmId;
+    public Boolean getDelete() {
+        return isDelete;
     }
 
-    public KindOfFilm getKindOfFilm() {
-        return kindOfFilm;
+    public void setDelete(Boolean delete) {
+        isDelete = delete;
     }
 
-    public void setKindOfFilm(KindOfFilm kindOfFilm) {
-        this.kindOfFilm = kindOfFilm;
+    public Set<KindOfFilm> getKindOfFilms() {
+        return kindOfFilms;
+    }
+
+    public void setKindOfFilms(Set<KindOfFilm> kindOfFilms) {
+        this.kindOfFilms = kindOfFilms;
     }
 }

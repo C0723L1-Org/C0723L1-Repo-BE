@@ -1,18 +1,12 @@
-package org.c07.movie_booking.model;
-
-import jakarta.persistence.*;
-
-@Entity
-@Table(name="role")
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+package org.c07.movie_booking.dto.response;
+public class RoleResDTO {
     private Long id;
     private String name;
 
-    public Role() {
+    public RoleResDTO() {
     }
-    public Role(Long id, String name) {
+
+    public RoleResDTO(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -32,5 +26,4 @@ public class Role {
     public void setName(String name) {
         this.name = name;
     }
-
 }

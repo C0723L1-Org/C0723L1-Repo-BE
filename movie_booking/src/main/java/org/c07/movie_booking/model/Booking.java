@@ -11,6 +11,7 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String codeBooking;
+    private boolean receive;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateBooking;
     private double totalAmount;
@@ -30,6 +31,18 @@ public class Booking {
     public Booking() {
     }
 
+    public Booking(long id, String codeBooking, boolean receive, LocalDate dateBooking, double totalAmount, BookingStatus bookingStatus, User user, Showtime showTime, Seat seat) {
+        this.id = id;
+        this.codeBooking = codeBooking;
+        this.receive = receive;
+        this.dateBooking = dateBooking;
+        this.totalAmount = totalAmount;
+        this.bookingStatus = bookingStatus;
+        this.user = user;
+        this.showTime = showTime;
+        this.seat = seat;
+    }
+
     public long getId() {
         return id;
     }
@@ -44,6 +57,14 @@ public class Booking {
 
     public void setCodeBooking(String codeBooking) {
         this.codeBooking = codeBooking;
+    }
+
+    public boolean isReceive() {
+        return receive;
+    }
+
+    public void setReceive(boolean receive) {
+        this.receive = receive;
     }
 
     public LocalDate getDateBooking() {
