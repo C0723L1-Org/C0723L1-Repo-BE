@@ -1,5 +1,7 @@
 package org.c07.movie_booking.dto.response;
 
+import java.time.LocalDate;
+
 public class UserResDTO {
     private Long id;
     private String code;
@@ -18,12 +20,13 @@ public class UserResDTO {
     private String avatar;
     private String address;
     private String password;
+    private LocalDate dateOfBirth;
     private Long role_id;
 
     public UserResDTO() {
     }
 
-    public UserResDTO(Long id, String code, String name, String cardId, String email, boolean gender, boolean status, String phoneNumber, String avatar, String address, String password, Long role_id) {
+    public UserResDTO(Long id, String code, String name, String cardId, String email, boolean gender, boolean status, String phoneNumber, String avatar, String address, String password, LocalDate dateOfBirth, Long role_id) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -35,6 +38,7 @@ public class UserResDTO {
         this.avatar = avatar;
         this.address = address;
         this.password = password;
+        this.dateOfBirth = dateOfBirth;
         this.role_id = role_id;
     }
 
@@ -124,6 +128,14 @@ public class UserResDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Long getRole_id() {

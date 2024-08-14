@@ -32,8 +32,8 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Query(value = "update user set status = 1 where id = ?1", nativeQuery = true)
     void deleteEmployeeByQuery( Long id);
+
     // Tìm employee theo id
-//    @Query(value= "select * from user where id = ?1 and status = false", nativeQuery = true)
     @Query(value = "SELECT u.* " +
             "FROM user u " +
             "JOIN role r ON u.role_id = r.id " +
