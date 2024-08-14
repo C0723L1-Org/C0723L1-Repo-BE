@@ -38,9 +38,9 @@ public class Movie {
     private KindOfFilm kindOfFilm;
     @ManyToMany
     @JoinTable(
-        name = "movie_kind_of_film",
-        joinColumns = @JoinColumn(name = "movie_id"),
-        inverseJoinColumns = @JoinColumn(name = "kind_of_film_id")
+            name = "movie_kind_of_film",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "kind_of_film_id")
     )
     private Set<KindOfFilm> kindOfFilms = new HashSet<>();
 

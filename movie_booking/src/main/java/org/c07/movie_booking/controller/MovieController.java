@@ -1,4 +1,5 @@
 package org.c07.movie_booking.controller;
+
 import org.c07.movie_booking.dto.KindOfFilmDTO;
 import org.c07.movie_booking.dto.MovieDTO;
 import org.c07.movie_booking.model.KindOfFilm;
@@ -17,13 +18,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/movie")
 @CrossOrigin("*")
+@RequestMapping("api/v1/movie/")
 public class MovieController {
 
     @Autowired
@@ -45,9 +45,18 @@ public class MovieController {
         if (page < 0) {
             page = 0;
         }
-        Page<Movie> movies = iMovieService.getSearchMovie("%"+nameMovie+"%", "%"+director+"%", releaseDate, "%"+nameStatus+"%", "%"+actor+"%", PageRequest.of(page, 5));
+        Page<Movie> movies = iMovieService.getSearchMovie("%" + nameMovie + "%", "%" + director + "%", releaseDate, "%" + nameStatus + "%", "%" + actor + "%", PageRequest.of(page, 5));
         return ResponseEntity.ok(movies);
     }
+
+    @GetMapping("private/list-movie")
+    public Page<MovieDTO> getFindAll(
+            @RequestParam(value = "pageNumber") int pageNumber,
+            @RequestParam(value = "pageSize") int pageSize
+    ){
+        return iMovieService.getFindAll(pageNumber, pageSize);
+    }
+
     @GetMapping("public/search-movie-by-kind")
     public ResponseEntity<?> Test(
             @RequestParam(value = "nameKind", defaultValue = "") String nameKind,
@@ -75,7 +84,7 @@ public class MovieController {
         }
         return ResponseEntity.ok(movies);
     }
-    @GetMapping("public/show-list-kindofmovie")
+    @GetMapping(value = "public/show-list-kindofmovie")
     public ResponseEntity<?> getKindOfMovie(){
         List<KindOfFilm> movies = iKindOfFilmService.getKindOfMovie();
         if (movies.isEmpty()) {
@@ -91,12 +100,12 @@ public class MovieController {
         }
         return ResponseEntity.ok(movies);
     }
-//    @GetMapping("/public/{id}")
-//    public ResponseEntity<Movie> getMovieById(@PathVariable Long id){
-//        Movie movie =iMovieService.getMovieById(id);
-//        System.out.println(movie);
-//        return new ResponseEntity<>(movie, HttpStatus.OK);
-//    }
+    @GetMapping("/public/{id}")
+    public ResponseEntity<Movie> getMovieById(@PathVariable Long id){
+        Movie movie =iMovieService.getMovieById(id);
+        System.out.println(movie);
+        return new ResponseEntity<>(movie, HttpStatus.OK);
+    }
 
     //Manager
 
@@ -118,7 +127,7 @@ public class MovieController {
 
     //xem chi tiết phim
     @GetMapping("private/find/{id}")
-    public ResponseEntity<?> getMovieById(@PathVariable Long id) {
+    public ResponseEntity<?> getMovieById1(@PathVariable Long id) {
         Movie movie = iMovieService.findMovieById(id);
         if (movie != null) {
             MovieDTO movieDTO = iMovieService.convertToDTO(movie);
@@ -145,7 +154,20 @@ public class MovieController {
     public List<StatusFilmDTO> getFindAllStatus() {
             return iStatusFilmService.getFindAll();
     }
+@GetMapping("private/searches")
+public Page<MovieDTO> getSearchFields(
+        @RequestParam(value = "nameMovie", required = false) String nameMovie,
+        @RequestParam(value = "content", required = false) String content,
+        @RequestParam(value = "director", required = false) String director,
+        @RequestParam(value = "releaseDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate releaseDate,
+        @RequestParam(value = "nameStatus", required = false) String nameStatus,
+        @RequestParam(value = "actor", required = false) String actor,
+        @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
 
+    return iMovieService.getSearchFields(nameMovie, content, director, releaseDate,
+            nameStatus, actor, pageNumber, pageSize);
+}
     @GetMapping("private/currently-showing")
     public ResponseEntity<?> getCurrentlyShowingMovies() {
         try {

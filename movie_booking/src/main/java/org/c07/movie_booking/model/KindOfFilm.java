@@ -1,3 +1,4 @@
+
 package org.c07.movie_booking.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,6 +19,7 @@ public class KindOfFilm {
     @JsonIgnore
     private Set<Movie> movies = new HashSet<>();
     public Set<Movie> getMovies() {
+
         return movies;
     }
 
@@ -41,3 +43,4 @@ public class KindOfFilm {
         this.name = name;
     }
 }
+

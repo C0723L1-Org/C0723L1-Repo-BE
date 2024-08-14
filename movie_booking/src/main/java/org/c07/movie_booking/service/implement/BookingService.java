@@ -1,4 +1,3 @@
-
 package org.c07.movie_booking.service.implement;
 
 import org.c07.movie_booking.dto.BookingDTO;
