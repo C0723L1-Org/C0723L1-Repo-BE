@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ISeatService {
     List<Seat> getAllSelectedSeat();
+
+    Seat getSeatByRoomIdAndSeatNumber(Long roomId, String seatNumber);
 }

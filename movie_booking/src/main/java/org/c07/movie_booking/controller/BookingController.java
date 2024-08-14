@@ -3,6 +3,7 @@ package org.c07.movie_booking.controller;
 import jakarta.validation.Valid;
 import org.c07.movie_booking.dto.BookingDto;
 import org.c07.movie_booking.model.Booking;
+import org.c07.movie_booking.model.User;
 import org.c07.movie_booking.service.EmailService;
 import org.c07.movie_booking.service.IBookingService;
 import org.springframework.beans.BeanUtils;
@@ -25,8 +26,6 @@ public class BookingController {
     IBookingService bookingService;
     @Autowired
     EmailService emailService;
-
-
     @PostMapping("/create")
     public ResponseEntity<?> createNewBooking(@Valid @RequestBody BookingDto bookingDto,
                                               BindingResult bindingResult) {

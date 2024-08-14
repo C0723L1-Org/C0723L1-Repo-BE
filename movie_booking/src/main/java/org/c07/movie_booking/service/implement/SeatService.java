@@ -16,4 +16,9 @@ public class SeatService implements ISeatService {
     public List<Seat> getAllSelectedSeat() {
         return seatRepository.getAllSelectedSeat();
     }
+
+    @Override
+    public Seat getSeatByRoomIdAndSeatNumber(Long roomId, String seatNumber) {
+        return seatRepository.getSeatByRoomIdAndSeatNumber(roomId,seatNumber);
+    }
 }
