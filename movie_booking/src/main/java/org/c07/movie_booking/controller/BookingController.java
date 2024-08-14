@@ -1,8 +1,7 @@
 package org.c07.movie_booking.controller;
 
-import org.c07.movie_booking.dto.BookingDTO;
+import org.c07.movie_booking.dto.response.BookingDetailResDTO;
 import org.c07.movie_booking.dto.response.BookingResDTO;
-import org.c07.movie_booking.dto.response.UserResDTO;
 import org.c07.movie_booking.service.IBookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,12 +22,13 @@ public class BookingController {
     @Autowired
     private IBookingService iBookingService;
 
-    // Danh sách vé của riêng từng khách hàng
+//     Danh sách vé của riêng từng khách hàng
     @GetMapping("private/booking-customer")
-    public ResponseEntity<List<BookingDTO>> showList() {
-        List<BookingDTO> bookings = iBookingService.fillAllBooking();
-        return ResponseEntity.ok(bookings);
+    public ResponseEntity<?> getBookingDetails() {
+        List<BookingDetailResDTO> bookingDetails = iBookingService.getBookingDetails();
+        return ResponseEntity.ok(bookingDetails);
     }
+
     // Show danh sách vé chưa nhận
     @GetMapping("private/list-booking")
     public ResponseEntity<Page<BookingResDTO>> SearchBookings(
