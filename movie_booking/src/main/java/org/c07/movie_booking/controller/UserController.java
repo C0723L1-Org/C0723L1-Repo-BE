@@ -64,6 +64,7 @@ public class UserController {
                 valueSearch, pageable);
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
+
     // Remove Employee
     @PutMapping("private/delete-employee/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
@@ -74,7 +75,4 @@ public class UserController {
         iUserService.deleteEmployeeById(id);
         return new ResponseEntity<>("Delete employee successfully.", HttpStatus.OK);
     }
-
-
 }
-

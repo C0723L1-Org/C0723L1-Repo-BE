@@ -1,10 +1,12 @@
 package org.c07.movie_booking.model;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,6 +31,9 @@ public class User implements UserDetails {
     private String phoneNumber;
     private String avatar;
     private String address;
+
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate dateOfBirth;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
@@ -48,9 +53,34 @@ public class User implements UserDetails {
         this.address = address;
         this.role = role;
     }
+
+    public User(Long id, String code, String name, String cardId, String email, String password, boolean gender, boolean status, String phoneNumber, String avatar, String address, LocalDate dateOfBirth, Role role) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+        this.cardId = cardId;
+        this.email = email;
+        this.password = password;
+        this.gender = gender;
+        this.status = status;
+        this.phoneNumber = phoneNumber;
+        this.avatar = avatar;
+        this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.role = role;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.getName()));
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package org.c07.movie_booking.service.auth;
 
-import lombok.RequiredArgsConstructor;
 import org.c07.movie_booking.model.auth_entity.AuthenticationRequest;
 import org.c07.movie_booking.model.auth_entity.RegisterRequest;
 import org.c07.movie_booking.model.User;
