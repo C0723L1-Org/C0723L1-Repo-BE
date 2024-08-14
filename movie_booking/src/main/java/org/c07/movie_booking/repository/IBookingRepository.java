@@ -1,10 +1,6 @@
 package org.c07.movie_booking.repository;
-<<<<<<< HEAD
 
-import org.c07.movie_booking.dto.BookingDTO;
-=======
 import org.c07.movie_booking.dto.response.BookingDetailResDTO;
->>>>>>> trinh-branch
 import org.c07.movie_booking.dto.response.BookingResDTO;
 import org.c07.movie_booking.model.Booking;
 import org.springframework.data.domain.Page;
@@ -51,11 +47,7 @@ public interface IBookingRepository extends JpaRepository<Booking, Long> {
             "JOIN b.showTime s " +
             "JOIN s.movie m " +
             "JOIN b.bookingStatus bs")
-<<<<<<< HEAD
-    List<BookingDTO> findBookingDetails();
-=======
     List<BookingDetailResDTO> findBookingDetails();
->>>>>>> trinh-branch
 
     // Tìm vé và xem chi tiết vé theo Id
     @Query(value = "SELECT new org.c07.movie_booking.dto.response.BookingResDTO(b.id, b.codeBooking, m.nameMovie, s.showDate, s.startTime, b.totalAmount, b.receive, u.name, u.cardId, u.phoneNumber, u.code, ss.seatNumber, r.roomName) " +

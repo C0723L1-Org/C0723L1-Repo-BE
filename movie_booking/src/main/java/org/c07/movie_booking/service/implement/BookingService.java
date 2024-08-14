@@ -2,10 +2,7 @@ package org.c07.movie_booking.service.implement;
 
 import org.c07.movie_booking.dto.response.BookingDetailResDTO;
 import org.c07.movie_booking.dto.response.BookingResDTO;
-<<<<<<< HEAD
 import org.c07.movie_booking.model.Booking;
-=======
->>>>>>> trinh-branch
 import org.c07.movie_booking.repository.IBookingRepository;
 import org.c07.movie_booking.service.IBookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +14,6 @@ import java.util.List;
 @Service
 public class BookingService implements IBookingService {
     @Autowired
-<<<<<<< HEAD
     IBookingRepository bookingRepository;
     @Override
     public boolean addNewBooking(Booking booking) {
@@ -40,18 +36,10 @@ public class BookingService implements IBookingService {
         }
     }
 
-    @Override
-    public List<BookingDTO> fillAllBooking() {
-
-        return bookingRepository.findBookingDetails();
-=======
-    private IBookingRepository iBookingRepository;
-
     // Danh sách vé của riêng từng khách hàng
     @Override
     public List<BookingDetailResDTO> getBookingDetails() {
-        return iBookingRepository.findBookingDetails();
->>>>>>> trinh-branch
+        return bookingRepository.findBookingDetails();
     }
 
     // Danh sách vé chưa in- role nhân viên hoặc admin
