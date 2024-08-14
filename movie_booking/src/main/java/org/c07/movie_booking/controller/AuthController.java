@@ -3,10 +3,7 @@ package org.c07.movie_booking.controller;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-
 import org.c07.movie_booking.dto.UserResponse;
-import org.c07.movie_booking.model.User;
 import org.c07.movie_booking.model.auth_entity.AuthenticationRequest;
 import org.c07.movie_booking.model.auth_entity.RegisterRequest;
 import org.c07.movie_booking.service.IUserService;
@@ -15,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.security.Principal;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
