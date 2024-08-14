@@ -45,6 +45,7 @@ public class BookingController {
     @GetMapping("private/booking-details/{id}")
     public ResponseEntity<BookingResDTO> findEmployeeById(@PathVariable Long id) {
         BookingResDTO bookingResDTO = iBookingService.findBookingResDTOById(id);
+        System.out.println(bookingResDTO);
         return ResponseEntity.ok(bookingResDTO);
     }
     // Nhận vé
