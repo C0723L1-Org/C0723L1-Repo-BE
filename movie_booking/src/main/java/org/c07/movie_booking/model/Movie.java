@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "movie")
@@ -18,10 +20,26 @@ public class Movie {
     private String actor;
     private String director;
     private String studio;
+    @Column(columnDefinition = "TEXT")
     private String content;
     private String trailer;
     private String avatar;
     private String poster;
+    private Boolean isDelete;
+    @ManyToOne
+    @JoinColumn(name = "status_movie_id")
+    private StatusFilm statusFilmId;
+    @ManyToOne
+    @JoinColumn(name = "kind_of_movie_id")
+    private KindOfFilm kindOfFilm;
+
+    @ManyToMany
+    @JoinTable(
+            name = "movie_kind_of_film",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "kind_of_film_id")
+    )
+    private Set<KindOfFilm> kindOfFilms = new HashSet<>();
 
     public String getPoster() {
         return poster;
@@ -31,15 +49,14 @@ public class Movie {
         this.poster = poster;
     }
 
-    private Boolean isDelete;
-    @ManyToOne
-    @JoinColumn(name = "status_movie_id")
-    private StatusFilm statusFilmId;
-    @ManyToOne
-    @JoinColumn(name = "kind_of_movie_id")
-    private KindOfFilm kindOfFilm;
-
     public Movie() {
+    }
+    public KindOfFilm getKindOfFilm() {
+        return kindOfFilm;
+    }
+
+    public void setKindOfFilm(KindOfFilm kindOfFilm) {
+        this.kindOfFilm = kindOfFilm;
     }
     public Boolean getDelete() {
         return isDelete;
@@ -145,11 +162,11 @@ public class Movie {
         this.statusFilmId = statusFilmId;
     }
 
-    public KindOfFilm getKindOfFilm() {
-        return kindOfFilm;
+    public Set<KindOfFilm> getKindOfFilms() {
+        return kindOfFilms;
     }
 
-    public void setKindOfFilm(KindOfFilm kindOfFilm) {
-        this.kindOfFilm = kindOfFilm;
+    public void setKindOfFilms(Set<KindOfFilm> kindOfFilms) {
+        this.kindOfFilms = kindOfFilms;
     }
 }

@@ -1,8 +1,11 @@
 package org.c07.movie_booking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class KindOfFilm {
@@ -12,6 +15,10 @@ public class KindOfFilm {
     private Long id;
     @Column(name = "name")
     private String name;
+    @ManyToMany(mappedBy = "kindOfFilms")
+    @JsonIgnore
+    private Set<Movie> movies = new HashSet<>();
+
 
     public KindOfFilm() {
     }

@@ -1,12 +1,15 @@
 package org.c07.movie_booking.dto;
 
-import javax.xml.crypto.Data;
-import java.util.Date;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public class MovieDTO {
     private Long id;
     private String nameMovie;
-    private Date releaseDate;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate releaseDate;
     private String durationMovie;
     private String actor;
     private String director;
@@ -16,6 +19,27 @@ public class MovieDTO {
     private String avatar;
     private String poster;
     private Boolean isDelete;
+    private String statusName;
+    private List<String> kindOfFilm;
+
+
+    public List<String> getKindOfFilm() {
+        return kindOfFilm;
+    }
+
+    public void setKindOfFilm(List<String> kindOfFilm) {
+        this.kindOfFilm = kindOfFilm;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
+
 
     public String getPoster() {
         return poster;
@@ -48,11 +72,11 @@ public class MovieDTO {
         this.nameMovie = nameMovie;
     }
 
-    public Date getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 
