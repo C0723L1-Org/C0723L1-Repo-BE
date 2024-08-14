@@ -49,5 +49,4 @@ public class BookingDTO {
     public void setBookingStatus(String bookingStatus) {
         this.bookingStatus = bookingStatus;
     }
-
 }
