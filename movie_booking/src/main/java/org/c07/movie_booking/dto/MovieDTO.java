@@ -2,6 +2,7 @@ package org.c07.movie_booking.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
+import org.c07.movie_booking.model.StatusFilm;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class MovieDTO implements Validator {
 
-    private long id;
+    private Long id;
 
     @NotBlank(message = "Tên phim không được để trống")
     private String nameMovie;
@@ -47,30 +48,10 @@ public class MovieDTO implements Validator {
     private Boolean isDelete = true;
 
     @NotBlank(message = "Trạng thái phim không được bỏ trống")
-    private long statusFilm;
+    private StatusFilm statusFilm;
 
     @NotBlank(message = "Loại phim không được bỏ trống")
     private List<KindOfFilmDTO> kindOfFilm;
-
-    public MovieDTO() {
-    }
-
-    public MovieDTO(long id, String nameMovie, LocalDate releaseDate, String durationMovie, String actor, String director, String studio, String content, String trailer, String avatar, String poster, Boolean isDelete, long statusFilm, List<KindOfFilmDTO> kindOfFilm) {
-        this.id = id;
-        this.nameMovie = nameMovie;
-        this.releaseDate = releaseDate;
-        this.durationMovie = durationMovie;
-        this.actor = actor;
-        this.director = director;
-        this.studio = studio;
-        this.content = content;
-        this.trailer = trailer;
-        this.avatar = avatar;
-        this.poster = poster;
-        this.isDelete = isDelete;
-        this.statusFilm = statusFilm;
-        this.kindOfFilm = kindOfFilm;
-    }
 
     public long getId() {
         return id;
@@ -170,11 +151,11 @@ public class MovieDTO implements Validator {
     }
 
     @NotBlank(message = "Trạng thái phim không được bỏ trống")
-    public long getStatusFilm() {
+    public StatusFilm getStatusFilm() {
         return statusFilm;
     }
 
-    public void setStatusFilm(@NotBlank(message = "Trạng thái phim không được bỏ trống") long statusFilm) {
+    public void setStatusFilm(StatusFilm statusFilm) {
         this.statusFilm = statusFilm;
     }
 

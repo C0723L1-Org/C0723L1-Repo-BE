@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -131,6 +132,7 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
     //Tìm kiếm phim theo id
     @Query(value = "select * FROM  Movie  where id=:id", nativeQuery = true)
     Optional<Movie>findMovieById(@Param("id") long id);
+//
     @Query(value = "SELECT distinct m.*, s.name AS status_name " +
             "FROM movie m " +
             "LEFT JOIN movie_kind_of_film mk ON mk.movie_id = m.id " +
@@ -138,24 +140,26 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
             "WHERE is_delete = 0 ", nativeQuery = true)
         Page<Movie> findAllByQuery(Pageable pageable);
 
-    @Query("select mv from Movie mv " +
-            "left join mv.kindOfFilm k " +
-            "left join mv.statusFilmId s " +
-            "where mv.isDelete = false " +
-            "and (:nameMovie is null or mv.nameMovie like %:nameMovie%) " +
-            "and (:director is null or mv.director like %:director%) " +
-            "and (:releaseDate is null or DATE(mv.releaseDate) =:releaseDate) " +
-            "and (:content is null or mv.content like %:content%) " +
-            "and (:actor is null or mv.actor like %:actor%) " +
-            "and (:nameStatus is null or s.name like %:nameStatus%) ")
-    Page<Movie> getSearchOfFields(
-            @Param("nameMovie") String nameMovie,
-            @Param("content") String content,
-            @Param("director") String director,
-            @Param("releaseDate") LocalDate releaseDate,
-            @Param("nameStatus") String nameStatus,
-            @Param("actor") String actor,
-            Pageable pageable);
+@Query("select mv from Movie mv " +
+        "left join mv.kindOfFilm k " +
+        "left join mv.statusFilmId s " +
+        "where mv.isDelete = false " +
+        "and (:nameMovie is null or mv.nameMovie like %:nameMovie%) " +
+        "and (:director is null or mv.director like %:director%) " +
+        "and (:releaseDateFrom is null or :releaseDateTo is null or DATE(mv.releaseDate) between :releaseDateFrom and :releaseDateTo) " +
+        "and (:content is null or mv.content like %:content%) " +
+        "and (:actor is null or mv.actor like %:actor%) " +
+        "and (:nameStatus is null or s.name like %:nameStatus%) ")
+Page<Movie> getSearchOfFields(
+        @Param("nameMovie") String nameMovie,
+        @Param("content") String content,
+        @Param("director") String director,
+        @Param("releaseDateFrom") LocalDate releaseDateFrom,
+        @Param("releaseDateTo") LocalDate releaseDateTo,
+        @Param("nameStatus") String nameStatus,
+        @Param("actor") String actor,
+        Pageable pageable);
+
 
     @Modifying
     @Transactional
