@@ -10,15 +10,6 @@ import org.springframework.data.domain.Pageable;
 import java.security.Principal;
 
 public interface IUserService {
-    User addNewUser(UserDTO userDTO);
-    void updateUser(Long id, UserDTO userDTO);
-    Boolean existsByEmail(String email); //email da co trong DB chua
-    Page<UserDTO> getAllUser (Pageable pageable);
-
-    UserDTO findByEmail (String email);
-    Boolean existsByCardId(String cardId);
-    Boolean existsByPhoneNumber(String phoneNumber);
-
     UserResponse findUserByEmail(String email);
     //Show List and Search Employee
     Page<UserResDTO> searchEmployees(String valueSearch, Pageable pageable);
@@ -26,7 +17,5 @@ public interface IUserService {
     void deleteEmployeeById(Long id);
     // Tìm employee theo id
     UserResDTO findEmployeeById(Long id);
-
-    void changePassword(String email, String currentPassword, String newPassword);
 }
 

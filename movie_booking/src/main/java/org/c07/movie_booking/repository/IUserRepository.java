@@ -12,15 +12,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
-import org.c07.movie_booking.dto.UserResponse;
-import org.c07.movie_booking.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository
 public interface IUserRepository extends JpaRepository<User, Long> {
@@ -53,23 +44,6 @@ public interface IUserRepository extends JpaRepository<User, Long> {
             , nativeQuery = true)
     Optional<User> findEmployeeById(Long id);
 
-
-
-    @Query(nativeQuery = true,
-            value = "select u.id,u.name,u.card_id,u.email,u.gender,u.phone_number,u.avatar,u.address, r.name as role" +
-                    " from user u join role r on r.id = u.role_id where u.email =?1")
-    UserResponse findUserByEmail(String email);
-    //Gia?
-
-
-    @Query(nativeQuery = true, value = "select * from user where email =?1")
-    Optional<User> findByEmail(String email);
-    Optional<User> findByName(String name); //Tim kiem User co ton tai trong DB khong?
-    Boolean existsByEmail(String email); //email da co trong DB chua
-
-    Boolean existsByCardId(String cardId);
-    Boolean existsByPhoneNumber(String phoneNumber);
-
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.name = :name, u.cardId = :cardId, u.email = :email, u.phoneNumber = :phoneNumber, u.avatar = :avatar, u.address = :address, u.password = :password, u.gender = :gender WHERE u.id = :id")
@@ -82,4 +56,12 @@ public interface IUserRepository extends JpaRepository<User, Long> {
                     @Param("address") String address,
                     @Param("password") String password,
                     @Param("gender") Boolean gender);
+
+    @Query(nativeQuery = true,
+            value = "select u.id,u.name,u.card_id,u.email,u.gender,u.phone_number,u.avatar,u.address, r.name as role" +
+                    " from user u join role r on r.id = u.role_id where u.email =?1")
+    UserResponse findUserByEmail(String email);
 }
+
+
+
