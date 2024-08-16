@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import org.c07.movie_booking.dto.ChangePasswordRequest;
 import org.c07.movie_booking.dto.UserDTO;
 import java.security.Principal;
-import org.c07.movie_booking.repository.IUserRepositoty;
 import org.c07.movie_booking.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
