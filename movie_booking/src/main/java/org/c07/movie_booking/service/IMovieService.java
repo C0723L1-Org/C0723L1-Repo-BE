@@ -21,13 +21,10 @@ public interface IMovieService {
     Movie getMovieById(Long id);
 
     //Manager
-//    Page<MovieDTO> getSearchFields(String nameMovie, String content, String director,
-//                                   LocalDate releaseDate, String nameStatus, String actor,
-//                                   Integer pageNumber, Integer pageSize);
     Page<MovieDTO> getSearchFields(String nameMovie, String content, String director,
                                    LocalDate releaseDateFrom, LocalDate releaseDateTo, String nameStatus, String actor,
                                    Integer pageNumber, Integer pageSize);
-
+    
     void createMovie(MovieDTO movieDTO);
     void updateMovie(MovieDTO movieDTO, Long id);
 

@@ -152,22 +152,9 @@ public class MovieController {
     //lấy danh sách trạng thái phim
     @GetMapping("private/list-status-film")
     public List<StatusFilmDTO> getFindAllStatus() {
-            return iStatusFilmService.getFindAll();
+
+        return iStatusFilmService.getFindAll();
     }
-//@GetMapping("private/searches")
-//public Page<MovieDTO> getSearchFields(
-//        @RequestParam(value = "nameMovie", required = false) String nameMovie,
-//        @RequestParam(value = "content", required = false) String content,
-//        @RequestParam(value = "director", required = false) String director,
-//        @RequestParam(value = "releaseDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate releaseDate,
-//        @RequestParam(value = "nameStatus", required = false) String nameStatus,
-//        @RequestParam(value = "actor", required = false) String actor,
-//        @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
-//        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-//
-//    return iMovieService.getSearchFields(nameMovie, content, director, releaseDate,
-//            nameStatus, actor, pageNumber, pageSize);
-//}
 @GetMapping("private/searches")
 public Page<MovieDTO> getSearchFields(
         @RequestParam(value = "nameMovie", required = false) String nameMovie,
