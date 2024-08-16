@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IBookingRepository extends JpaRepository<Booking, Long> {
-    @Query(nativeQuery = true, value = "select MAX(code) from booking")
+    @Query(nativeQuery = true, value = "select MAX(code_booking) from booking")
     String selectCurrentCode();
 }

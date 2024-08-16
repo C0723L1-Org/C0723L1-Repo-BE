@@ -1,5 +1,7 @@
 package org.c07.movie_booking.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.c07.movie_booking.model.BookingStatus;
@@ -14,15 +16,14 @@ import java.time.LocalDate;
 
 public class BookingDto implements Validator {
     private long id;
-    @NotBlank
     private String codeBooking;
-    @NotBlank
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate dateBooking;
-    @NotBlank
+    @Min(0)
     private double totalAmount;
     private BookingStatus bookingStatus;
-    @NotNull(message ="Please Login")
+//    @NotNull(message ="Please Login")
     private User user;
     @NotNull(message = "Please choose showtime")
     private Showtime showTime;

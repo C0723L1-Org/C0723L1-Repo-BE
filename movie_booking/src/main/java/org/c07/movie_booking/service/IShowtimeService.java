@@ -5,5 +5,5 @@ import org.c07.movie_booking.model.Showtime;
 import java.util.List;
 
 public interface IShowtimeService {
-    List<Showtime> findShowtimeByIdMovie(Long id,String date,String dateTime);
+    List<Showtime> findShowtimeByIdMovie(Long id,String date,String time);
 }

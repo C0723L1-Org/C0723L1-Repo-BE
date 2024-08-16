@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface IShowtimeRepository extends JpaRepository<Showtime,Long> {
     @Query(nativeQuery = true, value = "select s.* from showtime s where s.movie_id = ?1 and s.show_date like ?2 and s.start_time > ?3")
-    List<Showtime> findShowtimeByIdMovie(Long id,String Date,String dateTime);
+    List<Showtime> findShowtimeByIdMovie(Long id,String Date,String time);
 }

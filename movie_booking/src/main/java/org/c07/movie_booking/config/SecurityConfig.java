@@ -33,12 +33,14 @@ public class SecurityConfig {
         return http
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
+
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
                         "/api/v1/seat/public/**",
                         "/api/v1/auth/public/**",
                         "/api/v1/movie/public/**",
                         "/api/v1/room/public/**",
                         "/api/v1/showtime/public/**",
+                        "/api/v1/user/public/**",
                         "/api/v1/mail/public/**"
                 ).permitAll())
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())

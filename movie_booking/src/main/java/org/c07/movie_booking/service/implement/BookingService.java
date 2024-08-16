@@ -1,7 +1,9 @@
 package org.c07.movie_booking.service.implement;
 
 import org.c07.movie_booking.model.Booking;
+import org.c07.movie_booking.model.User;
 import org.c07.movie_booking.repository.IBookingRepository;
+import org.c07.movie_booking.repository.IUserRepositoty;
 import org.c07.movie_booking.service.IBookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,8 @@ import java.util.Random;
 public class BookingService implements IBookingService {
     @Autowired
     IBookingRepository bookingRepository;
+    @Autowired
+    IUserRepositoty userRepositoty;
     @Override
     public boolean addNewBooking(Booking booking) {
         try{
@@ -33,4 +37,6 @@ public class BookingService implements IBookingService {
             return Integer.toString(currentCode +1);
         }
     }
+
+    
 }

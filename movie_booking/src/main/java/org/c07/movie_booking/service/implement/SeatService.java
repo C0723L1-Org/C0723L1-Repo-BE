@@ -13,7 +13,12 @@ public class SeatService implements ISeatService {
     @Autowired
     ISeatRepository seatRepository;
     @Override
-    public List<Seat> getAllSelectedSeat() {
-        return seatRepository.getAllSelectedSeat();
+    public List<Seat> getAllSelectedSeat(Long showtimeId) {
+        return seatRepository.getAllSelectedSeat(showtimeId);
+    }
+
+    @Override
+    public Seat getSeatByRoomIdAndSeatNumber(Long roomId, String seatNumber) {
+        return seatRepository.getSeatByRoomIdAndSeatNumber(roomId,seatNumber);
     }
 }

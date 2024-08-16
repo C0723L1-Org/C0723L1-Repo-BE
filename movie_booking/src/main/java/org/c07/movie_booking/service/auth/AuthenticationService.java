@@ -30,6 +30,7 @@ public class AuthenticationService {
                 request.getCode(),
                 request.getName(),
                 request.getCardId(),
+                request.getDayOfBirth(),
                 request.getEmail(),
                 passwordEncoder.encode(request.getPassword()),
                 request.isGender(),
