@@ -4,7 +4,6 @@ public interface UserResponse {
     Long getId();
     String getName();
     String getCardId();
-
     String getEmail();
     String getPhoneNumber();
     String getAvatar();

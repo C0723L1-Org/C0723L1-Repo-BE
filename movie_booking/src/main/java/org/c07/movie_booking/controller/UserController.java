@@ -1,67 +1,99 @@
 package org.c07.movie_booking.controller;
 
 import jakarta.validation.Valid;
+import org.c07.movie_booking.dto.ChangePasswordRequest;
 import org.c07.movie_booking.dto.UserDTO;
-import org.c07.movie_booking.dto.UserResponse;
-import org.c07.movie_booking.model.User;
-import org.c07.movie_booking.service.IRoleService;
+import java.security.Principal;
 import org.c07.movie_booking.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.security.Principal;
 import java.util.HashMap;
+import java.util.Map;
 
-@Controller
-@RequestMapping("/api/v1/user/")
+@RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/api/v1/user")
 public class UserController {
     @Autowired
-    private IRoleService iRoleService;
+    private IUserService iUserService;
     @Autowired
-    private IUserService iUserSrevice;
+    private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/public/register")
-    public String showRegisterForm(Model model) {
-        model.addAttribute("listRole", iRoleService.findAll());
-        model.addAttribute("user", new UserDTO());
-        return "register";
+    @PutMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest, Principal principal) {
+        try {
+            iUserService.changePassword(
+                    principal.getName(), // Email từ principal (người dùng hiện tại)
+                    changePasswordRequest.getCurrentPassword(),
+                    changePasswordRequest.getNewPassword()
+            );
+            return ResponseEntity.ok("Password changed successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @PostMapping("/public/register")
-    public String addNewUser(@Valid @ModelAttribute("user") UserDTO userDTO,
-                             BindingResult bindingResult,
-                             RedirectAttributes redirectAttributes,
-                             Model model) {
+    public ResponseEntity<?> addNewUser(@Valid @RequestBody UserDTO userDTO,
+                                        BindingResult bindingResult,
+                                        RedirectAttributes redirectAttributes) {
         new UserDTO().validate(userDTO, bindingResult);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("listRole", iRoleService.findAll());
-            return "register";
+            // Chuyển hướng trở lại form đăng ký khi có lỗi
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("user", userDTO);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        iUserSrevice.createNewUser(userDTO);
-        redirectAttributes.addFlashAttribute("message", "User registered successfully!");
-        return "redirect:/api/v1/user/public/register";
+        if (iUserService.existsByEmail(userDTO.getEmail())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already in use");
+        }
+        if (iUserService.existsByCardId(userDTO.getCardId())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID Card already in use");
+        }
+        if (iUserService.existsByPhoneNumber(userDTO.getPhoneNumber())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Number phone already in use");
+        }
+
+
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        iUserService.addNewUser(userDTO);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "User registered successfully!");
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("check-email")
     public ResponseEntity<?> checkEmail(@RequestParam String email) {
-        boolean exists = iUserSrevice.existsByEmail(email);
+        boolean exists = iUserService.existsByEmail(email);
         return ResponseEntity.ok(new HashMap<String, Boolean>() {{
             put("exists", exists);
         }});
     }
-    @GetMapping("list")
+    @GetMapping("/public/list")
     public ResponseEntity<Page<UserDTO>> listUsers(Pageable pageable) {
-        Page<UserDTO> userPage = iUserSrevice.getAllUser(pageable);
+        Page<UserDTO> userPage = iUserService.getAllUser(pageable);
         return ResponseEntity.ok(userPage);
+    }
+    @GetMapping("/public/profile")
+    public ResponseEntity<UserDTO> getUserProfile(Principal principal) {
+        String email = principal.getName();
+        UserDTO userDTO = iUserService.findByEmail(email);
+        return ResponseEntity.ok(userDTO);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        iUserService.updateUser(id, userDTO);
+        return ResponseEntity.ok("User updated successfully");
     }
 
 }
