@@ -24,33 +24,13 @@ public class AuthenticationService {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    public String register(RegisterRequest request) {
-        User user = new User(
-                request.getCode(),
-                request.getName(),
-                request.getCardId(),
-                request.getEmail(),
-                passwordEncoder.encode(request.getPassword()),
-                request.isGender(),
-                request.isStatus(),
-                request.getPhoneNumber(),
-                request.getAvatar(),
-                request.getAddress(),
-                request.getRole());
-        repository.save(user);
-        return jwtService.generateToken(user);
-    }
 
     public String authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
         User user = repository.findByEmail(request.getEmail()).orElseThrow();
-//        Map<String, String> responseMap = new HashMap<>();
-//        responseMap.put("user",user.getEmail());
-//        responseMap.put("name",user.getName());
-//        responseMap.put("avatar", user.getAvatar());
-//        responseMap.put("token",jwtService.generateToken(user));
+
         return jwtService.generateToken(user);
     }
 }

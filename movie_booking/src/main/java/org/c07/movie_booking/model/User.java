@@ -2,14 +2,16 @@ package org.c07.movie_booking.model;
 
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
-
+@Getter
+@Setter
 @Entity
 public class User implements UserDetails {
     @Id
@@ -21,6 +23,7 @@ public class User implements UserDetails {
 
     private String cardId;
 
+    private LocalDate dayOfBirth;
     private String email;
     private String password;
 
@@ -40,19 +43,8 @@ public class User implements UserDetails {
 
     public User() {
     }
-    public User(String code, String name, String cardId, String email, String password, boolean gender, boolean status, String phoneNumber, String avatar, String address, Role role) {
-        this.code = code;
-        this.name = name;
-        this.cardId = cardId;
-        this.email = email;
-        this.password = password;
-        this.gender = gender;
-        this.status = status;
-        this.phoneNumber = phoneNumber;
-        this.avatar = avatar;
-        this.address = address;
-        this.role = role;
-    }
+    public User(String code, String name, String cardId, String email, String password, boolean gender, boolean status, String phoneNumber, String avatar, String address, Role role) {}
+
 
     public User(Long id, String code, String name, String cardId, String email, String password, boolean gender, boolean status, String phoneNumber, String avatar, String address, LocalDate dateOfBirth, Role role) {
         this.id = id;
@@ -112,11 +104,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-    public Long getId() {
-        return id;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
