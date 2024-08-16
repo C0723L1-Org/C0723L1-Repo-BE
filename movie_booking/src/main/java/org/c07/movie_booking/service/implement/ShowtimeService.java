@@ -12,7 +12,7 @@ public class ShowtimeService implements IShowtimeService {
     @Autowired
     IShowtimeRepository showtimeRepository;
     @Override
-    public List<Showtime> findShowtimeByIdMovie(Long id,String date,String dateTime) {
-        return showtimeRepository.findShowtimeByIdMovie(id,date,dateTime);
+    public List<Showtime> findShowtimeByIdMovie(Long id,String date,String time) {
+        return showtimeRepository.findShowtimeByIdMovie(id,date,time);
     }
 }

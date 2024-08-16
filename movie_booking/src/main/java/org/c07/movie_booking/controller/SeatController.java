@@ -17,8 +17,8 @@ public class SeatController {
     ISeatService seatService;
     // get all selected seats
     @GetMapping("/public/list")
-    public ResponseEntity<List<Seat>> getAllSelectedSeats(){
-        List<Seat> seatList = seatService.getAllSelectedSeat();
+    public ResponseEntity<List<Seat>> getAllSelectedSeats(@RequestParam Long showtimeId){
+        List<Seat> seatList = seatService.getAllSelectedSeat(showtimeId);
         if(seatList.isEmpty()){
             return new ResponseEntity<>(seatList, HttpStatus.NO_CONTENT);
         }else return new ResponseEntity<>(seatList, HttpStatus.OK);
