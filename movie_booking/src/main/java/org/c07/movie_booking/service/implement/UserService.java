@@ -1,6 +1,5 @@
 package org.c07.movie_booking.service.implement;
 
-
 import org.c07.movie_booking.dto.UserResponse;
 import org.c07.movie_booking.dto.response.UserResDTO;
 import org.c07.movie_booking.model.User;
