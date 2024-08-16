@@ -2,6 +2,7 @@ package org.c07.movie_booking.controller;
 
 import org.c07.movie_booking.dto.KindOfFilmDTO;
 import org.c07.movie_booking.dto.MovieDTO;
+import org.c07.movie_booking.exception.FieldRequiredException;
 import org.c07.movie_booking.model.KindOfFilm;
 import org.c07.movie_booking.model.Movie;
 import org.c07.movie_booking.dto.StatusFilmDTO;
@@ -154,35 +155,38 @@ public class MovieController {
     public List<StatusFilmDTO> getFindAllStatus() {
             return iStatusFilmService.getFindAll();
     }
-//@GetMapping("private/searches")
-//public Page<MovieDTO> getSearchFields(
-//        @RequestParam(value = "nameMovie", required = false) String nameMovie,
-//        @RequestParam(value = "content", required = false) String content,
-//        @RequestParam(value = "director", required = false) String director,
-//        @RequestParam(value = "releaseDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate releaseDate,
-//        @RequestParam(value = "nameStatus", required = false) String nameStatus,
-//        @RequestParam(value = "actor", required = false) String actor,
-//        @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
-//        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-//
-//    return iMovieService.getSearchFields(nameMovie, content, director, releaseDate,
-//            nameStatus, actor, pageNumber, pageSize);
-//}
-@GetMapping("private/searches")
-public Page<MovieDTO> getSearchFields(
-        @RequestParam(value = "nameMovie", required = false) String nameMovie,
-        @RequestParam(value = "content", required = false) String content,
-        @RequestParam(value = "director", required = false) String director,
-        @RequestParam(value = "releaseDateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate releaseDateFrom,
-        @RequestParam(value = "releaseDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate releaseDateTo,
-        @RequestParam(value = "nameStatus", required = false) String nameStatus,
-        @RequestParam(value = "actor", required = false) String actor,
-        @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
-        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
 
-    return iMovieService.getSearchFields(nameMovie, content, director, releaseDateFrom, releaseDateTo,
-            nameStatus, actor, pageNumber, pageSize);
-}
+    @GetMapping("private/searches")
+    public Page<MovieDTO> getSearchFields(
+            @RequestParam(value = "nameMovie", required = false) String nameMovie,
+            @RequestParam(value = "content", required = false) String content,
+            @RequestParam(value = "director", required = false) String director,
+            @RequestParam(value = "releaseDateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate releaseDateFrom,
+            @RequestParam(value = "releaseDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate releaseDateTo,
+            @RequestParam(value = "nameStatus", required = false) String nameStatus,
+            @RequestParam(value = "actor", required = false) String actor,
+            @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+
+        return iMovieService.getSearchFields(nameMovie, content, director, releaseDateFrom, releaseDateTo,
+                nameStatus, actor, pageNumber, pageSize);
+    }
+
+    @PutMapping ("private/delete/{id}")
+    public ResponseEntity<Void> deleteMovieById(@PathVariable(name = "id") Long id) throws FieldRequiredException {
+        try{
+            iMovieService.deleteByIdQuery(id);
+        } catch (FieldRequiredException e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping ("private/list-delete")
+    public ResponseEntity<Void> deleteMovieByIds(@RequestParam List<Long> id){
+        iMovieService.deleteByIds(id);
+        return ResponseEntity.noContent().build();
+    }
     @GetMapping("private/currently-showing")
     public ResponseEntity<?> getCurrentlyShowingMovies() {
         try {
@@ -206,7 +210,6 @@ public Page<MovieDTO> getSearchFields(
             return ResponseEntity.ok(kindOfFilmDTOs);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-
         }
     }
 }

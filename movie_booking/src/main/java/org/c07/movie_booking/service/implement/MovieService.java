@@ -3,6 +3,7 @@ package org.c07.movie_booking.service.implement;
 import org.c07.movie_booking.dto.KindOfFilmDTO;
 import org.c07.movie_booking.dto.MovieDTO;
 import jakarta.transaction.Transactional;
+import org.c07.movie_booking.exception.FieldRequiredException;
 import org.c07.movie_booking.model.KindOfFilm;
 import org.c07.movie_booking.model.Movie;
 import org.c07.movie_booking.model.StatusFilm;
@@ -82,19 +83,30 @@ public Page<MovieDTO> getFindAll(Integer pageNumber, Integer pageSize) {
     }
 
     return new PageImpl<>(movieDTOList, pageable, movies.getTotalPages());
-}
+    }
+    @Override
+    public void deleteByIdQuery(Long id) throws FieldRequiredException {
+//        Movie movie = iMovieRepository.findById(id).get();
+//        if(movie.getId() != id){
+//            throw new FieldRequiredException("id not found or you did not pass the value!");
+//        }
+        iMovieRepository.deleteById(id);
+    }
+    @Override
+    public void deleteByIds(List<Long> paths) {
+        for (Long item: paths){
+            iMovieRepository.deleteById(item);
+        }
+    }
     @Override
     public List<Movie> getMovieIsShowing() {
         return iMovieRepository.getMovieIsShowing();
     }
-
     //Manager
     @Override
     public List<Movie> findCurrentlyShowingMovies() {
-
         return iMovieRepository.findCurrentlyShowingMovies();
     }
-
     @Override
     public void createMovie(MovieDTO movieDTO) {
         iMovieRepository.createMovie(
@@ -172,10 +184,8 @@ public Page<MovieDTO> getFindAll(Integer pageNumber, Integer pageSize) {
         movieDTO.setKindOfFilm(kindOfFilmDTOs);
         return movieDTO;
     }
-
     @Override
     public Movie findMovieById(Long id) {
         return iMovieRepository.findMovieById(id).get();
     }
-
 }

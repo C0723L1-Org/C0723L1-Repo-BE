@@ -140,30 +140,32 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
             "WHERE is_delete = 0 ", nativeQuery = true)
         Page<Movie> findAllByQuery(Pageable pageable);
 
-@Query("select mv from Movie mv " +
-        "left join mv.kindOfFilm k " +
-        "left join mv.statusFilmId s " +
-        "where mv.isDelete = false " +
-        "and (:nameMovie is null or mv.nameMovie like %:nameMovie%) " +
-        "and (:director is null or mv.director like %:director%) " +
-        "and (:releaseDateFrom is null or :releaseDateTo is null or DATE(mv.releaseDate) between :releaseDateFrom and :releaseDateTo) " +
-        "and (:content is null or mv.content like %:content%) " +
-        "and (:actor is null or mv.actor like %:actor%) " +
-        "and (:nameStatus is null or s.name like %:nameStatus%) ")
-Page<Movie> getSearchOfFields(
-        @Param("nameMovie") String nameMovie,
-        @Param("content") String content,
-        @Param("director") String director,
-        @Param("releaseDateFrom") LocalDate releaseDateFrom,
-        @Param("releaseDateTo") LocalDate releaseDateTo,
-        @Param("nameStatus") String nameStatus,
-        @Param("actor") String actor,
-        Pageable pageable);
-
+    @Query("select mv from Movie mv " +
+            "left join mv.kindOfFilm k " +
+            "left join mv.statusFilmId s " +
+            "where mv.isDelete = false " +
+            "and (:nameMovie is null or mv.nameMovie like %:nameMovie%) " +
+            "and (:director is null or mv.director like %:director%) " +
+            "and (:releaseDateFrom is null or :releaseDateTo is null or DATE(mv.releaseDate) between :releaseDateFrom and :releaseDateTo) " +
+            "and (:content is null or mv.content like %:content%) " +
+            "and (:actor is null or mv.actor like %:actor%) " +
+            "and (:nameStatus is null or s.name like %:nameStatus%) ")
+    Page<Movie> getSearchOfFields(
+            @Param("nameMovie") String nameMovie,
+            @Param("content") String content,
+            @Param("director") String director,
+            @Param("releaseDateFrom") LocalDate releaseDateFrom,
+            @Param("releaseDateTo") LocalDate releaseDateTo,
+            @Param("nameStatus") String nameStatus,
+            @Param("actor") String actor,
+            Pageable pageable);
 
     @Modifying
     @Transactional
     @Query(value = "update movie set is_delete = 1 where id =:id", nativeQuery = true)
     void deleteById(@Param("id") Long id);
+    @Query(value = "select id from movie where id = :id", nativeQuery = true)
+    Long findByIdMovie(@Param("id") Long id);
+
 }
 
