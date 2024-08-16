@@ -13,7 +13,7 @@ import java.util.Optional;
 
 
 @Repository
-public interface IUserRepositoty extends JpaRepository<User, Long> {
+public interface IUserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByName(String name); //Tìm kiếm User có tồn tại trong DB không?
 
