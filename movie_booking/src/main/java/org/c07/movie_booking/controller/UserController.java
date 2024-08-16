@@ -1,8 +1,10 @@
 package org.c07.movie_booking.controller;
 
 import jakarta.validation.Valid;
+import org.c07.movie_booking.dto.ChangePasswordRequest;
 import org.c07.movie_booking.dto.UserDTO;
-import org.c07.movie_booking.service.IRoleService;
+import java.security.Principal;
+import org.c07.movie_booking.repository.IUserRepositoty;
 import org.c07.movie_booking.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,8 +26,21 @@ public class UserController {
     @Autowired
     private IUserService iUserService;
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
+    @PutMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest, Principal principal) {
+        try {
+            iUserService.changePassword(
+                    principal.getName(), // Email từ principal (người dùng hiện tại)
+                    changePasswordRequest.getCurrentPassword(),
+                    changePasswordRequest.getNewPassword()
+            );
+            return ResponseEntity.ok("Password changed successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 
     @PostMapping("/public/register")
     public ResponseEntity<?> addNewUser(@Valid @RequestBody UserDTO userDTO,
@@ -58,7 +72,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-
     @GetMapping("check-email")
     public ResponseEntity<?> checkEmail(@RequestParam String email) {
         boolean exists = iUserService.existsByEmail(email);
@@ -71,47 +84,17 @@ public class UserController {
         Page<UserDTO> userPage = iUserService.getAllUser(pageable);
         return ResponseEntity.ok(userPage);
     }
-    @GetMapping("/profile")
+    @GetMapping("/public/profile")
     public ResponseEntity<UserDTO> getUserProfile(Principal principal) {
         String email = principal.getName();
-        UserDTO userDTO = iUserService.findUserByEmail(email);
+        UserDTO userDTO = iUserService.findByEmail(email);
         return ResponseEntity.ok(userDTO);
     }
-    @PutMapping("/profile")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody UserDTO userDTO,
-                                        BindingResult bindingResult,
-                                        Principal principal) {
-        // Lấy email từ người dùng hiện tại
-        String currentEmail = principal.getName();
 
-        // Tìm kiếm người dùng hiện tại
-        UserDTO existingUser = iUserService.findUserByEmail(currentEmail);
-
-        if (existingUser == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
-
-        // Validate dữ liệu đầu vào
-        new UserDTO().validate(userDTO, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
-        }
-
-        // Cập nhật các thông tin không liên quan đến email và password
-        existingUser.setName(userDTO.getName());
-        existingUser.setGender(userDTO.isGender());
-        existingUser.setPhoneNumber(userDTO.getPhoneNumber());
-        existingUser.setAddress(userDTO.getAddress());
-        existingUser.setAvatar(userDTO.getAvatar());
-        // Nếu bạn muốn cập nhật mật khẩu, có thể sử dụng đoạn code sau
-         existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-
-        // Lưu thay đổi, truyền cả userDTO và email vào phương thức
-        iUserService.updateUser(existingUser, currentEmail);
-
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "User updated successfully!");
-        return ResponseEntity.ok(response);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        iUserService.updateUser(id, userDTO);
+        return ResponseEntity.ok("User updated successfully");
     }
 
 }

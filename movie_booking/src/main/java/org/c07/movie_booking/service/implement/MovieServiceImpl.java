@@ -34,4 +34,9 @@ public class MovieServiceImpl implements IMovieService {
     public void deleteById(Long id) {
 
     }
+
+    @Override
+    public Movie getMovieById(Long id) {
+        return movieRepository.getMovieById(id);
+    }
 }

@@ -11,6 +11,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class AuthenticationService {
     @Autowired
@@ -27,6 +30,7 @@ public class AuthenticationService {
                 request.getCode(),
                 request.getName(),
                 request.getCardId(),
+                request.getDayOfBirth(),
                 request.getEmail(),
                 passwordEncoder.encode(request.getPassword()),
                 request.isGender(),
@@ -44,6 +48,11 @@ public class AuthenticationService {
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
         User user = repository.findByEmail(request.getEmail()).orElseThrow();
+//        Map<String, String> responseMap = new HashMap<>();
+//        responseMap.put("user",user.getEmail());
+//        responseMap.put("name",user.getName());
+//        responseMap.put("avatar", user.getAvatar());
+//        responseMap.put("token",jwtService.generateToken(user));
         return jwtService.generateToken(user);
     }
 }

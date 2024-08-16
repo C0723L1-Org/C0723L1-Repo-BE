@@ -1,7 +1,9 @@
 package org.c07.movie_booking.service.implement;
 
 
+import org.c07.movie_booking.dto.ChangePasswordRequest;
 import org.c07.movie_booking.dto.UserDTO;
+import org.c07.movie_booking.dto.UserResponse;
 import org.c07.movie_booking.model.Role;
 import org.c07.movie_booking.model.User;
 import org.c07.movie_booking.repository.IUserRepositoty;
@@ -11,8 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -21,6 +26,8 @@ import java.util.stream.Collectors;
 public class UserService implements IUserService {
     @Autowired
     private IUserRepositoty iUserRepositoty;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -44,10 +51,7 @@ public class UserService implements IUserService {
             defaultRole.setName("user");
             userDTO.setRole(defaultRole);
         }
-
             userDTO.setStatus(false);
-
-
 
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
@@ -62,21 +66,43 @@ public class UserService implements IUserService {
     }
 
     // Lấy thông tin người dùng theo id
-    @Override
-    public User findUserById(Long id) {
-        return iUserRepositoty.findById(id)
-                .orElseThrow(() -> new RuntimeException("Người dùng không được tìm thấy"));
-    }
 
-    // Cập nhật thông tin
     @Override
-    public User updateUser(UserDTO userDTO, String email) {
-        User existingUser = iUserRepositoty.findUserByEmail(email)
+    public void updateUser(Long id, UserDTO userDTO) {
+        User existingUser = iUserRepositoty.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        BeanUtils.copyProperties(userDTO, existingUser, "id", "email", "code", "status");
-        return iUserRepositoty.save(existingUser);
+        // Cập nhật các thông tin người dùng
+        if (userDTO.getName() != null && !userDTO.getName().isEmpty()) {
+            existingUser.setName(userDTO.getName());
+        }
+        if (userDTO.getGender() != null) {
+            existingUser.setGender(userDTO.getGender());
+        }
+        if (userDTO.getPhoneNumber() != null && !userDTO.getPhoneNumber().isEmpty()) {
+            existingUser.setPhoneNumber(userDTO.getPhoneNumber());
+        }
+        if (userDTO.getAddress() != null && !userDTO.getAddress().isEmpty()) {
+            existingUser.setAddress(userDTO.getAddress());
+        }
+        if (userDTO.getCardId() != null && !userDTO.getCardId().isEmpty()){
+            existingUser.setCardId(userDTO.getCardId());
+        }
+        if (userDTO.getAvatar() != null && !userDTO.getAvatar().isEmpty()) {
+            existingUser.setAvatar(userDTO.getAvatar());
+        }
+        if (userDTO.getDayOfBirth() != null) {
+            existingUser.setDayOfBirth(userDTO.getDayOfBirth());
+        }
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+            existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
+
+        // Thực hiện lưu thông tin cập nhật vào DB
+        iUserRepositoty.save(existingUser);
     }
+
+
 
     @Override
     public Boolean existsByEmail(String email) {
@@ -99,8 +125,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDTO findUserByEmail(String email) {
-        User user = iUserRepositoty.findUserByEmail(email)
+    public UserDTO findByEmail(String email) {
+        User user = iUserRepositoty.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(user, userDTO);
@@ -116,4 +142,31 @@ public class UserService implements IUserService {
     public Boolean existsByPhoneNumber(String phoneNumber) {
         return iUserRepositoty.existsByPhoneNumber(phoneNumber);
     }
+    public UserResponse findUserByEmail(String email) {
+
+        return iUserRepositoty.findUserByEmail(email);
+    }
+
+    @Override
+    public void changePassword(String email, String oldPassword, String newPassword) {
+        // Tìm người dùng theo email
+        User user = iUserRepositoty.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        // Kiểm tra mật khẩu cũ
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new IllegalStateException("Mật khẩu cũ không đúng");
+        }
+
+        // Kiểm tra mật khẩu mới và mật khẩu xác nhận có khớp nhau không
+        if (newPassword == null || newPassword.isEmpty()) {
+            throw new IllegalArgumentException("Mật khẩu mới không được để trống");
+        }
+
+        // Cập nhật mật khẩu mới
+        user.setPassword(passwordEncoder.encode(newPassword));
+        iUserRepositoty.save(user);
+    }
+
+
 }

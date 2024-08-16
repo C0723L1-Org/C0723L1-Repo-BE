@@ -1,10 +1,12 @@
 package org.c07.movie_booking.model.auth_entity;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+//
+//import lombok.AllArgsConstructor;
+//import lombok.Builder;
+//import lombok.Data;
+//import lombok.NoArgsConstructor;
 import org.c07.movie_booking.model.Role;
+
+import java.time.LocalDate;
 
 
 public class RegisterRequest {
@@ -25,13 +27,14 @@ public class RegisterRequest {
     private String phoneNumber;
     private String avatar;
     private String address;
+    private LocalDate dayOfBirth;
     private Role role;
 
     public RegisterRequest() {
     }
 
     public RegisterRequest(Long id, String code, String name, String cardId, String email, String password,
-                           boolean gender, boolean status, String phoneNumber, String avatar, String address, Role role) {
+                           boolean gender, boolean status, String phoneNumber, String avatar, String address, Role role, LocalDate dayOfBirth) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -43,6 +46,7 @@ public class RegisterRequest {
         this.phoneNumber = phoneNumber;
         this.avatar = avatar;
         this.address = address;
+        this.dayOfBirth = dayOfBirth;
         this.role = role;
     }
 
@@ -140,5 +144,13 @@ public class RegisterRequest {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public LocalDate getDayOfBirth() {
+        return dayOfBirth;
+    }
+
+    public void setDayOfBirth(LocalDate dayOfBirth) {
+        this.dayOfBirth = dayOfBirth;
     }
 }
