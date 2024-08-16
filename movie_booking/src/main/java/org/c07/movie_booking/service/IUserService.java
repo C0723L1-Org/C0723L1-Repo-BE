@@ -16,4 +16,5 @@ public interface IUserService {
     Page<UserDTO> getAllUser (Pageable pageable);
 
     UserResponse findUserByEmail(String email);
+
 }

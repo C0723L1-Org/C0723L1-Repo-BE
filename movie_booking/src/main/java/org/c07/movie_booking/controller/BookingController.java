@@ -6,15 +6,13 @@ import org.c07.movie_booking.model.Booking;
 import org.c07.movie_booking.model.User;
 import org.c07.movie_booking.service.EmailService;
 import org.c07.movie_booking.service.IBookingService;
+import org.c07.movie_booking.service.IUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,8 +24,11 @@ public class BookingController {
     IBookingService bookingService;
     @Autowired
     EmailService emailService;
-    @PostMapping("/create")
+    @Autowired
+    IUserService userService;
+    @PostMapping("/create/{id}")
     public ResponseEntity<?> createNewBooking(@Valid @RequestBody BookingDto bookingDto,
+                                              @PathVariable Long id,
                                               BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> map = new HashMap<>();
@@ -39,6 +40,7 @@ public class BookingController {
         bookingDto.setCodeBooking(bookingService.createCodeBooking());
         Booking booking = new Booking();
         BeanUtils.copyProperties(bookingDto,booking);
+        booking.setUser(userService.findUserById(id));
         String msg;
         if(bookingService.addNewBooking(booking)){
             sendEmail(booking.getUser().getEmail(),
