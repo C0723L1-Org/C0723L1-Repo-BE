@@ -50,13 +50,6 @@ public class MovieController {
         return ResponseEntity.ok(movies);
     }
 
-    @GetMapping("private/list-movie")
-    public Page<MovieDTO> getFindAll(
-            @RequestParam(value = "pageNumber") int pageNumber,
-            @RequestParam(value = "pageSize") int pageSize
-    ){
-        return iMovieService.getFindAll(pageNumber, pageSize);
-    }
 
     @GetMapping("public/search-movie-by-kind")
     public ResponseEntity<?> Test(
@@ -155,6 +148,13 @@ public class MovieController {
     public List<StatusFilmDTO> getFindAllStatus() {
 
         return iStatusFilmService.getFindAll();
+    }
+    @GetMapping("private/list-movie")
+    public Page<MovieDTO> getFindAll(
+            @RequestParam(value = "pageNumber") int pageNumber,
+            @RequestParam(value = "pageSize") int pageSize
+    ){
+        return iMovieService.getFindAll(pageNumber, pageSize);
     }
 @GetMapping("private/searches")
 public Page<MovieDTO> getSearchFields(
