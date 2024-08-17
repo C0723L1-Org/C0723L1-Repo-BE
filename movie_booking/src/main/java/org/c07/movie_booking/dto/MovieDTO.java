@@ -2,6 +2,7 @@ package org.c07.movie_booking.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
+import org.c07.movie_booking.model.StatusFilm;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -47,15 +48,16 @@ public class MovieDTO implements Validator {
     private Boolean isDelete = true;
 
     @NotBlank(message = "Trạng thái phim không được bỏ trống")
-    private long statusFilm;
+    private StatusFilm statusFilm;
 
     @NotBlank(message = "Loại phim không được bỏ trống")
     private List<KindOfFilmDTO> kindOfFilm;
 
+
     public MovieDTO() {
     }
 
-    public MovieDTO(long id, String nameMovie, LocalDate releaseDate, String durationMovie, String actor, String director, String studio, String content, String trailer, String avatar, String poster, Boolean isDelete, long statusFilm, List<KindOfFilmDTO> kindOfFilm) {
+    public MovieDTO(long id, String nameMovie, LocalDate releaseDate, String durationMovie, String actor, String director, String studio, String content, String trailer, String avatar, String poster, Boolean isDelete, StatusFilm statusFilm, List<KindOfFilmDTO> kindOfFilm) {
         this.id = id;
         this.nameMovie = nameMovie;
         this.releaseDate = releaseDate;
@@ -167,20 +169,16 @@ public class MovieDTO implements Validator {
     public void setDelete(Boolean delete) {
         isDelete = delete;
     }
-
     @NotBlank(message = "Trạng thái phim không được bỏ trống")
-    public long getStatusFilm() {
+    public StatusFilm getStatusFilm() {
         return statusFilm;
     }
-
-    public void setStatusFilm(@NotBlank(message = "Trạng thái phim không được bỏ trống") long statusFilm) {
+    public void setStatusFilm(@NotBlank(message = "Trạng thái phim không được bỏ trống") StatusFilm statusFilm) {
         this.statusFilm = statusFilm;
     }
-
     public @NotBlank(message = "Loại phim không được bỏ trống") List<KindOfFilmDTO> getKindOfFilm() {
         return kindOfFilm;
     }
-
     public void setKindOfFilm(@NotBlank(message = "Loại phim không được bỏ trống") List<KindOfFilmDTO> kindOfFilm) {
         this.kindOfFilm = kindOfFilm;
     }

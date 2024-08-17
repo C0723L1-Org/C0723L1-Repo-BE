@@ -42,7 +42,7 @@ public class MovieService implements IMovieService {
                 movieDTO.getAvatar(),
                 movieDTO.getPoster(),
                 movieDTO.getDelete(),
-                movieDTO.getStatusFilm()
+                movieDTO.getStatusFilm().getId()
         );
         Long movieId = iMovieRepository.findLastInsertedMovieId();
 
@@ -65,7 +65,7 @@ public class MovieService implements IMovieService {
                 movieDTO.getReleaseDate(),
                 movieDTO.getStudio(),
                 movieDTO.getTrailer(),
-                movieDTO.getStatusFilm(),
+                movieDTO.getStatusFilm().getId(),
                 movieDTO.getPoster(),
                 id
         );
@@ -102,7 +102,7 @@ public class MovieService implements IMovieService {
         movieDTO.setAvatar(movie.getAvatar());
         movieDTO.setPoster(movie.getPoster());
         movieDTO.setDelete(movie.getDelete());
-        movieDTO.setStatusFilm(movie.getStatusFilm().getId());
+        movieDTO.setStatusFilm(movie.getStatusFilm());
 
         // Convert KindOfFilm to KindOfFilmDTO
         List<KindOfFilmDTO> kindOfFilmDTOs = movie.getKindOfFilms().stream()

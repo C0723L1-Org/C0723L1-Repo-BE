@@ -2,6 +2,7 @@ package org.c07.movie_booking.repository;
 
 import jakarta.transaction.Transactional;
 import org.c07.movie_booking.model.Movie;
+import org.c07.movie_booking.model.StatusFilm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
