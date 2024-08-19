@@ -1,12 +1,13 @@
 package org.c07.movie_booking.service.implement;
 
-
 import org.c07.movie_booking.dto.UserDTO;
 import org.c07.movie_booking.dto.UserResponse;
+import org.c07.movie_booking.dto.response.UserResDTO;
 import org.c07.movie_booking.model.Role;
 import org.c07.movie_booking.model.User;
 import org.c07.movie_booking.repository.IUserRepository;
 import org.c07.movie_booking.service.IUserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,8 +26,42 @@ public class UserService implements IUserService {
     @Autowired
     private IUserRepository iUserRepository;
     @Autowired
+    ModelMapper modelMapper;
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
+
+    public UserResponse findUserByEmail(String email) {
+
+        return iUserRepository.findUserByEmail(email);
+    }
+
+    //Show List and Search Employee
+    @Override
+    public Page<UserResDTO> searchEmployees(String valueSearch, Pageable pageable) {
+        Page<User> userPage = iUserRepository.SearchEmployees(valueSearch, pageable);
+        return userPage.map(this::convertToDTO);
+    }
+    // Remove Employee
+    @Override
+    public void deleteEmployeeById(Long id) {
+        iUserRepository.deleteEmployeeByQuery(id);
+    }
+    // Tìm kiếm theo ID
+    @Override
+    public UserResDTO findEmployeeById(Long id) {
+        User user = iUserRepository.findEmployeeById(id).orElse(null);
+        if (user == null || user.isStatus()) {
+            return null;
+        } else {
+            return convertToDTO(user);
+        }
+    }
+
+    @Override
+    public User findUserById(Long id) {
+        return iUserRepository.findById(id).orElse(null);
+    }
 
     @Override
     public User addNewUser(UserDTO userDTO) {
@@ -49,21 +84,12 @@ public class UserService implements IUserService {
             defaultRole.setName("user");
             userDTO.setRole(defaultRole);
         }
-            userDTO.setStatus(false);
+        userDTO.setStatus(false);
 
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
         return iUserRepository.save(user);
     }
-
-    // Hàm tạo mã ngẫu nhiên 5 chữ số không âm
-    private String generateRandomCode() {
-        Random random = new Random();
-        int randomNumber = random.nextInt(100000); // Tạo số ngẫu nhiên từ 0 đến 99999
-        return String.format("%05d", randomNumber); // Định dạng số với 5 chữ số, thêm số 0 phía trước nếu cần
-    }
-
-    // Lấy thông tin người dùng theo id
 
     @Override
     public void updateUser(Long id, UserDTO userDTO) {
@@ -92,21 +118,15 @@ public class UserService implements IUserService {
         if (userDTO.getDayOfBirth() != null) {
             existingUser.setDayOfBirth(userDTO.getDayOfBirth());
         }
-        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
-            existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        }
 
         // Thực hiện lưu thông tin cập nhật vào DB
         iUserRepository.save(existingUser);
     }
 
-
-
     @Override
     public Boolean existsByEmail(String email) {
         return iUserRepository.existsByEmail(email);
     }
-
 
     @Override
     public Page<UserDTO> getAllUser(Pageable pageable) {
@@ -140,19 +160,15 @@ public class UserService implements IUserService {
     public Boolean existsByPhoneNumber(String phoneNumber) {
         return iUserRepository.existsByPhoneNumber(phoneNumber);
     }
-    public UserResponse findUserByEmail(String email) {
-
-        return iUserRepository.findUserByEmail(email);
-    }
 
     @Override
-    public void changePassword(String email, String oldPassword, String newPassword) {
+    public void changePassword(String email, String currentPassword, String newPassword) {
         // Tìm người dùng theo email
         User user = iUserRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         // Kiểm tra mật khẩu cũ
-        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             throw new IllegalStateException("Mật khẩu cũ không đúng");
         }
 
@@ -165,6 +181,20 @@ public class UserService implements IUserService {
         user.setPassword(passwordEncoder.encode(newPassword));
         iUserRepository.save(user);
     }
+    private UserResDTO convertToDTO(User user) {
+        UserResDTO userResDTO = modelMapper.map(user, UserResDTO.class);
+        if (user.getRole() != null) {
+            userResDTO.setRole_id(user.getRole().getId());
+        }
+        return userResDTO;
+    }
 
+    private String generateRandomCode() {
+        Random random = new Random();
+        int randomNumber = random.nextInt(100000); // Tạo số ngẫu nhiên từ 0 đến 99999
+        return String.format("%05d", randomNumber); // Định dạng số với 5 chữ số, thêm số 0 phía trước nếu cần
+    }
+
+    // thêm role_id vào UserResDTO
 
 }

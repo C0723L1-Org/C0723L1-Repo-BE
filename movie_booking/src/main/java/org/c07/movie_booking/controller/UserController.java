@@ -1,23 +1,24 @@
 package org.c07.movie_booking.controller;
-
 import jakarta.validation.Valid;
 import org.c07.movie_booking.dto.ChangePasswordRequest;
 import org.c07.movie_booking.dto.UserDTO;
-import java.security.Principal;
+import org.c07.movie_booking.dto.response.UserResDTO;
 import org.c07.movie_booking.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.Optional;
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/v1/user")
@@ -26,7 +27,30 @@ public class UserController {
     private IUserService iUserService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @GetMapping("private/list-employee")
+    public ResponseEntity<Page<UserResDTO>> searchEmployees(
+            @RequestParam(value = "valueSearch", defaultValue = "") String valueSearch,
+            @RequestParam("page") Optional<Integer> page) {
 
+        System.out.println("Search criteria:");
+        System.out.println("Name: " + valueSearch);
+        int currentPage = page.map(p -> Math.max(p, 0)).orElse(0);
+        Pageable pageable = PageRequest.of(currentPage, 7);
+        Page<UserResDTO> employees = iUserService.searchEmployees(
+                valueSearch, pageable);
+        return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
+
+    // Remove Employee
+    @PutMapping("private/delete-employee/{id}")
+    public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
+        UserResDTO userResDTO = iUserService.findEmployeeById(id);
+        if (userResDTO == null) {
+            return new ResponseEntity<>("Employee not found to delete !", HttpStatus.BAD_REQUEST);
+        }
+        iUserService.deleteEmployeeById(id);
+        return new ResponseEntity<>("Delete employee successfully.", HttpStatus.OK);
+    }
     @PutMapping("/change-password")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest, Principal principal) {
         try {
@@ -40,7 +64,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
     @PostMapping("/public/register")
     public ResponseEntity<?> addNewUser(@Valid @RequestBody UserDTO userDTO,
                                         BindingResult bindingResult,
@@ -95,5 +118,4 @@ public class UserController {
         iUserService.updateUser(id, userDTO);
         return ResponseEntity.ok("User updated successfully");
     }
-
 }

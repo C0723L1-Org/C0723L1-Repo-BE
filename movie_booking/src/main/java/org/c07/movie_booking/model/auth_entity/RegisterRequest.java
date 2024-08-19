@@ -1,9 +1,5 @@
 package org.c07.movie_booking.model.auth_entity;
-//
-//import lombok.AllArgsConstructor;
-//import lombok.Builder;
-//import lombok.Data;
-//import lombok.NoArgsConstructor;
+
 import org.c07.movie_booking.model.Role;
 
 import java.time.LocalDate;
