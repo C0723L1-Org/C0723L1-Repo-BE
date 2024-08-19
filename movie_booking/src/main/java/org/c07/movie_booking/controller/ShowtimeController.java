@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+import org.c07.movie_booking.dto.ShowtimeDTO;
+import org.springframework.validation.BindingResult;
 @RestController
 @RequestMapping("/api/v1/showtime")
 @CrossOrigin
@@ -23,4 +24,23 @@ public class ShowtimeController {
         }else return new ResponseEntity<>(showtimeList, HttpStatus.OK);
 
     }
+    @GetMapping("private/list-showtime")
+    public List<ShowtimeDTO> getFindAll(){
+        return showtimeService.findAllShowtime();
+    }
+    @PostMapping("private/create")
+    public ResponseEntity<ShowtimeDTO> createShowTime(@RequestBody ShowtimeDTO showtimeDTO, BindingResult bindingResult){
+        new ShowtimeDTO().validate(showtimeDTO,bindingResult);
+        if (bindingResult.hasErrors()){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        }
+        try {
+            showtimeService.create(showtimeDTO.getShowDate(),showtimeDTO.getStartTime(),showtimeDTO.getRoom(),showtimeDTO.getMoviel());
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
+

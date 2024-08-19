@@ -8,7 +8,6 @@ import lombok.Setter;
 import org.c07.movie_booking.model.Role;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-
 import java.time.LocalDate;
 import java.util.Random;
 

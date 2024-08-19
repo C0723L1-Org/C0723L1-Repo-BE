@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface ISeatService {
     List<Seat> getAllSelectedSeat(Long showtimeId);
+    List<Seat> getAllSelectingSeat(Long showtimeId);
 
     Seat getSeatByRoomIdAndSeatNumber(Long roomId, String seatNumber);
 }

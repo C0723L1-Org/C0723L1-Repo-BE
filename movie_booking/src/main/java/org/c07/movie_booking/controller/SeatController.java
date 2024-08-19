@@ -16,9 +16,16 @@ public class SeatController {
     @Autowired
     ISeatService seatService;
     // get all selected seats
-    @GetMapping("/public/list")
+    @GetMapping("/public/selected")
     public ResponseEntity<List<Seat>> getAllSelectedSeats(@RequestParam Long showtimeId){
         List<Seat> seatList = seatService.getAllSelectedSeat(showtimeId);
+        if(seatList.isEmpty()){
+            return new ResponseEntity<>(seatList, HttpStatus.NO_CONTENT);
+        }else return new ResponseEntity<>(seatList, HttpStatus.OK);
+    }
+    @GetMapping("/public/selecting")
+    public ResponseEntity<List<Seat>> getAllSelectingSeats(@RequestParam Long showtimeId){
+        List<Seat> seatList = seatService.getAllSelectingSeat(showtimeId);
         if(seatList.isEmpty()){
             return new ResponseEntity<>(seatList, HttpStatus.NO_CONTENT);
         }else return new ResponseEntity<>(seatList, HttpStatus.OK);

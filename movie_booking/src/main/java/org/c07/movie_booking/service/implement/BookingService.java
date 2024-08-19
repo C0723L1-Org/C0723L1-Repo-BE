@@ -1,22 +1,23 @@
 package org.c07.movie_booking.service.implement;
 
 import org.c07.movie_booking.model.Booking;
-import org.c07.movie_booking.model.User;
 import org.c07.movie_booking.repository.IBookingRepository;
-import org.c07.movie_booking.repository.IUserRepositoty;
+import org.c07.movie_booking.repository.IUserRepository;
 import org.c07.movie_booking.service.IBookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.c07.movie_booking.dto.response.BookingDetailResDTO;
+import org.c07.movie_booking.dto.response.BookingResDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class BookingService implements IBookingService {
     @Autowired
     IBookingRepository bookingRepository;
     @Autowired
-    IUserRepositoty userRepositoty;
+    IUserRepository userRepository;
     @Override
     public boolean addNewBooking(Booking booking) {
         try{
@@ -37,6 +38,42 @@ public class BookingService implements IBookingService {
             return Integer.toString(currentCode +1);
         }
     }
+    @Override
+    public List<BookingDetailResDTO> getBookingDetails() {
+        return bookingRepository.findBookingDetails();
+    }
 
-    
+    // Danh sách vé chưa in- role nhân viên hoặc admin
+    @Override
+    public Page<BookingResDTO> SearchBookings(String valueSearch, Pageable pageable) {
+        return bookingRepository.SearchBookings(valueSearch, pageable) ;
+    }
+
+    // Tìm vé và xem chi tiết vé theo Id
+    @Override
+    public BookingResDTO findBookingResDTOById(Long id) {
+        BookingResDTO bookingResDTO = bookingRepository.findBookingResDTOById(id).orElse(null);
+        if (bookingResDTO == null || bookingResDTO.getReceive()) {
+            return null;
+        } else {
+            return bookingResDTO;
+        }
+    }
+
+    // Nhận vé
+    @Override
+    public void receiveBookingById(Long id) {
+        bookingRepository.receiveBookingById(id);
+    }
+
+    @Override
+    public Booking findBookingBySeatIdAndShowtimeId(Long seatId, Long showtimeId) {
+        return bookingRepository.findBookingBySeatIdAndShowtimeId(seatId,showtimeId);
+    }
+
 }
+
+
+
+
+

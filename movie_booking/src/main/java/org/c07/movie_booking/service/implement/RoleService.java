@@ -1,6 +1,5 @@
 package org.c07.movie_booking.service.implement;
 
-
 import org.c07.movie_booking.model.Role;
 import org.c07.movie_booking.repository.IRoleRepository;
 import org.c07.movie_booking.service.IRoleService;
