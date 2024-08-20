@@ -6,7 +6,6 @@ import jakarta.transaction.Transactional;
 import org.c07.movie_booking.exception.FieldRequiredException;
 import org.c07.movie_booking.model.KindOfFilm;
 import org.c07.movie_booking.model.Movie;
-import org.c07.movie_booking.model.StatusFilm;
 import org.c07.movie_booking.repository.IMovieRepository;
 import org.c07.movie_booking.service.IMovieService;
 import org.modelmapper.ModelMapper;
@@ -27,15 +26,26 @@ public class MovieService implements IMovieService {
     private ModelMapper modelMapper;
     //Home
     @Override
-    public Page<Movie> getSearchMovie(String nameMovie, String director, String nameStatus, String actor,  String releaseDate,Pageable pageable) {
-        return iMovieRepository.getSearchMovie(nameMovie, director, nameStatus, actor,  releaseDate, pageable);
+    public Page<Movie> getSearchMovie(String nameMovie, String director, String actor, String nameStatus, String releaseDate, String studio,Pageable pageable) {
+        return iMovieRepository.getSearchMovie(nameMovie, director, actor, nameStatus, releaseDate, studio, pageable);
+
     }
 
     @Override
     public Page<Movie> searchMovieByKindOfFilm(String nameKind, Pageable pageable) {
         return iMovieRepository.searchMovieByKindOfFilm(nameKind,pageable);
     }
-@Override
+    @Override
+    public Page<Movie> getMovieIsComming(Pageable pageable) {
+
+        return iMovieRepository.getMovieIsComming(pageable);
+    }
+    @Override
+    public Page<Movie> getMovieIsShowing(Pageable pageable) {
+
+        return iMovieRepository.getMovieIsShowing(pageable);
+    }
+    @Override
 public Page<MovieDTO> getFindAll(Integer pageNumber, Integer pageSize) {
     Pageable pageable = PageRequest.of(pageNumber, pageSize);
     Page<Movie> movieEntity = iMovieRepository.findAllByQuery(pageable);
@@ -57,10 +67,7 @@ public Page<MovieDTO> getFindAll(Integer pageNumber, Integer pageSize) {
 }
 
 
-    @Override
-    public List<Movie> getMovieIsComming() {
-        return iMovieRepository.getMovieIsComming();
-    }
+
 
     @Override
     public Page<MovieDTO> getSearchFields(String nameMovie, String content, String director,
@@ -96,10 +103,6 @@ public Page<MovieDTO> getFindAll(Integer pageNumber, Integer pageSize) {
         for (Long item: paths){
             iMovieRepository.deleteById(item);
         }
-    }
-    @Override
-    public List<Movie> getMovieIsShowing() {
-        return iMovieRepository.getMovieIsShowing();
     }
     //Manager
     @Override

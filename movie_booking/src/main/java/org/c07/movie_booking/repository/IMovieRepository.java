@@ -25,32 +25,31 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
             nativeQuery = true,
             value = "select m.* from movie m " +
                     "join status_film s on s.id = m.status_movie_id " +
-                    "join kind_of_film k on k.id = m.kind_of_movie_id "
-                    +"where m.is_delete = false " +
+                    "join kind_of_film k on k.id = m.kind_of_movie_id " +
+                    "where is_delete = false " +
                     "and m.name_movie like ?1 " +
                     "and m.director like ?2 " +
-                    "and s.name like ?3 " +
-                    "and m.actor like ?4 " +
-                    "and m.release_date like ?5"
-
-            ,
+                    "and m.actor like ?3 " +
+                    "and s.name like ?4 " +
+                    "and m.release_date like ?5 " +
+                    "and m.studio like ?6 " ,
             countQuery = "select count(m.id) from movie m " +
-                    "join status_film s on s.id = m.status_movie_id " +
-                    "join kind_of_film k on k.id = m.kind_of_movie_id "
-                    + "where m.is_delete = false " +
-                    "and m.name_movie like ?1 " +
-                    "and m.director like ?2 " +
-                    "and s.name like ?3 " +
-                    "and m.actor like ?4 " +
-                    "and m.release_date like ?5"
-
-    )
+                    " join status_film s on s.id = m.status_movie_id " +
+                    " join kind_of_film k on k.id = m.kind_of_movie_id " +
+                    " where is_delete = false " +
+                    " and m.name_movie like ?1 " +
+                    " and m.director like ?2 " +
+                    " and m.actor like ?3 " +
+                    " and s.name like ?4 " +
+                    " and m.release_date like ?5 "+
+                    " and m.studio like ?6 " )
     Page<Movie> getSearchMovie(
             String nameMovie,
             String director,
-            String nameStatus,
             String actor,
+            String nameStatus,
             String releaseDate,
+            String studio,
             Pageable pageable);
 
     @Query("SELECT m FROM Movie m " +
@@ -58,24 +57,31 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
             "JOIN m.kindOfFilms ks " +
             "JOIN m.statusFilmId s " +
             "WHERE m.isDelete = FALSE " +
-            "AND (:nameKind is null or ks.name LIKE %:nameKind%)")
+            "AND (:nameKind is null or ks.name LIKE %:nameKind%) ")
     Page<Movie> searchMovieByKindOfFilm(
             @Param("nameKind") String nameKind,
             Pageable pageable);
 
 
-    @Query(nativeQuery = true , value = " SELECT m.* FROM Movie m " +
+    @Query(nativeQuery = true , value =
+            " SELECT m.* FROM Movie m " +
             " join status_film s on s.id = m.status_movie_id " +
-            " WHERE m.is_delete = 0 " +
-            "and s.id = 1 ")
-    List<Movie> getMovieIsComming();
-
-    @Query(nativeQuery = true , value = " SELECT m.* FROM Movie m " +
-            " join status_film s on s.id = m.status_movie_id " +
-            " WHERE m.is_delete = 0 " +
-            "and s.id = 2 ")
-    List<Movie> getMovieIsShowing();
-
+            " WHERE s.id = 1 " +
+            " and is_delete = false ",
+            countQuery =
+            "SELECT COUNT(*) FROM Movie m " +
+            "JOIN status_film s ON s.id = m.status_movie_id " +
+             "WHERE s.id = 1 AND m.is_delete = false")
+    Page<Movie> getMovieIsComming(Pageable pageable);
+    @Query(nativeQuery = true, value =
+            "SELECT m.* FROM Movie m " +
+            "JOIN status_film s ON s.id = m.status_movie_id " +
+            "WHERE s.id = 2 AND m.is_delete = false",
+            countQuery =
+            "SELECT COUNT(*) FROM Movie m " +
+            "JOIN status_film s ON s.id = m.status_movie_id " +
+            "WHERE s.id = 2 AND m.is_delete = false")
+    Page<Movie> getMovieIsShowing(Pageable pageable);
     @Query(nativeQuery = true,value ="select * from movie where id = ?1")
     Movie getMovieById(Long id);
 

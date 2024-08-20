@@ -15,21 +15,6 @@ import java.util.Optional;
 
 @Repository
 public interface IUserRepository extends JpaRepository<User, Long> {
-
-
-    //BuiTheThien
-    // Show List and Search Employee
-//    @Query(value = "SELECT u.* " +
-//            "FROM user u " +
-//            "JOIN role r ON u.role_id = r.id "+
-//            "WHERE r.name = 'employee' AND u.status = 1 "
-//            + "AND (u.name LIKE ?1 OR u.code LIKE ?1)"
-//            ,
-//            countQuery = "SELECT COUNT(*) " +
-//                    "FROM user u " +
-//                    "JOIN role r ON u.role_id = r.id " +
-//                    "WHERE r.name = 'employee' AND u.status = 1 " +
-//                    "AND (u.name LIKE ?1 OR u.code LIKE ?1)", nativeQuery = true)
     @Query(value = "SELECT u.* " +
             "FROM user u " +
             "JOIN role r ON u.role_id = r.id " +

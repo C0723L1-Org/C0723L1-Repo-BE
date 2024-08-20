@@ -1,10 +1,14 @@
 package org.c07.movie_booking.controller;
+
 import jakarta.validation.Valid;
 import org.c07.movie_booking.dto.ChangePasswordRequest;
 import org.c07.movie_booking.dto.UserDTO;
 import org.c07.movie_booking.dto.response.UserResDTO;
+import java.security.Principal;
 import org.c07.movie_booking.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
