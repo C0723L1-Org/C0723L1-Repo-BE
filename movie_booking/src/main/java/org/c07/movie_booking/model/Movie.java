@@ -28,7 +28,7 @@ public class Movie {
     private String avatar;
     private String poster;
 
-    private Boolean isDelete = true;
+    private Boolean isDelete = false;
     @ManyToOne
     @JoinColumn(name = "status_movie_id")
     private StatusFilm statusFilmId;

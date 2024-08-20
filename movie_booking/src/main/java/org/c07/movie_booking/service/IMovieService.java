@@ -5,20 +5,19 @@ import org.c07.movie_booking.exception.FieldRequiredException;
 import org.c07.movie_booking.model.Movie;
 import org.springframework.data.domain.Page;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 public interface IMovieService {
     //home
-    Page<Movie> getSearchMovie(String nameMovie, String director, LocalDate releaseDate,
-                               String nameStatus, String actor, Pageable pageable);
-    Page<MovieDTO> getFindAll(Integer pageNumber, Integer pageSize);
+    Page<Movie> getSearchMovie(String nameMovie, String director, String actor, String nameStatus, String releaseDate, String studio ,Pageable pageable);
     Page<Movie> searchMovieByKindOfFilm(String nameKind, Pageable pageable);
 
-    List<Movie> getMovieIsComming();
+    Page<Movie> getMovieIsComming(Pageable pageable);
 
-    List<Movie> getMovieIsShowing();
+    Page<Movie> getMovieIsShowing(Pageable pageable);
+
+    Page<MovieDTO> getFindAll(Integer pageNumber, Integer pageSize);
     Movie getMovieById(Long id);
 
     //Manager

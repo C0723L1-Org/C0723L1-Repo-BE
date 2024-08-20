@@ -39,14 +39,15 @@ public class MovieController {
     public ResponseEntity<?> showAndSearchMovie(
             @RequestParam(defaultValue = "") String nameMovie,
             @RequestParam(defaultValue = "") String director,
-            @RequestParam(defaultValue = "2024-02-25") @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate releaseDate,
-            @RequestParam(defaultValue = "") String nameStatus,
             @RequestParam(defaultValue = "") String actor,
+            @RequestParam(defaultValue = "") String nameStatus,
+            @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "dd/MM/yyyy") String releaseDate,
+            @RequestParam(defaultValue = "") String studio,
             @RequestParam(defaultValue = "0") int page) {
         if (page < 0) {
             page = 0;
         }
-        Page<Movie> movies = iMovieService.getSearchMovie("%" + nameMovie + "%", "%" + director + "%", releaseDate, "%" + nameStatus + "%", "%" + actor + "%", PageRequest.of(page, 5));
+        Page<Movie> movies = iMovieService.getSearchMovie("%" + nameMovie + "%", "%" + director + "%","%" + actor + "%",  "%" + nameStatus + "%", "%" + releaseDate + "%", "%" + studio + "%" ,PageRequest.of(page, 5));
         return ResponseEntity.ok(movies);
     }
 
@@ -63,16 +64,26 @@ public class MovieController {
     }
 
     @GetMapping("public/show-list-movie-showing")
-    public ResponseEntity<?> getMovieIsShowing(){
-        List<Movie> movies = iMovieService.getMovieIsShowing();
+    public ResponseEntity<?> getMovieIsShowing(
+            @RequestParam(value = "page", defaultValue = "0") int page){
+
+        if (page < 0) {
+            page = 0;
+        }
+        Page<Movie> movies = iMovieService.getMovieIsShowing(PageRequest.of(page, 10));
         if (movies.isEmpty()) {
             return ResponseEntity.status(404).body("Not found");
         }
         return ResponseEntity.ok(movies);
     }
     @GetMapping("public/show-list-movie-comming")
-    public ResponseEntity<?> getMovieIsComming(){
-        List<Movie> movies = iMovieService.getMovieIsComming();
+    public ResponseEntity<?> getMovieIsComming(
+            @RequestParam(value = "page", defaultValue = "0") int page){
+
+        if (page < 0) {
+            page = 0;
+        }
+        Page<Movie> movies = iMovieService.getMovieIsComming( PageRequest.of(page, 10));
         if (movies.isEmpty()) {
             return ResponseEntity.status(404).body("Not found");
         }
@@ -120,7 +131,7 @@ public class MovieController {
     }
 
     //xem chi tiết phim
-    @GetMapping("private/find/{id}")
+    @GetMapping("public/find/{id}")
     public ResponseEntity<?> getMovieById1(@PathVariable Long id) {
         Movie movie = iMovieService.findMovieById(id);
         if (movie != null) {
