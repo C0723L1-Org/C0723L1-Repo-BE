@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Repository
 public interface IBookingRepository extends JpaRepository<Booking, Long> {
-    @Query(nativeQuery = true, value = "select MAX(code) from booking")
+    @Query(nativeQuery = true, value = "select MAX(id) from booking")
     String selectCurrentCode();
 
     // Danh sách vé chưa in- role nhân viên hoặc admin
@@ -73,4 +73,6 @@ public interface IBookingRepository extends JpaRepository<Booking, Long> {
     @Transactional
     @Query(value = "update booking set receive = 1 where id = ?1", nativeQuery = true)
     void receiveBookingById( Long id);
+    @Query(nativeQuery = true, value = "select b.* from booking b where seat_id =?1 and showtime_id =?2 and booking_status_id =1")
+    Booking findBookingBySeatIdAndShowtimeId(Long seatId, Long showtimeId);
 }

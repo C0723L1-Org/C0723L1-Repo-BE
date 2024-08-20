@@ -9,6 +9,14 @@ import java.util.List;
 
 @Repository
 public interface ISeatRepository extends JpaRepository<Seat,Long> {
-    @Query(nativeQuery = true, value = "select s.* from seat s join booking b on  b.seat_id = s.id where b.booking_status_id = 1")
-    List<Seat> getAllSelectedSeat();
+    @Query(nativeQuery = true,
+            value = "select s.* from seat s join booking b on  b.seat_id = s.id where b.booking_status_id = 2 and b.showtime_id = ?1")
+    List<Seat> getAllSelectedSeat(Long showtimeId);
+    @Query(nativeQuery = true,
+            value = "select s.* from seat s join booking b on  b.seat_id = s.id where b.booking_status_id = 1 and b.showtime_id = ?1")
+
+    List<Seat> getAllSelectingSeat(Long showtimeId);
+    @Query(nativeQuery = true,
+            value = "select s.* from seat s join room r on s.room_id = r.id where r.id =?1 and s.seat_number =?2")
+    Seat getSeatByRoomIdAndSeatNumber(Long roomId, String seatNumber);
 }

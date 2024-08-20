@@ -15,21 +15,17 @@ import java.util.Optional;
 
 @Repository
 public interface IUserRepository extends JpaRepository<User, Long> {
-
-
-    //BuiTheThien
-    // Show List and Search Employee
     @Query(value = "SELECT u.* " +
             "FROM user u " +
             "JOIN role r ON u.role_id = r.id " +
-            "WHERE r.name = 'employee' AND u.status = false " +
+            "WHERE r.name = 'employee' AND u.status = 0 " +
             "AND (u.name LIKE %:valueSearch% OR u.code LIKE %:valueSearch%)",
             countQuery = "SELECT COUNT(*) " +
                     "FROM user u " +
                     "JOIN role r ON u.role_id = r.id " +
-                    "WHERE r.name = 'employee' AND u.status = false " +
+                    "WHERE r.name = 'employee' AND u.status = 0 " +
                     "AND (u.name LIKE %:valueSearch% OR u.code LIKE %:valueSearch%)", nativeQuery = true)
-      Page<User> SearchEmployees(@Param("valueSearch") String valueSearch, Pageable pageable);
+    Page<User> SearchEmployees(@Param("valueSearch") String valueSearch, Pageable pageable);
     // Remove Employee
     @Modifying
     @Transactional
@@ -40,7 +36,7 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT u.* " +
             "FROM user u " +
             "JOIN role r ON u.role_id = r.id " +
-            "WHERE r.name = 'employee' AND u.status = false AND u.id = ?1"
+            "WHERE r.name = 'employee' AND u.status = 0 AND u.id = ?1"
             , nativeQuery = true)
     Optional<User> findEmployeeById(Long id);
 
@@ -61,6 +57,15 @@ public interface IUserRepository extends JpaRepository<User, Long> {
             value = "select u.id,u.name,u.card_id,u.email,u.gender,u.phone_number,u.avatar,u.address, r.name as role" +
                     " from user u join role r on r.id = u.role_id where u.email =?1")
     UserResponse findUserByEmail(String email);
+    Optional<User> findByName(String name); //Tìm kiếm User có tồn tại trong DB không?
+
+    Boolean existsByEmail(String email); // Kiểm tra email đã có trong DB chưa
+
+    @Query(nativeQuery = true, value = "select * from user where email =?1")
+    Optional<User> findByEmail(String email);
+
+    Boolean existsByCardId(String cardId);
+    Boolean existsByPhoneNumber(String phoneNumber);
 }
 
 

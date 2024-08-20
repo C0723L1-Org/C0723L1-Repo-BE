@@ -28,6 +28,7 @@ public class MovieService implements IMovieService {
     @Override
     public Page<Movie> getSearchMovie(String nameMovie, String director, String actor, String nameStatus, String releaseDate, String studio,Pageable pageable) {
         return iMovieRepository.getSearchMovie(nameMovie, director, actor, nameStatus, releaseDate, studio, pageable);
+
     }
 
     @Override
@@ -44,10 +45,7 @@ public class MovieService implements IMovieService {
 
         return iMovieRepository.getMovieIsShowing(pageable);
     }
-
-
-
-@Override
+    @Override
 public Page<MovieDTO> getFindAll(Integer pageNumber, Integer pageSize) {
     Pageable pageable = PageRequest.of(pageNumber, pageSize);
     Page<Movie> movieEntity = iMovieRepository.findAllByQuery(pageable);

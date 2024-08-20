@@ -16,7 +16,6 @@ public class Movie {
     private Long id;
     private String nameMovie;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-
     private LocalDate releaseDate;
     private String durationMovie;
     private String actor;

@@ -5,5 +5,8 @@ import org.c07.movie_booking.model.Seat;
 import java.util.List;
 
 public interface ISeatService {
-    List<Seat> getAllSelectedSeat();
+    List<Seat> getAllSelectedSeat(Long showtimeId);
+    List<Seat> getAllSelectingSeat(Long showtimeId);
+
+    Seat getSeatByRoomIdAndSeatNumber(Long roomId, String seatNumber);
 }

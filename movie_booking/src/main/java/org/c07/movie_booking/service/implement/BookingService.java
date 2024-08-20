@@ -1,20 +1,23 @@
 package org.c07.movie_booking.service.implement;
 
-import org.c07.movie_booking.dto.response.BookingDetailResDTO;
-import org.c07.movie_booking.dto.response.BookingResDTO;
 import org.c07.movie_booking.model.Booking;
 import org.c07.movie_booking.repository.IBookingRepository;
+import org.c07.movie_booking.repository.IUserRepository;
 import org.c07.movie_booking.service.IBookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.c07.movie_booking.dto.response.BookingDetailResDTO;
+import org.c07.movie_booking.dto.response.BookingResDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class BookingService implements IBookingService {
     @Autowired
     IBookingRepository bookingRepository;
+    @Autowired
+    IUserRepository userRepository;
     @Override
     public boolean addNewBooking(Booking booking) {
         try{
@@ -35,8 +38,6 @@ public class BookingService implements IBookingService {
             return Integer.toString(currentCode +1);
         }
     }
-
-    // Danh sách vé của riêng từng khách hàng
     @Override
     public List<BookingDetailResDTO> getBookingDetails() {
         return bookingRepository.findBookingDetails();
@@ -64,4 +65,15 @@ public class BookingService implements IBookingService {
     public void receiveBookingById(Long id) {
         bookingRepository.receiveBookingById(id);
     }
+
+    @Override
+    public Booking findBookingBySeatIdAndShowtimeId(Long seatId, Long showtimeId) {
+        return bookingRepository.findBookingBySeatIdAndShowtimeId(seatId,showtimeId);
+    }
+
 }
+
+
+
+
+

@@ -45,7 +45,7 @@ public class MovieDTO implements Validator {
     @NotBlank(message = "Poster không được bỏ trống")
     private String poster;
 
-    private Boolean isDelete = true;
+    private Boolean isDelete = false;
 
     @NotBlank(message = "Trạng thái phim không được bỏ trống")
     private StatusFilm statusFilm;

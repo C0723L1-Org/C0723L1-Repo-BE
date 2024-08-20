@@ -17,5 +17,18 @@ public interface IUserService {
     void deleteEmployeeById(Long id);
     // Tìm employee theo id
     UserResDTO findEmployeeById(Long id);
+
+    User findUserById(Long id);
+    User addNewUser(UserDTO userDTO);
+    void updateUser(Long id, UserDTO userDTO);
+    Boolean existsByEmail(String email); //email da co trong DB chua
+    Page<UserDTO> getAllUser (Pageable pageable);
+
+    UserDTO findByEmail (String email);
+    Boolean existsByCardId(String cardId);
+    Boolean existsByPhoneNumber(String phoneNumber);
+
+
+    void changePassword(String email, String currentPassword, String newPassword);
 }
 

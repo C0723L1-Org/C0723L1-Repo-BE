@@ -47,6 +47,7 @@ public class MovieController {
         if (page < 0) {
             page = 0;
         }
+
         Page<Movie> movies = iMovieService.getSearchMovie("%" + nameMovie + "%", "%" + director + "%","%" + actor + "%",  "%" + nameStatus + "%", "%" + releaseDate + "%", "%" + studio + "%" ,PageRequest.of(page, 5));
         return ResponseEntity.ok(movies);
     }
@@ -197,7 +198,7 @@ public Page<MovieDTO> getSearchFields(
         iMovieService.deleteByIds(id);
         return ResponseEntity.noContent().build();
     }
-    @GetMapping("private/currently-showing")
+    @GetMapping("public/currently-showing")
     public ResponseEntity<?> getCurrentlyShowingMovies() {
         try {
             List<Movie> movies = iMovieService.findCurrentlyShowingMovies();

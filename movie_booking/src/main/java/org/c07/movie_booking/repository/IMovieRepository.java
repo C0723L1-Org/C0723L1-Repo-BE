@@ -42,8 +42,7 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
                     " and m.actor like ?3 " +
                     " and s.name like ?4 " +
                     " and m.release_date like ?5 "+
-                    " and m.studio like ?6 "
-    )
+                    " and m.studio like ?6 " )
     Page<Movie> getSearchMovie(
             String nameMovie,
             String director,
@@ -83,14 +82,13 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
             "JOIN status_film s ON s.id = m.status_movie_id " +
             "WHERE s.id = 2 AND m.is_delete = false")
     Page<Movie> getMovieIsShowing(Pageable pageable);
-
     @Query(nativeQuery = true,value ="select * from movie where id = ?1")
     Movie getMovieById(Long id);
 
     //Manager
 
     //Query tìm kiếm phim đang chiếu
-    @Query("SELECT m FROM Movie m LEFT JOIN FETCH m.kindOfFilms k WHERE m.statusFilmId.id = 1")
+    @Query("SELECT m FROM Movie m LEFT JOIN FETCH m.kindOfFilms k WHERE m.statusFilmId.id = 2")
     List<Movie> findCurrentlyShowingMovies();
 
     @Modifying
