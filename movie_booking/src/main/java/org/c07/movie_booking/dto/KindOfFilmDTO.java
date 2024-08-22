@@ -4,8 +4,6 @@ public class KindOfFilmDTO {
     private long id;
     private String name;
 
-    public KindOfFilmDTO() {
-    }
 
     public KindOfFilmDTO(long id, String name) {
         this.id = id;

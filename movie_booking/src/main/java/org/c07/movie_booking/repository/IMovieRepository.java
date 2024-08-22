@@ -57,7 +57,8 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
             "JOIN m.kindOfFilms ks " +
             "JOIN m.statusFilmId s " +
             "WHERE m.isDelete = FALSE " +
-            "AND (:nameKind is null or ks.name LIKE %:nameKind%) ")
+            "AND (:nameKind is null or ks.name LIKE %:nameKind%)"
+    )
     Page<Movie> searchMovieByKindOfFilm(
             @Param("nameKind") String nameKind,
             Pageable pageable);
