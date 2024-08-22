@@ -54,7 +54,7 @@ public class AuthController {
     public ResponseEntity<String> getStatus(){
         return new  ResponseEntity<>("OK",HttpStatus.OK);
     }
-    @PostMapping("/log-out")
+    @PostMapping("/public/log-out")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response){
         // Tạo lại cookie jwt với giá trị rỗng và maxAge bằng 0 để xóa nó
         Cookie jwtCookie = new Cookie("jwt", null);

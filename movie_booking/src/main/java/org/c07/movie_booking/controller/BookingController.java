@@ -160,6 +160,16 @@ public class BookingController {
         List<BookingDetailResDTO> bookingDetails = bookingService.getBookingDetails();
         return ResponseEntity.ok(bookingDetails);
     }
+    @PutMapping("remove")
+    public ResponseEntity<?> removeBookingBy(@RequestBody BookingRequest bookingRequest){
+        try{
+            changeStatusBookingToCancel(bookingRequest.getSeatId(), bookingRequest.getShowtimeId());
+            return new ResponseEntity<>("Success",HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST);
+        }
+    }
 }
 
 
