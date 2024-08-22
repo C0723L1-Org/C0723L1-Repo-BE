@@ -145,11 +145,10 @@ public interface IMovieRepository extends JpaRepository<Movie, Long> {
     @Query(value = "select * FROM  Movie  where id=:id", nativeQuery = true)
     Optional<Movie>findMovieById(@Param("id") long id);
 //
-    @Query(value = "SELECT distinct m.*, s.name AS status_name " +
-            "FROM movie m " +
-            "LEFT JOIN movie_kind_of_film mk ON mk.movie_id = m.id " +
-            "LEFT JOIN status_film s ON s.id = m.status_movie_id " +
-            "WHERE is_delete = 0 ", nativeQuery = true)
+        @Query(value = "select mv from Movie mv " +
+                "left join mv.kindOfFilm k " +
+                "left join mv.statusFilmId s " +
+                "where mv.isDelete = false " )
         Page<Movie> findAllByQuery(Pageable pageable);
 
     @Query("select mv from Movie mv " +
