@@ -63,7 +63,7 @@ public Page<MovieDTO> getFindAll(Integer pageNumber, Integer pageSize) {
         movieDTOList.add(movieDTO);
     }
 
-    return new PageImpl<>(movieDTOList, pageable, movieEntity.getTotalPages());
+    return new PageImpl<>(movieDTOList, pageable, movieEntity.getTotalElements());
 }
 
 
