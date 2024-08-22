@@ -88,7 +88,7 @@ public Page<MovieDTO> getFindAll(Integer pageNumber, Integer pageSize) {
         movieDTOList.add(movieDTO);
     }
 
-    return new PageImpl<>(movieDTOList, pageable, movies.getTotalPages());
+    return new PageImpl<>(movieDTOList, pageable, movies.getTotalElements());
     }
     @Override
     public void deleteByIdQuery(Long id) throws FieldRequiredException {
