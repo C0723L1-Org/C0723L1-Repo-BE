@@ -48,7 +48,7 @@ public class MovieController {
             page = 0;
         }
 
-        Page<Movie> movies = iMovieService.getSearchMovie("%" + nameMovie + "%", "%" + director + "%","%" + actor + "%",  "%" + nameStatus + "%", "%" + releaseDate + "%", "%" + studio + "%" ,PageRequest.of(page, 5));
+        Page<Movie> movies = iMovieService.getSearchMovie("%" + nameMovie + "%", "%" + director + "%","%" + actor + "%",  "%" + nameStatus + "%", "%" + releaseDate + "%", "%" + studio + "%" ,PageRequest.of(page, 10));
         return ResponseEntity.ok(movies);
     }
 
@@ -60,7 +60,7 @@ public class MovieController {
         if (page < 0) {
             page = 0;
         }
-        Page<Movie> movies = iMovieService.searchMovieByKindOfFilm(nameKind, PageRequest.of(page, 5));
+        Page<Movie> movies = iMovieService.searchMovieByKindOfFilm(nameKind, PageRequest.of(page, 10));
         return ResponseEntity.ok(movies);
     }
 
