@@ -2,8 +2,10 @@ package org.c07.movie_booking.repository;
 
 import org.c07.movie_booking.model.Seat;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,4 +21,8 @@ public interface ISeatRepository extends JpaRepository<Seat,Long> {
     @Query(nativeQuery = true,
             value = "select s.* from seat s join room r on s.room_id = r.id where r.id =?1 and s.seat_number =?2")
     Seat getSeatByRoomIdAndSeatNumber(Long roomId, String seatNumber);
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true,value ="update  booking set booking_status_id =3 where user_id = ?1 and showtime_id = ?2 and booking_status_id = 1" )
+    void setAllSeatToCancelByUserIdAndShowtimeId(Long userId, Long showtimeId);
 }
