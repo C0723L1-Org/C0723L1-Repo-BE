@@ -26,4 +26,15 @@ public class SeatService implements ISeatService {
     public Seat getSeatByRoomIdAndSeatNumber(Long roomId, String seatNumber) {
         return seatRepository.getSeatByRoomIdAndSeatNumber(roomId,seatNumber);
     }
+
+    @Override
+    public boolean setAllSeatToCancelByUserIdAndShowtimeId(Long userId, Long showtimeId) {
+        try{
+            seatRepository.setAllSeatToCancelByUserIdAndShowtimeId(userId,showtimeId);
+            return  true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
 }

@@ -9,4 +9,6 @@ public interface ISeatService {
     List<Seat> getAllSelectingSeat(Long showtimeId);
 
     Seat getSeatByRoomIdAndSeatNumber(Long roomId, String seatNumber);
+
+    boolean setAllSeatToCancelByUserIdAndShowtimeId(Long userId, Long showtimeId);
 }
